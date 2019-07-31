@@ -2,23 +2,7 @@
   <v-container mt-5>
     <v-layout mb-4 column align-center>
       <v-flex>
-        <v-tabs
-          fixed-tabs
-          v-model="currentMedia"
-          @change="getPopular"
-          color="transparent"
-          slider-color="blue"
-          icons-and-text
-        >
-          <v-tab :href="'#movie'">
-            Movies
-            <v-icon>movie</v-icon>
-          </v-tab>
-          <v-tab :href="'#tv'">
-            Series
-            <v-icon>tv</v-icon>
-          </v-tab>
-        </v-tabs>
+        <MediaTabs @emmittedMediaChange="getPopular" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
@@ -39,6 +23,7 @@
 </template>
 
 <script>
+import MediaTabs from "@/components/MediaTabs";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import axios from "axios";
@@ -46,62 +31,32 @@ import { mapState } from "vuex";
 export default {
   components: {
     MovieCard,
-    SeriesCard
+    SeriesCard,
+    MediaTabs
   },
   data() {
     return {
-      searchQuery: "",
       media: []
     };
   },
   methods: {
     getPopular() {
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${
-        this.apiKey
-      }&language=${this.language}`;
-
+      let searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${this.apiKey}&language=${this.language}`;
       axios
-        .get(this.searchQuery)
+        .get(searchQuery)
         .then(response => {
           this.media = response.data.results;
           console.log(response);
         })
-        .catch(error => {
-          console.log(error);
+        .catch(err => {
+          console.log(err);
         });
     }
   },
-  mounted() {
+  created() {
     this.getPopular();
   },
-  computed: {
-    baseUrl: {
-      get() {
-        return this.$store.state.baseUrl;
-      }
-    },
-    apiKey: {
-      get() {
-        return this.$store.state.apiKey;
-      }
-    },
-    currentMedia: {
-      get() {
-        return this.$store.state.currentMedia;
-      },
-      set(media) {
-        this.$store.commit("setCurrentMedia", media);
-      }
-    },
-    language: {
-      get() {
-        return this.$store.state.language;
-      },
-      set(language) {
-        this.$store.commit("setLanguage", lang);
-      }
-    }
-  }
+  computed: mapState(["baseUrl", "apiKey", "currentMedia", "language"])
 };
 </script>
 

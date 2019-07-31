@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <v-container>
     <v-layout>
       <v-flex xs3 v-for="movie in tmdbMovies" :key="movie.id">
@@ -64,12 +63,3 @@ export default {
   ])
 };
 </script>
-=======
-  <div></div>
-</template>
-
-<script>
-export default {};
-</script>
-
->>>>>>> 014649e25ec0329e136056dbca1a6b9279d9d99a

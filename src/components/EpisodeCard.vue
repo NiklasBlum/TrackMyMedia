@@ -18,7 +18,6 @@
 import { mapState } from "vuex";
 export default {
   props: ["episode"],
-  mounted() {},
   computed: mapState(["posterUrlOrg"])
 };
 </script>

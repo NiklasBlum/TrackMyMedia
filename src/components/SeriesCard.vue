@@ -9,7 +9,7 @@
         <v-btn block color="info">Details</v-btn>
       </router-link>
       <v-spacer></v-spacer>
-      <!-- <CheckWatchList :media="this.show"></CheckWatchList> -->
+      <CheckWatchList :media="this.show"></CheckWatchList>
     </v-card-actions>
   </v-card>
 </template>

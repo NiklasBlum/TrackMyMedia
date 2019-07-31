@@ -25,9 +25,6 @@ export default {
         return this.$store.state.posterUrl;
       }
     }
-  },
-  mounted() {
-   
   }
 };
 </script>

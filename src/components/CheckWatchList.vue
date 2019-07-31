@@ -40,9 +40,7 @@ export default {
     addToWatchlist() {
       this.loading = true;
 
-      this.searchQuery = `${this.baseAccountUrl}${
-        this.accountId
-      }/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
+      this.searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
       axios
         .post(this.searchQuery, {
           media_type: this.currentMedia,
@@ -61,9 +59,7 @@ export default {
     },
     removeFromWatchList() {
       this.loading = true;
-      this.searchQuery = `${this.baseAccountUrl}${
-        this.accountId
-      }/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
+      this.searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
       axios
         .post(this.searchQuery, {
           media_type: this.currentMedia,
@@ -82,9 +78,7 @@ export default {
     },
     checkWatchList() {
       this.loading = true;
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${
-        this.media.id
-      }/account_states?api_key=${this.apiKey}&session_id=${this.sessionId}`;
+      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${this.media.id}/account_states?api_key=${this.apiKey}&session_id=${this.sessionId}`;
       axios
         .get(this.searchQuery)
         .then(response => {

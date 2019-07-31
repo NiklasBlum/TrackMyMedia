@@ -2,26 +2,9 @@
   <v-container mt-5>
     <v-layout column align-center>
       <v-flex>
-        <v-tabs
-          fixed-tabs
-          v-model="currentMedia"
-          @change="getMedia"
-          color="transparent"
-          slider-color="blue"
-          icons-and-text
-        >
-          <v-tab :href="'#movie'">
-            Movies
-            <v-icon>movie</v-icon>
-          </v-tab>
-          <v-tab :href="'#tv'">
-            Series
-            <v-icon>tv</v-icon>
-          </v-tab>
-        </v-tabs>
+        <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>
     </v-layout>
-
     <v-layout mt-3 row wrap align-center>
       <v-flex xs12 sm4>
         <v-select :items="years" v-model="year" item-text="name" item-value="id" label="Year"></v-select>
@@ -29,7 +12,6 @@
       <v-flex xs12 sm4>
         <v-select :items="genres" v-model="genre" item-text="name" item-value="id" label="Genre"></v-select>
       </v-flex>
-
       <v-flex xs12 sm4>
         <v-select
           :items="sortBy"
@@ -61,13 +43,15 @@
 </template>
 
 <script>
+import MediaTabs from "@/components/MediaTabs";
 import axios from "axios";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 export default {
   components: {
     MovieCard,
-    SeriesCard
+    SeriesCard,
+    MediaTabs
   },
   data() {
     return {
@@ -98,9 +82,7 @@ export default {
   },
   methods: {
     getMedia() {
-      this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${
-        this.apiKey
-      }&language=${this.language}`;
+      this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}`;
 
       if (this.selectedFilter) {
         this.searchQuery += `&sort_by=${this.selectedFilter}`;

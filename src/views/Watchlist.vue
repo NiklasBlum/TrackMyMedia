@@ -2,16 +2,7 @@
   <v-container mt-5>
     <v-layout column align-center>
       <v-flex>
-        <v-tabs fixed-tabs v-model="currentMedia" color="transparent" slider-color="blue">
-          <v-tab :href="'#movie'">
-            Movies
-            <v-icon>movie</v-icon>
-          </v-tab>
-          <v-tab :href="'#tv'">
-            Series
-            <v-icon>tv</v-icon>
-          </v-tab>
-        </v-tabs>
+        <MediaTabs @emmittedMediaChange="getWatchlist" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
@@ -32,103 +23,56 @@
 </template>
 
 <script>
+import MediaTabs from "@/components/MediaTabs";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 export default {
   components: {
+    MediaTabs,
     MovieCard,
     SeriesCard
   },
   data() {
     return {
-      searchQuery: "",
       watchList: [],
       localMedia: "movies"
     };
   },
-<<<<<<< HEAD
-  created() {
-    console.log("adsf");
-=======
-  watch: {
-    currentMedia(media) {
-      console.log("media: " + media);
-      if (media === "tv") {
-        this.localMedia = media;
-      }
-      if (media === "movie") {
-        this.localMedia = "movies";
-      }
-      this.getWatchlist();
-    }
-  },
-  mounted() {
->>>>>>> 014649e25ec0329e136056dbca1a6b9279d9d99a
-    this.getWatchlist();
-    this.currentMedia;
-  },
+
   methods: {
     getWatchlist() {
-<<<<<<< HEAD
-      this.searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist/${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&session_id=${this.sessionId}`;
+      if (this.currentMedia == "movie") {
+        this.localMedia = "movies";
+      } else {
+        this.localMedia = "tv";
+      }
+      let searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist/${this.localMedia}?api_key=${this.apiKey}&language=${this.language}&session_id=${this.sessionId}`;
       if (this.sortBy != "") {
         this.searchQuery += `&sort_by=${this.sortBy}`;
       }
-=======
-      this.searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist/${
-        this.localMedia
-      }?api_key=${this.apiKey}&language=${this.language}&session_id=${
-        this.sessionId
-      }`;
-
->>>>>>> 014649e25ec0329e136056dbca1a6b9279d9d99a
       axios
-        .get(this.searchQuery)
+        .get(searchQuery)
         .then(response => {
           console.log(response.data.results);
           this.watchList = response.data.results;
         })
-        .catch(error => {
-          console.log(error);
+        .catch(err => {
+          console.log(err);
         });
     }
   },
-  computed: {
-    baseAccountUrl: {
-      get() {
-        return this.$store.state.baseAccountUrl;
-      }
-    },
-    accountId: {
-      get() {
-        return this.$store.state.accountId;
-      }
-    },
-    sessionId: {
-      get() {
-        return this.$store.state.sessionId;
-      }
-    },
-    apiKey: {
-      get() {
-        return this.$store.state.apiKey;
-      }
-    },
-    language: {
-      get() {
-        return this.$store.state.language;
-      }
-    },
-    currentMedia: {
-      get() {
-        return this.$store.state.currentMedia;
-      },
-      set(media) {
-        this.$store.commit("setCurrentMedia", media);
-      }
-    }
+  computed: mapState([
+    "baseAccountUrl",
+    "accountId",
+    "sessionId",
+    "apiKey",
+    "language",
+    "currentMedia"
+  ]),
+  created() {
+    this.getWatchlist();
   }
 };
 </script>

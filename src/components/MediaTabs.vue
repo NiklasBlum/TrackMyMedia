@@ -1,7 +1,7 @@
 <template>
   <v-tabs
     v-model="currentMedia"
-    @change="getMedia"
+    @change="emitChange"
     slider-color="blue"
     icons-and-text
     dark
@@ -22,6 +22,20 @@
 
 <script>
 export default {
-    
+  methods: {
+    emitChange() {
+      this.$emit("emmittedMediaChange", this.currentMedia);
+    }
+  },
+  computed: {
+    currentMedia: {
+      get() {
+        return this.$store.state.currentMedia;
+      },
+      set(media) {
+        this.$store.commit("setCurrentMedia", media);
+      }
+    }
+  }
 };
 </script>

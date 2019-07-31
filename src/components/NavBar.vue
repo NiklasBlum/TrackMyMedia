@@ -18,6 +18,7 @@
         <v-icon left>{{item.icon}}</v-icon>
         {{item.title}}
       </v-btn>
+      <v-icon @click="changeLightMode">mdi-brightness-2</v-icon>
     </v-app-bar>
     <v-navigation-drawer class="indigo darken-4" v-model="sideNav" absolute temporary>
       <v-list nav dense>
@@ -50,7 +51,7 @@ export default {
         { icon: "mdi-finance", title: "Popular", link: "/popular" },
         { icon: "mdi-clock", title: "Watchlist", link: "/watchlist" },
         { icon: "mdi-check-all", title: "Watched", link: "/watched" }
-      ]      
+      ]
     };
   },
   methods: {
