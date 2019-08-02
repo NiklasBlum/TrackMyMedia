@@ -1,7 +1,7 @@
 <template>
   <v-tabs
     v-model="currentMedia"
-    @change="emitChange"
+    @change="$emit('emmittedMediaChange')"
     slider-color="blue"
     icons-and-text
     dark
@@ -12,7 +12,6 @@
       Movies
       <v-icon>mdi-movie</v-icon>
     </v-tab>
-
     <v-tab :href="'#tv'">
       Series
       <v-icon>mdi-television</v-icon>
@@ -22,11 +21,6 @@
 
 <script>
 export default {
-  methods: {
-    emitChange() {
-      this.$emit("emmittedMediaChange", this.currentMedia);
-    }
-  },
   computed: {
     currentMedia: {
       get() {

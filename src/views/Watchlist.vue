@@ -1,19 +1,19 @@
 <template>
-  <v-container mt-5>
+  <v-container grid-list-lg>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getWatchlist" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
-      <v-layout row wrap>
+      <v-layout row wrap justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in watchList" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia === 'movie'">
-      <v-layout row wrap>
+      <v-layout row wrap justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="movie in watchList" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>
@@ -55,7 +55,6 @@ export default {
       axios
         .get(searchQuery)
         .then(response => {
-          console.log(response.data.results);
           this.watchList = response.data.results;
         })
         .catch(err => {

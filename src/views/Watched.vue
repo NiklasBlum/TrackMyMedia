@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-layout>
-      <v-flex xs3 v-for="movie in tmdbMovies" :key="movie.id">
+  <v-container grid-list-lg>
+    <v-layout row wrap>
+      <v-flex xs6 sm4 md3 lg3 v-for="movie in tmdbMovies" :key="movie.id">
         <MovieCard :movie="movie" />
       </v-flex>
     </v-layout>

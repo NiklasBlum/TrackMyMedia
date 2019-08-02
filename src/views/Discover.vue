@@ -1,11 +1,11 @@
 <template>
-  <v-container mt-5>
+  <v-container grid-list-lg>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>
     </v-layout>
-    <v-layout mt-3 row wrap align-center>
+    <v-layout mt-3 row wrap align-center justify-space-between>
       <v-flex xs12 sm4>
         <v-select :items="years" v-model="year" item-text="name" item-value="id" label="Year"></v-select>
       </v-flex>
@@ -58,6 +58,7 @@ export default {
       selectedYear: "",
       selectedGenre: "",
       selectedFilter: "",
+      media: [],
       genres: [
         { id: 0, name: "" },
         { id: 28, name: "Action" },
@@ -97,12 +98,10 @@ export default {
       axios
         .get(this.searchQuery)
         .then(response => {
-          console.log(response.data.results);
-          this.$store.commit("setMediaData", response.data.results);
-          console.log(this.media);
+          this.media = response.data.results;
         })
-        .catch(error => {
-          console.log(error);
+        .catch(err => {
+          console.log(err);
         });
     }
   },
@@ -112,18 +111,14 @@ export default {
         return this.$store.state.baseDiscoverUrl;
       }
     },
-    apiKey: {
-      get() {
-        return this.$store.state.apiKey;
-      }
-    },
     currentMedia: {
       get() {
         return this.$store.state.currentMedia;
-      },
-      set(media) {
-        this.$store.commit("setCurrentMedia", media);
-        console.log(this.currentMedia);
+      }
+    },
+    apiKey: {
+      get() {
+        return this.$store.state.apiKey;
       }
     },
     language: {
@@ -156,11 +151,6 @@ export default {
       },
       set(filter) {
         this.selectedFilter = filter;
-      }
-    },
-    media: {
-      get() {
-        return this.$store.state.media;
       }
     }
   }

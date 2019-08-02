@@ -1,22 +1,22 @@
 <template>
-  <v-container mt-4>
+  <v-container grid-list-lg>
     <v-layout column align-center>
       <v-flex>
-        <MediaTabs :emmittedMediaChange="getMedia" />
+        <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>
     </v-layout>
     <v-layout row wrap align-center justify-space-around>
       <v-flex xs10 sm10 md10>
         <v-text-field
-          :placeholder="'Search for '+ this.currentMedia + 'and press enter :)' "
+          :placeholder="'Search for '+ this.currentMedia + ' and press enter.' "
           v-model="searchText"
           @keyup.enter="getMedia"
         ></v-text-field>
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
-      <v-layout row wrap align-center justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
+      <v-layout row wrap align-center justify-space-around >
+        <v-flex xs5 sm4 md2 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
@@ -45,30 +45,25 @@ export default {
   },
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      media: []
     };
   },
   methods: {
     getMedia() {
+      console.log("asdf");
       let searchQuery = `${this.baseSearchUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&query=${this.searchText}`;
       console.log(searchQuery);
       axios
         .get(searchQuery)
         .then(response => {
-          console.log(response.data.results);
-          this.$store.commit("setMediaData", response.data.results);
+          this.media = response.data.results;
         })
         .catch(err => {
           console.log(err);
         });
     }
   },
-  computed: mapState([
-    "baseSearchUrl",
-    "apiKey",
-    "currentMedia",
-    "language",
-    "media"
-  ])
+  computed: mapState(["baseSearchUrl", "apiKey", "currentMedia", "language"])
 };
 </script>

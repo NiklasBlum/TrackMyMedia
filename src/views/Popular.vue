@@ -1,6 +1,6 @@
 <template>
-  <v-container mt-5>
-    <v-layout mb-4 column align-center>
+  <v-container grid-list-lg>
+    <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getPopular" />
       </v-flex>
@@ -8,7 +8,7 @@
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap align-center justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
-          <SeriesCard :show="show"></SeriesCard>
+          <SeriesCard  :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
@@ -46,7 +46,6 @@ export default {
         .get(searchQuery)
         .then(response => {
           this.media = response.data.results;
-          console.log(response);
         })
         .catch(err => {
           console.log(err);

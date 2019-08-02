@@ -1,5 +1,5 @@
 <template>
-  <v-container mt-5>
+  <v-container>
     <v-layout row wrap>
       <v-flex xs12 sm4 md2>
         <v-img :src="this.posterPath"></v-img>
@@ -17,12 +17,14 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout mt-5 row wrap>
-      <v-flex xs6 sm3 md3 lg2 v-for="season in details.seasons" :key="season.id">
-        <SeasonCard :season="season" :show="details"></SeasonCard>
-        <v-spacer></v-spacer>
-      </v-flex>
-    </v-layout>
+    <v-container grid-list-lg>
+      <v-layout mt-5 row wrap>
+        <v-flex xs6 sm3 md3 lg2 v-for="season in details.seasons" :key="season.id">
+          <SeasonCard :season="season" :show="details"></SeasonCard>
+          <v-spacer></v-spacer>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </v-container>
 </template>
 
@@ -51,9 +53,7 @@ export default {
   },
   methods: {
     getDetails(id) {
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${
-        this.apiKey
-      }&language=${this.language}`;
+      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios
         .get(this.searchQuery)
         .then(response => {

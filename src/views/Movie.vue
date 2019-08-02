@@ -1,20 +1,22 @@
 <template>
-  <v-container mt-5>
+  <v-container>
     <v-layout row wrap>
       <v-flex xs12 sm4 md2>
         <v-img :src="this.posterPath"></v-img>
       </v-flex>
-      <v-flex sm5>
-        <CheckWatchList v-if="this.details" :media="this.details"></CheckWatchList>
-      </v-flex>
+
       <v-flex xs12 sm8 md10>
-        <v-card flat color="blue-grey darken-2">
+        <v-card dark flat color="blue-grey darken-2">
           <v-card-title>
-            <h1>Plot</h1>
+            <h1>{{this.movie.title}}</h1>
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-card-text>{{this.details.overview}}</v-card-text>
+          <v-card-text>{{this.movie.overview}}</v-card-text>
         </v-card>
+      </v-flex>
+      <v-flex sm5>
+        <CheckWatchList v-if="this.movie" :media="this.movie" />
+        <MovieWatchState v-if="this.movie" :movie="this.movie" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -24,15 +26,17 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import CheckWatchList from "../components/CheckWatchList";
+import MovieWatchState from "@/components/MovieWatchState";
 
 export default {
   components: {
-    CheckWatchList
+    CheckWatchList,
+    MovieWatchState
   },
   data() {
     return {
       searchQuery: "",
-      details: "",
+      movie: "",
       posterPath: require("../assets/no-image.png")
     };
   },
@@ -42,15 +46,13 @@ export default {
   },
   methods: {
     getDetails(id) {
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${
-        this.apiKey
-      }&language=${this.language}`;
+      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
 
       axios
         .get(this.searchQuery)
         .then(response => {
-          this.details = response.data;
-          this.posterPath = this.posterUrl + this.details.poster_path;
+          this.movie = response.data;
+          this.posterPath = this.posterUrl + this.movie.poster_path;
         })
         .catch(error => {
           console.log(error);

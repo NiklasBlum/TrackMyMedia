@@ -9,18 +9,23 @@
         <v-btn block color="info">Details</v-btn>
       </router-link>
       <v-spacer></v-spacer>
-      <CheckWatchList :media="this.movie"></CheckWatchList>
+      <!-- <CheckWatchList :media="this.movie"></CheckWatchList> -->
+      <MovieWatchState :movie="movie" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import CheckWatchList from "./CheckWatchList";
+import MovieWatchState from "@/components/MovieWatchState";
 export default {
   components: {
-    CheckWatchList
+    CheckWatchList,
+    MovieWatchState
   },
-  props: ["movie"],
+  props: {
+    movie: Object
+  },
   data() {
     return {
       notFoundPic: require("../assets/no-image.png")

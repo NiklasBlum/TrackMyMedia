@@ -1,5 +1,5 @@
 <template>
-  <v-container mt-5>
+  <v-container>
     <v-layout row wrap>
       <v-flex v-for="episode in episodes" :key="episode.id">
         <EpisodeCard :episode="episode"></EpisodeCard>
@@ -29,9 +29,7 @@ export default {
   },
   methods: {
     getDetails(params) {
-      this.searchQuery = `${this.baseUrl}tv/${params.id}/season/${
-        params.number
-      }?api_key=${this.apiKey}&language=${this.language}`;
+      this.searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
       console.log(this.searchQuery);
       axios
         .get(this.searchQuery)

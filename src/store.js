@@ -16,9 +16,7 @@ export default new Vuex.Store({
     apiKey: "1f8b7310d5aba63d03369c54c3e4ccd5",
     sessionId: "ced41823e994afd59517d8bcd13c48e36a9a906d",
     accountId: "8149935",
-    media: [],
     darkMode: false,
-
   },
   mutations: {
     setLightMode(state, mode) {
@@ -26,12 +24,6 @@ export default new Vuex.Store({
     },
     setCurrentMedia(state, media) {
       state.currentMedia = media
-    },
-    setSearchText(state, text) {
-      state.searchText = text;
-    },
-    setMediaData(state, mediaData) {
-      state.media = mediaData;
     },
   },
 })
