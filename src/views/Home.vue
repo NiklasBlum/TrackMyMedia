@@ -15,7 +15,7 @@
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
-      <v-layout row wrap align-center justify-space-around >
+      <v-layout row wrap align-center justify-space-around>
         <v-flex xs5 sm4 md2 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
@@ -51,17 +51,17 @@ export default {
   },
   methods: {
     getMedia() {
-      console.log("asdf");
-      let searchQuery = `${this.baseSearchUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&query=${this.searchText}`;
-      console.log(searchQuery);
-      axios
-        .get(searchQuery)
-        .then(response => {
-          this.media = response.data.results;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (this.searchText != "") {
+        let searchQuery = `${this.baseSearchUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&query=${this.searchText}`;
+        axios
+          .get(searchQuery)
+          .then(response => {
+            this.media = response.data.results;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   },
   computed: mapState(["baseSearchUrl", "apiKey", "currentMedia", "language"])

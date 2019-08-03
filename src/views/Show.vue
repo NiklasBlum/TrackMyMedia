@@ -5,7 +5,8 @@
         <v-img :src="this.posterPath"></v-img>
       </v-flex>
       <v-flex sm5>
-        <CheckWatchList v-if="this.details" :media="this.details"></CheckWatchList>
+        <CheckWatchList v-if="this.show" :media="this.show"></CheckWatchList>
+        <MediaWatchState v-if="this.show" :media="this.show" />
       </v-flex>
       <v-flex xs12 sm8 md10>
         <v-card flat color="blue-grey darken-2">
@@ -13,14 +14,14 @@
             <h1>Plot</h1>
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-card-text>{{this.details.overview}}</v-card-text>
+          <v-card-text>{{this.show.overview}}</v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
     <v-container grid-list-lg>
       <v-layout mt-5 row wrap>
-        <v-flex xs6 sm3 md3 lg2 v-for="season in details.seasons" :key="season.id">
-          <SeasonCard :season="season" :show="details"></SeasonCard>
+        <v-flex xs6 sm3 md3 lg2 v-for="season in show.seasons" :key="season.id">
+          <SeasonCard :season="season" :show="show"></SeasonCard>
           <v-spacer></v-spacer>
         </v-flex>
       </v-layout>
@@ -33,16 +34,17 @@ import CheckWatchList from "../components/CheckWatchList";
 import axios from "axios";
 import { mapState } from "vuex";
 import SeasonCard from "../components/SeasonCard";
+import MediaWatchState from "@/components/MediaWatchState";
 
 export default {
   components: {
     CheckWatchList,
-    SeasonCard
+    SeasonCard,
+    MediaWatchState
   },
   data() {
     return {
-      searchQuery: "",
-      details: "",
+      show: "",
       posterPath: require("../assets/no-image.png"),
       myURL: this.posterUrl
     };
@@ -53,12 +55,12 @@ export default {
   },
   methods: {
     getDetails(id) {
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
+      let searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios
-        .get(this.searchQuery)
+        .get(searchQuery)
         .then(response => {
-          this.details = response.data;
-          this.posterPath = this.posterUrl + this.details.poster_path;
+          this.show = response.data;
+          this.posterPath = this.posterUrl + this.show.poster_path;
         })
         .catch(error => {
           console.log(error);

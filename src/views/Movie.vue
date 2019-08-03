@@ -16,7 +16,7 @@
       </v-flex>
       <v-flex sm5>
         <CheckWatchList v-if="this.movie" :media="this.movie" />
-        <MovieWatchState v-if="this.movie" :movie="this.movie" />
+        <MediaWatchState v-if="this.movie" :media="this.movie" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -26,12 +26,12 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import CheckWatchList from "../components/CheckWatchList";
-import MovieWatchState from "@/components/MovieWatchState";
+import MediaWatchState from "@/components/MediaWatchState";
 
 export default {
   components: {
     CheckWatchList,
-    MovieWatchState
+    MediaWatchState
   },
   data() {
     return {

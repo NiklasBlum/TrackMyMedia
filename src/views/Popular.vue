@@ -8,7 +8,7 @@
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap align-center justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
-          <SeriesCard  :show="show"></SeriesCard>
+          <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
@@ -36,11 +36,12 @@ export default {
   },
   data() {
     return {
-      media: []
+      media: null
     };
   },
   methods: {
     getPopular() {
+      this.media = null;
       let searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${this.apiKey}&language=${this.language}`;
       axios
         .get(searchQuery)

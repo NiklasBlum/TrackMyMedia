@@ -9,18 +9,24 @@
         <v-btn block color="info">Details</v-btn>
       </router-link>
       <v-spacer></v-spacer>
-      <!-- <CheckWatchList :media="this.show"></CheckWatchList> -->
+      <CheckWatchList :media="this.show"></CheckWatchList>
+      <MediaWatchState v-if="this.show" :media="show" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import CheckWatchList from "./CheckWatchList";
+import MediaWatchState from "@/components/MediaWatchState.vue";
+
 export default {
   components: {
-    CheckWatchList
+    CheckWatchList,
+    MediaWatchState
   },
-  props: ["show"],
+  props: {
+    show: Object
+  },
   data() {
     return {
       notFoundPic: require("../assets/no-image.png")

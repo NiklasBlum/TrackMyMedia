@@ -3,7 +3,14 @@
     <div v-if="onWatchlist">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn fab small color="error" :loading="loading" v-on="on" @click="removeFromWatchList">
+          <v-btn
+            fab
+            small
+            color="success"
+            :loading="loading"
+            v-on="on"
+            @click="removeFromWatchList"
+          >
             <v-icon>mdi-clock</v-icon>
           </v-btn>
         </template>
@@ -13,7 +20,7 @@
     <div v-else>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn fab small color="success" :loading="loading" v-on="on" @click="addToWatchlist">
+          <v-btn fab small color="grey" :loading="loading" v-on="on" @click="addToWatchlist">
             <v-icon>mdi-clock</v-icon>
           </v-btn>
         </template>
@@ -32,7 +39,6 @@ export default {
   data() {
     return {
       loading: false,
-      searchQuery: "",
       onWatchlist: false
     };
   },
@@ -40,15 +46,14 @@ export default {
     addToWatchlist() {
       this.loading = true;
 
-      this.searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
+      let searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
       axios
-        .post(this.searchQuery, {
+        .post(searchQuery, {
           media_type: this.currentMedia,
           media_id: this.media.id,
           watchlist: true
         })
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.checkWatchList();
         })
 

@@ -23,45 +23,41 @@
   </div>
 </template>
 
-
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/init";
 
 export default {
   props: {
-    movie: Object
+    media: Object
   },
   data() {
     return {
       watched: false,
-      docMovie: null
+      fsMediaId: null
     };
   },
   methods: {
     setAsWatched() {
-      if (this.movie) {
-        db.collection("movies")
-          .add({
-            title: this.movie.title,
-            MovieId: this.movie.id
-          })
+      if (this.media) {
+        db.collection(this.currentMedia)
+          .doc(this.media.id.toString())
+          .set({})
           .then(() => {
+            this.fsMediaId = this.media.id.toString();
+            //computed Property?
             //Maybe add banner?
-            console.log("success!");
             this.watched = true;
           })
           .catch(err => {
             console.log(err);
           });
-      } else {
-        this.feedback("Enter a smoothie title!");
       }
     },
     setAsNotWatched() {
       //delete doc from firestore
-      db.collection("movies")
-        .doc(this.docMovie.id)
+      db.collection(this.currentMedia)
+        .doc(this.fsMediaId)
         .delete()
         .then(() => {
           this.watched = false;
@@ -69,15 +65,15 @@ export default {
     },
     checkWatchState() {
       //fetch data from  the firestore
-      db.collection("movies")
+      db.collection(this.currentMedia)
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            let docMovie = doc.data();
-            docMovie.id = doc.id;
-            if (this.movie.id == docMovie.MovieId) {
+            let docMedia = doc.data();
+            docMedia.id = doc.id;
+            if (this.media.id == docMedia.id) {
               this.watched = true;
-              this.docMovie = docMovie;
+              this.fsMediaId = this.media.id.toString();
               return;
             }
           });
@@ -85,8 +81,8 @@ export default {
     }
   },
   created() {
-    console.log(this.movie);
     this.checkWatchState();
-  }
+  },
+  computed: mapState(["currentMedia"])
 };
 </script>
