@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg>
+  <v-container grid-list-lg fluid>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getPopular" />

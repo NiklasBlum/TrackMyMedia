@@ -8,6 +8,11 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: "/card",
+      name: "card",
+      component: () => import("@/components/Card.vue")
+    },
+    {
       path: "/",
       name: "home",
       component: Home

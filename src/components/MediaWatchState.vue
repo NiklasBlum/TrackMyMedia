@@ -1,25 +1,11 @@
 <template>
   <div>
-    <div v-if="watched">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn fab small color="success" v-on="on" @click="setAsNotWatched">
-            <v-icon>mdi-check-all</v-icon>
-          </v-btn>
-        </template>
-        <span>Set as not watched</span>
-      </v-tooltip>
-    </div>
-    <div v-else>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn fab small color="grey" v-on="on" @click="setAsWatched">
-            <v-icon>mdi-check-bold</v-icon>
-          </v-btn>
-        </template>
-        <span>Set as watched</span>
-      </v-tooltip>
-    </div>
+    <v-btn v-if="watched"  color="cyan darken-4" @click="setAsNotWatched">
+      <v-icon>mdi-check-all</v-icon>
+    </v-btn>
+    <v-btn v-if="!watched"  @click="setAsWatched">
+      <v-icon>mdi-check-bold</v-icon>
+    </v-btn>
   </div>
 </template>
 

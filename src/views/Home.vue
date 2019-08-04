@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg>
+  <v-container grid-list-lg fluid>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getMedia" />
@@ -16,14 +16,14 @@
     </v-layout>
     <div v-if="currentMedia == 'tv'">
       <v-layout row wrap align-center justify-space-around>
-        <v-flex xs5 sm4 md2 lg2 v-for="show in media" :key="show.id">
+        <v-flex xs6 sm4 md3 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia == 'movie'">
       <v-layout row wrap align-center justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="movie in media" :key="movie.id">
+        <v-flex xs6 sm4 md3 lg2 v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>
       </v-layout>

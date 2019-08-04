@@ -1,8 +1,8 @@
 <template>
-  <v-parallax :src="this.posterUrlOrg + this.movie.backdrop_path">
-    <v-container mt-5 grid-list-lg>
-      <v-layout mt-10 row wrap justify-center>
-        <v-flex xs5 sm4 md2>
+  <v-parallax v-if="this.movie" :src="this.posterUrlOrg + this.movie.backdrop_path" height="100%">
+    <v-container fluid grid-list-lg>
+      <v-layout row wrap justify-center >
+        <v-flex xs5 sm5 md2>
           <v-card>
             <v-img :src="this.posterPath"></v-img>
             <v-card-actions>
@@ -13,7 +13,7 @@
             </v-card-actions>
           </v-card>
         </v-flex>
-        <v-flex xs12 sm8 md10>
+        <v-flex xs12 sm7 md10>
           <v-card dark flat color="blue-grey darken-2">
             <v-card-title>
               <h1>{{this.movie.title}}</h1>

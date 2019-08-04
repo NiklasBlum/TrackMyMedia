@@ -1,9 +1,8 @@
 <template>
-  <v-container>
+  <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex v-for="episode in episodes" :key="episode.id">
         <EpisodeCard :episode="episode"></EpisodeCard>
-        <v-divider light></v-divider>
       </v-flex>
     </v-layout>
   </v-container>
@@ -20,19 +19,18 @@ export default {
   },
   data() {
     return {
-      searchQuery: "",
-      episodes: ""
+      episodes: null
     };
   },
-  mounted() {
+  created() {
     this.getDetails(this.$route.params);
   },
   methods: {
     getDetails(params) {
-      this.searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
-      console.log(this.searchQuery);
+      let searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
+
       axios
-        .get(this.searchQuery)
+        .get(searchQuery)
         .then(response => {
           console.log(response.data);
           this.episodes = response.data.episodes;
@@ -42,13 +40,7 @@ export default {
         });
     }
   },
-  computed: mapState([
-    // map this.count to store.state.count
-    "baseUrl",
-    "currentMedia",
-    "apiKey",
-    "language"
-  ])
+  computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"])
 };
 </script>
 

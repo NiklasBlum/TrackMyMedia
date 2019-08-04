@@ -2,14 +2,21 @@
   <v-card>
     <v-img v-if="movie.poster_path" :src="this.posterUrl + movie.poster_path"></v-img>
     <v-img v-else :src="notFoundPic"></v-img>
-    <v-card-title class="text-truncate">{{movie.original_title}}</v-card-title>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{movie.original_title}}</v-list-item-title>
+        <v-list-item-subtitle>{{movie.release_date}}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-divider></v-divider>
     <v-card-actions>
-      <router-link :to="{path: `movie/${movie.id}`}">
-        <v-btn block color="info">Details</v-btn>
-      </router-link>
+      <MediaWatchState v-if="this.movie" :media="this.movie" />
       <v-spacer></v-spacer>
       <CheckWatchList v-if="this.movie" :media="this.movie"></CheckWatchList>
-      <MediaWatchState v-if="this.movie" :media="this.movie" />
+      <v-spacer></v-spacer>
+      <v-btn :to="{path: `movie/${movie.id}`}">
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>

@@ -1,16 +1,22 @@
 <template>
   <v-card>
     <v-img v-if="show.poster_path" :src="this.posterUrl + show.poster_path"></v-img>
-    <v-img v-else-if="show.backdrop_path" :src="this.posterUrl + show.backdrop_path"></v-img>
     <v-img v-else :src="notFoundPic"></v-img>
-    <v-card-title class="text-truncate">{{show.original_name}}</v-card-title>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{show.name}}</v-list-item-title>
+        <v-list-item-subtitle>{{show.first_air_date}}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-divider></v-divider>
     <v-card-actions>
-      <router-link :to="/show/ + show.id">
-        <v-btn block color="info">Details</v-btn>
-      </router-link>
+      <MediaWatchState v-if="this.show" :media="show" />
       <v-spacer></v-spacer>
       <CheckWatchList :media="this.show"></CheckWatchList>
-      <MediaWatchState v-if="this.show" :media="show" />
+      <v-spacer></v-spacer>
+      <v-btn :to="/show/ + show.id">
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,6 +37,9 @@ export default {
     return {
       notFoundPic: require("../assets/no-image.png")
     };
+  },
+  created() {
+    console.log(this.show);
   },
   computed: {
     posterUrl: {

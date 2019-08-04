@@ -1,32 +1,38 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 md2>
-        <v-img :src="this.posterPath"></v-img>
-      </v-flex>
-      <v-flex sm5>
-        <CheckWatchList v-if="this.show" :media="this.show"></CheckWatchList>
-        <MediaWatchState v-if="this.show" :media="this.show" />
-      </v-flex>
-      <v-flex xs12 sm8 md10>
-        <v-card flat color="blue-grey darken-2">
-          <v-card-title>
-            <h1>Plot</h1>
-          </v-card-title>
-          <v-spacer></v-spacer>
-          <v-card-text>{{this.show.overview}}</v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-container grid-list-lg>
-      <v-layout mt-5 row wrap>
-        <v-flex xs6 sm3 md3 lg2 v-for="season in show.seasons" :key="season.id">
-          <SeasonCard :season="season" :show="show"></SeasonCard>
-          <v-spacer></v-spacer>
+  <v-parallax v-if="this.show" :src="this.posterUrlOrg + this.show.backdrop_path" height="100%">
+    <v-container fluid grid-list-lg>
+      <v-layout row wrap justify-center>
+        <v-flex xs5 sm5 md2>
+          <v-card>
+            <v-img :src="this.posterPath"></v-img>
+            <v-card-actions>
+              <v-layout justify-space-around>
+                <CheckWatchList v-if="this.show" :media="this.show"></CheckWatchList>
+                <MediaWatchState v-if="this.show" :media="this.show" />
+              </v-layout>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 sm7 md10>
+          <v-card flat color="blue-grey darken-2">
+            <v-card-title>
+              <h1>Plot</h1>
+            </v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-text>{{this.show.overview}}</v-card-text>
+          </v-card>
         </v-flex>
       </v-layout>
+      <v-container grid-list-lg fluid>
+        <v-layout mt-5 row wrap justify-center justify-space-around>
+          <v-flex xs6 sm3 md3 lg2 v-for="season in show.seasons" :key="season.id">
+            <SeasonCard :season="season" :show="show"></SeasonCard>
+            <v-spacer></v-spacer>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-container>
-  </v-container>
+  </v-parallax>
 </template>
 
 <script>
@@ -73,7 +79,8 @@ export default {
     "currentMedia",
     "apiKey",
     "language",
-    "media"
+    "media",
+    "posterUrlOrg"
   ])
 };
 </script>

@@ -4,16 +4,18 @@
     <v-img v-else :src="notFoundPic"></v-img>
     <v-card-title>{{season.name}}</v-card-title>
     <v-card-actions>
-      <router-link :to="/show/ + show.id + /season/ +season.season_number">
-        <v-btn color="info">Details</v-btn>
-      </router-link>
+      <v-btn color="info" :to="/show/ + show.id + /season/ +season.season_number">Details</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
-  props: ["season", "show"],
+  props: {
+    season: Object,
+    show: Object
+  },
+
   data() {
     return {
       notFoundPic: require("../assets/no-image.png")

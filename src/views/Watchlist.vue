@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg>
+  <v-container fluid grid-list-lg>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getWatchlist" />

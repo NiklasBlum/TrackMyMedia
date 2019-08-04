@@ -1,18 +1,18 @@
 <template>
-  <v-container grid-list-lg>
+  <v-container fluid grid-list-lg>
     <v-layout column align-center>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>
     </v-layout>
-    <v-layout mt-3 row wrap align-center justify-space-between>
-      <v-flex xs12 sm4>
+    <v-layout mt-3 row align-center justify-space-between>
+      <v-flex xs12 sm3 md3>
         <v-select :items="years" v-model="year" item-text="name" item-value="id" label="Year"></v-select>
       </v-flex>
-      <v-flex xs12 sm4>
+      <v-flex xs12 sm3 md3>
         <v-select :items="genres" v-model="genre" item-text="name" item-value="id" label="Genre"></v-select>
       </v-flex>
-      <v-flex xs12 sm4>
+      <v-flex xs12 sm3 md3>
         <v-select
           :items="sortBy"
           v-model="sortFilter"
@@ -21,7 +21,7 @@
           label="Sorting"
         ></v-select>
       </v-flex>
-      <v-flex xs12 sm2 text-xs-center align-center>
+      <v-flex xs12 sm3 md3 text-xs-center align-center>
         <v-btn @click="getMedia">Search</v-btn>
       </v-flex>
     </v-layout>

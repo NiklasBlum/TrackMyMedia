@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar>
+    <v-app-bar flat>
       <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">

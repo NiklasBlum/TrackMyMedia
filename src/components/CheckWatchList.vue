@@ -1,32 +1,12 @@
 <template>
   <div>
-    <div v-if="onWatchlist">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            fab
-            small
-            color="success"
-            :loading="loading"
-            v-on="on"
-            @click="removeFromWatchList"
-          >
-            <v-icon>mdi-clock</v-icon>
-          </v-btn>
-        </template>
-        <span>Remove from Watchlist</span>
-      </v-tooltip>
-    </div>
-    <div v-else>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn fab small color="grey" :loading="loading" v-on="on" @click="addToWatchlist">
-            <v-icon>mdi-clock</v-icon>
-          </v-btn>
-        </template>
-        <span>Add to Watchlist</span>
-      </v-tooltip>
-    </div>
+    <v-btn v-if="onWatchlist" color="cyan" :loading="loading" @click="removeFromWatchList">
+      <v-icon>mdi-clock</v-icon>
+    </v-btn>
+
+    <v-btn v-if="!onWatchlist" :loading="loading" @click="addToWatchlist">
+      <v-icon>mdi-clock</v-icon>
+    </v-btn>
   </div>
 </template>
 
