@@ -1,25 +1,30 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 md2>
-        <v-img :src="this.posterPath"></v-img>
-      </v-flex>
-
-      <v-flex xs12 sm8 md10>
-        <v-card dark flat color="blue-grey darken-2">
-          <v-card-title>
-            <h1>{{this.movie.title}}</h1>
-          </v-card-title>
-          <v-spacer></v-spacer>
-          <v-card-text>{{this.movie.overview}}</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex sm5>
-        <CheckWatchList v-if="this.movie" :media="this.movie" />
-        <MediaWatchState v-if="this.movie" :media="this.movie" />
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-parallax :src="this.posterUrlOrg + this.movie.backdrop_path">
+    <v-container mt-5 grid-list-lg>
+      <v-layout mt-10 row wrap justify-center>
+        <v-flex xs5 sm4 md2>
+          <v-card>
+            <v-img :src="this.posterPath"></v-img>
+            <v-card-actions>
+              <v-layout justify-space-around>
+                <CheckWatchList v-if="this.movie" :media="this.movie" />
+                <MediaWatchState v-if="this.movie" :media="this.movie" />
+              </v-layout>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 sm8 md10>
+          <v-card dark flat color="blue-grey darken-2">
+            <v-card-title>
+              <h1>{{this.movie.title}}</h1>
+            </v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-text>{{this.movie.overview}}</v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-parallax>
 </template>
 
 <script>
@@ -65,7 +70,8 @@ export default {
     "currentMedia",
     "apiKey",
     "language",
-    "media"
+    "media",
+    "posterUrlOrg"
   ])
 };
 </script>
