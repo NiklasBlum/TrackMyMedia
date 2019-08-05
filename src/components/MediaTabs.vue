@@ -2,10 +2,9 @@
   <v-tabs
     v-model="currentMedia"
     @change="$emit('emmittedMediaChange')"
-    slider-color="blue"
     icons-and-text
-    dark
     background-color="transparent"
+    centered
   >
     <v-tabs-slider></v-tabs-slider>
     <v-tab :href="'#movie'">

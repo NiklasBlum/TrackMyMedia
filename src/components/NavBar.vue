@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar flat>
+    <v-app-bar app>
       <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
@@ -20,7 +20,7 @@
       </v-btn>
       <v-icon @click="changeLightMode">mdi-brightness-2</v-icon>
     </v-app-bar>
-    <v-navigation-drawer class="indigo darken-4" v-model="sideNav" absolute temporary>
+    <v-navigation-drawer app class="indigo darken-4" v-model="sideNav" temporary>
       <v-list nav dense>
         <v-list-item-group>
           <v-list-item
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     changeLightMode() {
-      this.$store.commit("setLightMode", !this.$store.state.darkMode);
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   }
 };

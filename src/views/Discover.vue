@@ -26,14 +26,14 @@
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
-      <v-layout row wrap>
+      <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia === 'movie'">
-      <v-layout row wrap>
+      <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>

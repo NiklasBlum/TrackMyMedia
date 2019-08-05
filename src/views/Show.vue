@@ -50,23 +50,25 @@ export default {
   },
   data() {
     return {
-      show: "",
+      show: null,
       posterPath: require("../assets/no-image.png"),
-      myURL: this.posterUrl
+      trailerId: null
     };
   },
 
-  mounted() {
+  created() {
     this.getDetails(this.$route.params.id);
   },
   methods: {
     getDetails(id) {
-      let searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
+      let searchQuery = `${this.baseUrl}tv/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
       axios
         .get(searchQuery)
         .then(response => {
           this.show = response.data;
           this.posterPath = this.posterUrl + this.show.poster_path;
+          this.trailerId = this.show.videos.results[0].key;
+          console.log(this.trailerId);
         })
         .catch(error => {
           console.log(error);

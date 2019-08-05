@@ -1,30 +1,55 @@
 <template>
-  <v-parallax v-if="this.movie" :src="this.posterUrlOrg + this.movie.backdrop_path" height="100%">
-    <v-container fluid grid-list-lg>
-      <v-layout row wrap justify-center >
-        <v-flex xs5 sm5 md2>
-          <v-card>
-            <v-img :src="this.posterPath"></v-img>
-            <v-card-actions>
-              <v-layout justify-space-around>
-                <CheckWatchList v-if="this.movie" :media="this.movie" />
-                <MediaWatchState v-if="this.movie" :media="this.movie" />
-              </v-layout>
-            </v-card-actions>
-          </v-card>
+  <v-container fluid grid-list-lg>
+    <v-layout row wrap justify-center>
+      <v-flex xs5 sm5 md2>
+        <v-card>
+          <v-img :src="this.posterPath"></v-img>
+          <v-card-actions>
+            <v-layout justify-space-around>
+              <CheckWatchList v-if="this.movie" :media="this.movie" />
+              <MediaWatchState v-if="this.movie" :media="this.movie" />
+            </v-layout>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 sm7 md10>
+        <v-card v-if="this.movie" dark flat color="blue-grey darken-2">
+          <v-card-title>
+            <h1>{{this.movie.title}}</h1>
+          </v-card-title>
+          <v-spacer></v-spacer>
+          <v-card-text>{{this.movie.overview}}</v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
+    <v-container fluid>
+      <v-layout row justify-center align-center>
+        <v-flex xs12>
+          <v-tabs v-model="tab" icons-and-text background-color="transparent" fixed-tabs>
+            <v-tabs-slider></v-tabs-slider>
+            <v-tab href="#trailer">
+              Trailer
+              <v-icon>mdi-movie</v-icon>
+            </v-tab>
+            <v-tab href="#info">
+              Infos
+              <v-icon>mdi-information-outline</v-icon>
+            </v-tab>
+          </v-tabs>
         </v-flex>
-        <v-flex xs12 sm7 md10>
-          <v-card dark flat color="blue-grey darken-2">
-            <v-card-title>
-              <h1>{{this.movie.title}}</h1>
-            </v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text>{{this.movie.overview}}</v-card-text>
-          </v-card>
+        <v-flex>
+          <v-layout v-show="tab == 'trailer'" justify-center>
+            <v-flex xs12 lg8>
+              <youtube :video-id="trailerId" resize fitParent></youtube>
+            </v-flex>
+          </v-layout>
+
+          <div v-show="tab == 'info'"></div>
         </v-flex>
       </v-layout>
     </v-container>
-  </v-parallax>
+  </v-container>
 </template>
 
 <script>
@@ -40,9 +65,11 @@ export default {
   },
   data() {
     return {
-      searchQuery: "",
-      movie: "",
-      posterPath: require("../assets/no-image.png")
+      tab: null,
+      movie: null,
+      posterPath: require("../assets/no-image.png"),
+      trailer: false,
+      trailerId: null
     };
   },
 
@@ -51,13 +78,14 @@ export default {
   },
   methods: {
     getDetails(id) {
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
+      let searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
 
       axios
-        .get(this.searchQuery)
+        .get(searchQuery)
         .then(response => {
           this.movie = response.data;
           this.posterPath = this.posterUrl + this.movie.poster_path;
+          this.trailerId = this.movie.videos.results[0].key;
         })
         .catch(error => {
           console.log(error);
@@ -70,7 +98,6 @@ export default {
     "currentMedia",
     "apiKey",
     "language",
-    "media",
     "posterUrlOrg"
   ])
 };

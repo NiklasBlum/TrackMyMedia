@@ -1,8 +1,10 @@
 <template>
-  <v-app :dark="darkMode">
+  <v-app>
     <NavBar />
     <v-content>
-      <router-view />
+      <v-container fluid>
+        <router-view />
+      </v-container>
     </v-content>
   </v-app>
 </template>
@@ -13,11 +15,6 @@ import { mapState } from "vuex";
 export default {
   components: {
     NavBar
-  },
-  computed: mapState(["darkMode"])
+  }
 };
 </script>
-
-
-<style>
-</style>

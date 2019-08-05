@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-lg fluid>
-    <v-layout column align-center>
+    <v-layout row>
       <v-flex>
         <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>

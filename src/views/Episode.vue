@@ -1,6 +1,6 @@
 <template>
   <v-container fluid grid-list-lg>
-    <v-layout row wrap>
+    <v-layout row >
       <v-flex v-for="episode in episodes" :key="episode.id">
         <EpisodeCard :episode="episode"></EpisodeCard>
       </v-flex>
