@@ -5,7 +5,7 @@
         <MediaTabs @emmittedMediaChange="getMedia" />
       </v-flex>
     </v-layout>
-    <v-layout row wrap align-center justify-space-around>
+    <v-layout row align-center justify-space-around>
       <v-flex xs10 sm10 md10>
         <v-text-field
           :placeholder="'Search for '+ this.currentMedia + ' and press enter.' "
@@ -14,15 +14,15 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
-    <div v-if="currentMedia == 'tv'">
-      <v-layout row wrap align-center justify-space-around>
+    <div v-show="currentMedia == 'tv'">
+      <v-layout row align-center justify-space-around>
         <v-flex xs6 sm4 md3 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
-    <div v-if="currentMedia == 'movie'">
-      <v-layout row wrap align-center justify-space-around>
+    <div v-show="currentMedia == 'movie'">
+      <v-layout row align-center justify-space-around>
         <v-flex xs6 sm4 md3 lg2 v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>

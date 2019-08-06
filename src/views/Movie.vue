@@ -45,7 +45,20 @@
             </v-flex>
           </v-layout>
 
-          <div v-show="tab == 'info'"></div>
+          <v-layout v-show="tab == 'info'" justify-center>
+            <v-flex>
+              <v-chip large v-if="this.movie">
+                <v-icon left>mdi-timer</v-icon>
+                {{movie.runtime}} min
+              </v-chip>
+            </v-flex>
+            <v-flex>
+              <v-chip large v-if="this.movie">
+                <v-icon left>mdi-bell-ring-outline</v-icon>
+                {{movie.status}}
+              </v-chip>
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
     </v-container>
@@ -84,6 +97,7 @@ export default {
         .get(searchQuery)
         .then(response => {
           this.movie = response.data;
+          console.log(this.movie);
           this.posterPath = this.posterUrl + this.movie.poster_path;
           this.trailerId = this.movie.videos.results[0].key;
         })

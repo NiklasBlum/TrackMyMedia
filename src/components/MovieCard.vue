@@ -1,7 +1,27 @@
 <template>
   <v-card>
-    <v-img v-if="movie.poster_path" :src="this.posterUrl + movie.poster_path"></v-img>
-    <v-img v-else :src="notFoundPic"></v-img>
+    <v-hover>
+      <template v-slot:default="{ hover }">
+        <v-img v-if="movie.poster_path" :src="posterUrl + movie.poster_path">
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <v-btn large :to="{path: `movie/${movie.id}`}">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-overlay>
+          </v-fade-transition>
+        </v-img>
+        <v-img v-else :src="notFoundPic">
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <v-btn large :to="{path: `movie/${movie.id}`}">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-overlay>
+          </v-fade-transition>
+        </v-img>
+      </template>
+    </v-hover>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline">{{movie.original_title}}</v-list-item-title>
@@ -10,13 +30,9 @@
     </v-list-item>
     <v-divider></v-divider>
     <v-card-actions>
-      <MediaWatchState v-if="this.movie" :media="this.movie" />
+      <MediaWatchState v-if="movie" :media="movie" />
       <v-spacer></v-spacer>
-      <CheckWatchList v-if="this.movie" :media="this.movie"></CheckWatchList>
-      <v-spacer></v-spacer>
-      <v-btn :to="{path: `movie/${movie.id}`}">
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
+      <CheckWatchList v-if="movie" :media="movie"></CheckWatchList>
     </v-card-actions>
   </v-card>
 </template>

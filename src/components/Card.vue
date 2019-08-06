@@ -1,46 +1,32 @@
 <template>
-  <v-container grid-list-lg fluid>
-    <v-layout justify-center row>
-      <v-flex xs8 sm4 md3 lg3 v-for="item in 5" :key="item.id">
-        <v-card>
-          <v-container fluid>
-            <v-layout row>
-              <v-flex xs12>
-                <v-img src="https://image.tmdb.org/t/p/original/vFOnUUCWGWpbCmGvCpCkPxB2KJd.jpg"></v-img>
-              </v-flex>
-              <v-flex>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title class="headline">titasdfffffffffffffffffffffle</v-list-item-title>
-                    <v-list-item-subtitle>2019</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-flex>
-              <v-flex xs4>
-                <v-btn block>
-                  <v-icon>mdi-check-all</v-icon>
-                </v-btn>
-              </v-flex>
-              <v-flex xs4>
-                <v-btn block>
-                  <v-icon>mdi-clock</v-icon>
-                </v-btn>
-              </v-flex>
-              <v-flex xs4>
-                <v-btn block to>
-                  <v-icon>mdi-chevron-right</v-icon>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-hover>
+    <template v-slot:default="{ hover }">
+      <v-card class="mx-auto" max-width="344">
+        <v-img src="https://cdn.vuetifyjs.com/images/cards/forest-art.jpg"></v-img>
+        <v-card-text>
+          <h2 class="title primary--text">Magento Forests</h2>Travel to the best outdoor experience on planet Earth. A vacation you will never forget!
+        </v-card-text>
+        <v-card-title>
+          <v-rating :value="4" dense color="orange" background-color="orange" hover class="mr-2"></v-rating>
+          <span class="primary--text subtitle-2">64 Reviews</span>
+        </v-card-title>
+        <v-fade-transition>
+          <v-overlay v-if="hover" absolute color="#036358">
+            <v-btn>See more info</v-btn>
+          </v-overlay>
+        </v-fade-transition>
+      </v-card>
+    </template>
+  </v-hover>
 </template>
-
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      overlay: false
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>

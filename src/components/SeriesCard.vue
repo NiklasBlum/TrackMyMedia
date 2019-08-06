@@ -1,7 +1,27 @@
 <template>
   <v-card>
-    <v-img v-if="show.poster_path" :src="this.posterUrl + show.poster_path"></v-img>
-    <v-img v-else :src="notFoundPic"></v-img>
+    <v-hover>
+      <template v-slot:default="{ hover }">
+        <v-img v-if="show.poster_path" :src="posterUrl + show.poster_path">
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <v-btn large :to="/show/ + show.id">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-overlay>
+          </v-fade-transition>
+        </v-img>
+        <v-img v-else :src="notFoundPic">
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <v-btn large :to="/show/ + show.id">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-overlay>
+          </v-fade-transition>
+        </v-img>
+      </template>
+    </v-hover>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline">{{show.name}}</v-list-item-title>
@@ -10,13 +30,9 @@
     </v-list-item>
     <v-divider></v-divider>
     <v-card-actions>
-      <MediaWatchState v-if="this.show" :media="show" />
+      <MediaWatchState v-if="show" :media="show" />
       <v-spacer></v-spacer>
-      <CheckWatchList :media="this.show"></CheckWatchList>
-      <v-spacer></v-spacer>
-      <v-btn :to="/show/ + show.id">
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
+      <CheckWatchList v-if="show" :media="show"></CheckWatchList>
     </v-card-actions>
   </v-card>
 </template>
@@ -37,9 +53,6 @@ export default {
     return {
       notFoundPic: require("../assets/no-image.png")
     };
-  },
-  created() {
-    console.log(this.show);
   },
   computed: {
     posterUrl: {
