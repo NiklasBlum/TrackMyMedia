@@ -35,6 +35,7 @@ export default {
       watched: null
     };
   },
+  
   methods: {
     CheckWatchStateEpisode() {
       db.collection("series")
@@ -49,14 +50,13 @@ export default {
     },
     setEpisodeAsWatched() {
       this.watched = true;
-      console.log("asdf");
     },
     setEpisodeAsNotWatched() {
       this.watched = false;
     }
   },
   created() {
-    console.log(this.episode);
+
     this.CheckWatchStateEpisode();
   },
   computed: mapState(["posterUrlOrg"])

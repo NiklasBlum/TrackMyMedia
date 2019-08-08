@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+     
       notFoundPic: require("../assets/no-image.png")
     };
   },
