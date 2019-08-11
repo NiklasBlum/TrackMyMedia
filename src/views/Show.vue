@@ -55,10 +55,6 @@ export default {
       trailerId: null
     };
   },
-
-  created() {
-    this.getDetails(this.$route.params.id);
-  },
   methods: {
     getDetails(id) {
       let searchQuery = `${this.baseUrl}tv/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
@@ -74,6 +70,9 @@ export default {
           console.log(error);
         });
     }
+  },
+  created() {
+    this.getDetails(this.$route.params.id);
   },
   computed: mapState([
     "baseUrl",

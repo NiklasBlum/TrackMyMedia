@@ -25,14 +25,14 @@
         <v-btn @click="getMedia">Search</v-btn>
       </v-flex>
     </v-layout>
-    <div v-if="currentMedia === 'tv'">
+    <div v-if="currentMedia == 'tv'">
       <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
-    <div v-if="currentMedia === 'movie'">
+    <div v-if="currentMedia == 'movie'">
       <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
@@ -74,8 +74,8 @@ export default {
       ],
       sortBy: [
         { param: "", name: "" },
-        { param: "popularity.asc", name: "Popularity Ascending" },
         { param: "popularity.desc", name: "Popularity Descending" },
+        { param: "popularity.asc", name: "Popularity Ascending" },
         { param: "release_date.asc", name: "Release Ascending" },
         { param: "release_date.desc", name: "Release Descending" }
       ]
@@ -124,9 +124,6 @@ export default {
     language: {
       get() {
         return this.$store.state.language;
-      },
-      set(language) {
-        this.$store.commit("setLanguage", lang);
       }
     },
     year: {

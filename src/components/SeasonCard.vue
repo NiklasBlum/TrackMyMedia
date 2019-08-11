@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       watched: false,
+      mySeason: null,
       notFoundPic: require("../assets/no-image.png")
     };
   },
@@ -53,16 +54,39 @@ export default {
     checkWatchStateSeason() {
       db.collection("tv")
         .doc(this.show.id.toString())
+        .collection("seasons")
         .get()
         .then(snapshot => {
-          console.log(snapshot);
+          snapshot.forEach(snapSeason => {
+            if (snapSeason.id == this.season.season_number) {
+              let currentSeason = snapSeason.data();
+              currentSeason.id = snapSeason.id;
+              currentSeason.finished = snapSeason.data().finished;
+              this.watched = snapSeason.data().finished;
+              this.mySeason = currentSeason;
+            }
+          });
         });
     },
     setSeasonAsWatched() {
-      this.watched = true;
+      db.collection("tv")
+        .doc(this.show.id.toString())
+        .collection("seasons")
+        .doc(this.season.season_number.toString())
+        .set({
+          finished: true
+        })
+        .then((this.watched = true));
     },
     setSeasonAsUnwatched() {
-      this.watched = false;
+      db.collection("tv")
+        .doc(this.show.id.toString())
+        .collection("seasons")
+        .doc(this.season.season_number.toString())
+        .set({
+          finished: false
+        })
+        .then((this.watched = false));
     }
   },
   created() {
