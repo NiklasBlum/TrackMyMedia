@@ -3,15 +3,7 @@
     <v-container fluid grid-list-lg>
       <v-layout row wrap justify-center>
         <v-flex xs5 sm5 md2>
-          <v-card>
-            <v-img :src="this.posterPath"></v-img>
-            <v-card-actions>
-              <v-layout justify-space-around>
-                <CheckWatchList v-if="this.show" :media="this.show"></CheckWatchList>
-                <MediaWatchState v-if="this.show" :media="this.show" />
-              </v-layout>
-            </v-card-actions>
-          </v-card>
+          <SeriesCard v-if="this.show" :show="this.show" />
         </v-flex>
         <v-flex xs12 sm7 md10>
           <v-card flat color="blue-grey darken-2">
@@ -40,13 +32,13 @@ import CheckWatchList from "../components/CheckWatchList";
 import axios from "axios";
 import { mapState } from "vuex";
 import SeasonCard from "../components/SeasonCard";
-import MediaWatchState from "@/components/MediaWatchState";
+import SeriesCard from "@/components/SeriesCard";
 
 export default {
   components: {
     CheckWatchList,
     SeasonCard,
-    MediaWatchState
+    SeriesCard
   },
   data() {
     return {

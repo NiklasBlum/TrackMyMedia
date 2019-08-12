@@ -19,6 +19,14 @@
         </v-flex>
       </v-layout>
     </div>
+    <v-pagination
+      v-show="showPagination"
+      v-model="page"
+      :length="10"
+      prev-icon="mdi-menu-left"
+      next-icon="mdi-menu-right"
+    ></v-pagination>
+    {{showPagination}}
   </v-container>
 </template>
 
@@ -36,13 +44,16 @@ export default {
   },
   data() {
     return {
-      media: null
+      media: null,
+      showPagination: false,
+      page: 1
     };
   },
   methods: {
     getPopular() {
+      this.showPagination = false;
       this.media = null;
-      let searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${this.apiKey}&language=${this.language}`;
+      let searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${this.apiKey}&language=${this.language}&page=${this.page}`;
       axios
         .get(searchQuery)
         .then(response => {
@@ -53,8 +64,17 @@ export default {
         });
     }
   },
+  watch: {
+    page() {
+      this.getPopular();
+    }
+  },
   created() {
+    this.showPagination = false;
     this.getPopular();
+  },
+  updated() {
+    this.showPagination = true;
   },
   computed: mapState(["baseUrl", "apiKey", "currentMedia", "language"])
 };

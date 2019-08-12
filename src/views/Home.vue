@@ -24,7 +24,7 @@
     <div v-show="currentMedia == 'movie'">
       <v-layout row align-center justify-space-around>
         <v-flex xs6 sm4 md3 lg2 v-for="movie in media" :key="movie.id">
-          <MovieCard :movie="movie"></MovieCard>
+          <MovieCard :movie="movie" />
         </v-flex>
       </v-layout>
     </div>

@@ -2,15 +2,7 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap justify-center>
       <v-flex xs5 sm5 md2>
-        <v-card>
-          <v-img :src="this.posterPath"></v-img>
-          <v-card-actions>
-            <v-layout justify-space-around>
-              <CheckWatchList v-if="this.movie" :media="this.movie" />
-              <MediaWatchState v-if="this.movie" :media="this.movie" />
-            </v-layout>
-          </v-card-actions>
-        </v-card>
+        <MovieCard v-if="movie" :movie="movie" />
       </v-flex>
       <v-flex xs12 sm7 md10>
         <v-card v-if="this.movie" dark flat color="blue-grey darken-2">
@@ -69,12 +61,11 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import CheckWatchList from "../components/CheckWatchList";
-import MediaWatchState from "@/components/MediaWatchState";
-
+import MovieCard from "@/components/MovieCard";
 export default {
   components: {
     CheckWatchList,
-    MediaWatchState
+    MovieCard
   },
   data() {
     return {

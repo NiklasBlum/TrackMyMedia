@@ -83,7 +83,7 @@ export default {
         .doc(this.show.id.toString())
         .collection("seasons")
         .doc(this.season.season_number.toString())
-        .set({
+        .update({
           finished: false
         })
         .then((this.watched = false));

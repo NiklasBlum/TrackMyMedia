@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
     <v-hover>
       <template v-slot:default="{ hover }">
         <v-img v-if="show.poster_path" :src="posterUrl + show.poster_path">
@@ -30,7 +30,12 @@
     </v-list-item>
     <v-divider></v-divider>
     <v-card-actions>
-      <MediaWatchState v-if="show" :media="show" />
+      <v-btn v-if="watched" color="cyan darken-4" @click="setShowAsNotWatched">
+        <v-icon>mdi-check-all</v-icon>
+      </v-btn>
+      <v-btn v-if="!watched" @click="setShowAsWatched">
+        <v-icon>mdi-check-bold</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <CheckWatchList v-if="show" :media="show"></CheckWatchList>
     </v-card-actions>
@@ -39,28 +44,56 @@
 
 <script>
 import CheckWatchList from "./CheckWatchList";
-import MediaWatchState from "@/components/MediaWatchState.vue";
+import { mapState } from "vuex";
+import db from "@/firebase/init";
 
 export default {
   components: {
-    CheckWatchList,
-    MediaWatchState
+    CheckWatchList
   },
   props: {
     show: Object
   },
   data() {
     return {
-     
+      watched: false,
       notFoundPic: require("../assets/no-image.png")
     };
   },
-  computed: {
-    posterUrl: {
-      get() {
-        return this.$store.state.posterUrl;
-      }
+  methods: {
+    checkShowWatchState() {
+      db.collection("tv")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(snapShow => {
+            if (snapShow.id == this.show.id.toString()) {
+              this.watched = snapShow.data().finished;
+            }
+          });
+        });
+    },
+    setShowAsWatched() {
+      db.collection("tv")
+        .doc(this.show.id.toString())
+        .set({
+          finished: true,
+          title: this.show.original_name
+        })
+        .then((this.watched = true));
+    },
+    setShowAsNotWatched() {
+      db.collection("tv")
+        .doc(this.show.id.toString())
+        .update({
+          finished: false
+        })
+        .then((this.watched = false));
     }
-  }
+  },
+  created() {
+    console.log(this.show);
+    this.checkShowWatchState();
+  },
+  computed: mapState(["posterUrl"])
 };
 </script>
