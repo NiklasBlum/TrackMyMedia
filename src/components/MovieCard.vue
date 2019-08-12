@@ -30,10 +30,10 @@
     </v-list-item>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-btn v-if="watched" color="cyan" @click="setMovieAsNotWatched">
+      <v-btn v-if="watched" light color="cyan" @click="setMovieAsNotWatched">
         <v-icon>mdi-check-all</v-icon>
       </v-btn>
-      <v-btn v-if="!watched" @click="setMovieAsWatched">
+      <v-btn v-if="!watched" dark @click="setMovieAsWatched">
         <v-icon>mdi-check-bold</v-icon>
       </v-btn>
       <v-spacer></v-spacer>

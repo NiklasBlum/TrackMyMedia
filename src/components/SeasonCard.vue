@@ -22,13 +22,19 @@
         </v-img>
       </template>
     </v-hover>
-    <v-card-title>{{season.name}}</v-card-title>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{season.name}}</v-list-item-title>
+        <v-list-item-subtitle>{{season.air_date}}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+
     <v-card-actions>
-      <v-btn v-if="!watched" block @click="setSeasonAsWatched">
+      <v-btn v-if="watched" light color="cyan" block @click="setSeasonAsNotWatched">
         <v-icon large>mdi-check-all</v-icon>
       </v-btn>
-      <v-btn v-if="watched" block @click="setSeasonAsUnwatched">
-        <v-icon large>mdi-cancel</v-icon>
+      <v-btn v-if="!watched" block @click="setSeasonAsWatched">
+        <v-icon large>mdi-check-bold</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -78,7 +84,7 @@ export default {
         })
         .then((this.watched = true));
     },
-    setSeasonAsUnwatched() {
+    setSeasonAsNotWatched() {
       db.collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons")

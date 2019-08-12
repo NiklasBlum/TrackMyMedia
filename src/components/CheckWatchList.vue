@@ -1,9 +1,8 @@
 <template>
   <div>
-    <v-btn v-if="onWatchlist" color="cyan" :loading="loading" @click="removeFromWatchList">
+    <v-btn v-if="onWatchlist" light color="cyan" :loading="loading" @click="removeFromWatchList">
       <v-icon>mdi-clock</v-icon>
     </v-btn>
-
     <v-btn v-if="!onWatchlist" :loading="loading" @click="addToWatchlist">
       <v-icon>mdi-clock</v-icon>
     </v-btn>

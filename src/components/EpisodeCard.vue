@@ -6,7 +6,7 @@
           <v-img v-if="this.episode.still_path" :src="this.posterUrlOrg + this.episode.still_path"></v-img>
         </v-flex>
         <v-flex xs12 sm12 md6 lg7>
-          <v-card-title>{{this.episode.name}}</v-card-title>
+          <v-card-title>{{this.episode.episode_number}} | {{this.episode.name}}</v-card-title>
           <v-card-text>{{this.episode.overview}}</v-card-text>
         </v-flex>
         <v-flex xs12 sm12 md2 lg2>
@@ -35,28 +35,55 @@ export default {
       watched: null
     };
   },
-  
+
   methods: {
     CheckWatchStateEpisode() {
-      db.collection("series")
+      db.collection("tv")
+        .doc(this.episode.show_id.toString())
+        .collection("seasons")
+        .doc(this.episode.season_number.toString())
+        .collection("episodes")
         .get()
         .then(snapshot => {
-          snapshot.forEach(doc => {
-            let docSeries = doc.data();
-            docSeries.id = doc.id;
-            console.log(docSeries);
+          snapshot.forEach(snapEpisode => {
+            if (snapEpisode.id == this.episode.episode_number.toString()) {
+              this.watched = true;
+            }
           });
         });
+      // snapshot.forEach(snapSeason => {
+      //   if (snapSeason.id == this.season.season_number) {
+      //     let currentSeason = snapSeason.data();
+      //     currentSeason.id = snapSeason.id;
+      //     currentSeason.finished = snapSeason.data().finished;
+      //     this.watched = snapSeason.data().finished;
+      //     this.mySeason = currentSeason;
+      //   }
+      // });
     },
     setEpisodeAsWatched() {
-      this.watched = true;
+      db.collection("tv")
+        .doc(this.episode.show_id.toString())
+        .collection("seasons")
+        .doc(this.episode.season_number.toString())
+        .collection("episodes")
+        .doc(this.episode.episode_number.toString())
+        .set({})
+        .then((this.watched = true));
     },
     setEpisodeAsNotWatched() {
-      this.watched = false;
+      db.collection("tv")
+        .doc(this.episode.show_id.toString())
+        .collection("seasons")
+        .doc(this.episode.season_number.toString())
+        .collection("episodes")
+        .doc(this.episode.episode_number.toString())
+        .delete()
+        .then((this.watched = false));
     }
   },
   created() {
-
+    console.log(this.episode);
     this.CheckWatchStateEpisode();
   },
   computed: mapState(["posterUrlOrg"])
