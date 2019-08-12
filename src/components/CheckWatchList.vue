@@ -23,9 +23,22 @@ export default {
     };
   },
   methods: {
+    checkWatchList() {
+      this.loading = true;
+      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${this.media.id}/account_states?api_key=${this.apiKey}&session_id=${this.sessionId}`;
+      axios
+        .get(this.searchQuery)
+        .then(response => {
+          this.onWatchlist = response.data.watchlist;
+          this.loading = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     addToWatchlist() {
       this.loading = true;
-
       let searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist?api_key=${this.apiKey}&session_id=${this.sessionId}`;
       axios
         .post(searchQuery, {
@@ -60,20 +73,6 @@ export default {
           this.loading = false;
         });
       this.loading = false;
-    },
-    checkWatchList() {
-      this.loading = true;
-      this.searchQuery = `${this.baseUrl}${this.currentMedia}/${this.media.id}/account_states?api_key=${this.apiKey}&session_id=${this.sessionId}`;
-      axios
-        .get(this.searchQuery)
-        .then(response => {
-          this.onWatchlist = response.data.watchlist;
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading = false;
-        });
     }
   },
   mounted() {

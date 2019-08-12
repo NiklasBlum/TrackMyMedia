@@ -91,7 +91,6 @@ export default {
     }
   },
   created() {
-    console.log(this.show);
     this.checkShowWatchState();
   },
   computed: mapState(["posterUrl"])

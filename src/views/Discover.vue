@@ -39,10 +39,12 @@
         </v-flex>
       </v-layout>
     </div>
+    <Pagination @pageChanged="getMedia" />
   </v-container>
 </template>
 
 <script>
+import Pagination from "@/components/Pagination";
 import MediaTabs from "@/components/MediaTabs";
 import axios from "axios";
 import MovieCard from "@/components/MovieCard.vue";
@@ -51,7 +53,8 @@ export default {
   components: {
     MovieCard,
     SeriesCard,
-    MediaTabs
+    MediaTabs,
+    Pagination
   },
   data() {
     return {
@@ -83,6 +86,7 @@ export default {
   },
   methods: {
     getMedia() {
+      this.media = null;
       this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}`;
 
       if (this.selectedFilter) {

@@ -19,14 +19,15 @@
         </v-flex>
       </v-layout>
     </div>
-    <v-pagination
-      v-show="showPagination"
-      v-model="page"
-      :length="10"
-      prev-icon="mdi-menu-left"
-      next-icon="mdi-menu-right"
-    ></v-pagination>
-    {{showPagination}}
+    <v-layout mt-5>
+      <v-pagination
+        v-show="showPagination"
+        v-model="page"
+        :length="10"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+      ></v-pagination>
+    </v-layout>
   </v-container>
 </template>
 
