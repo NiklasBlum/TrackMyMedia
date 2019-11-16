@@ -11,7 +11,7 @@
 
 <script>
 import NavBar from "./components/NavBar.vue";
-import { mapState } from "vuex";
+
 export default {
   components: {
     NavBar

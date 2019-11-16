@@ -41,4 +41,3 @@ export default {
   computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"])
 };
 </script>
-

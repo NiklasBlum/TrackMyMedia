@@ -5,7 +5,7 @@
         <v-img v-if="movie.poster_path" :src="posterUrl + movie.poster_path">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="/movie/  + movie.id">
+              <v-btn large :to="/movie/ + movie.id">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -14,7 +14,7 @@
         <v-img v-else :src="notFoundPic">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="{path: `movie/${movie.id}`}">
+              <v-btn large :to="{ path: `movie/${movie.id}` }">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -24,11 +24,13 @@
     </v-hover>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{movie.original_title}}</v-list-item-title>
-        <v-list-item-subtitle>{{movie.release_date}}</v-list-item-subtitle>
+        <v-list-item-title class="headline">{{
+          movie.original_title
+        }}</v-list-item-title>
+        <v-list-item-subtitle>{{ movie.release_date }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-actions>
       <v-btn v-if="watched" light color="cyan" @click="setMovieAsNotWatched">
         <v-icon>mdi-check-all</v-icon>
@@ -36,8 +38,8 @@
       <v-btn v-if="!watched" dark @click="setMovieAsWatched">
         <v-icon>mdi-check-bold</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
-      <CheckWatchList v-if="movie" :media="movie"></CheckWatchList>
+      <v-spacer />
+      <CheckWatchList v-if="movie" :media="movie" />
     </v-card-actions>
   </v-card>
 </template>
@@ -94,4 +96,3 @@ export default {
   computed: mapState(["posterUrl"])
 };
 </script>
-

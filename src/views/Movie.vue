@@ -7,10 +7,10 @@
       <v-flex xs12 sm7 md10>
         <v-card v-if="this.movie" dark flat color="blue-grey darken-2">
           <v-card-title>
-            <h1>{{this.movie.title}}</h1>
+            <h1>{{ this.movie.title }}</h1>
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-card-text>{{this.movie.overview}}</v-card-text>
+          <v-card-text>{{ this.movie.overview }}</v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
@@ -18,7 +18,12 @@
     <v-container fluid>
       <v-layout row justify-center align-center>
         <v-flex xs12>
-          <v-tabs v-model="tab" icons-and-text background-color="transparent" fixed-tabs>
+          <v-tabs
+            v-model="tab"
+            icons-and-text
+            background-color="transparent"
+            fixed-tabs
+          >
             <v-tabs-slider></v-tabs-slider>
             <v-tab href="#trailer">
               Trailer
@@ -41,13 +46,13 @@
             <v-flex>
               <v-chip large v-if="this.movie">
                 <v-icon left>mdi-timer</v-icon>
-                {{movie.runtime}} min
+                {{ movie.runtime }} min
               </v-chip>
             </v-flex>
             <v-flex>
               <v-chip large v-if="this.movie">
                 <v-icon left>mdi-bell-ring-outline</v-icon>
-                {{movie.status}}
+                {{ movie.status }}
               </v-chip>
             </v-flex>
           </v-layout>

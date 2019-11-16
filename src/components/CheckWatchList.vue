@@ -1,6 +1,13 @@
+/* eslint-disable */
 <template>
   <div>
-    <v-btn v-if="onWatchlist" light color="cyan" :loading="loading" @click="removeFromWatchList">
+    <v-btn
+      v-if="onWatchlist"
+      light
+      color="cyan"
+      :loading="loading"
+      @click="removeFromWatchList"
+    >
       <v-icon>mdi-clock</v-icon>
     </v-btn>
     <v-btn v-if="!onWatchlist" :loading="loading" @click="addToWatchlist">
@@ -31,8 +38,7 @@ export default {
           this.onWatchlist = response.data.watchlist;
           this.loading = false;
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
           this.loading = false;
         });
     },
@@ -45,12 +51,9 @@ export default {
           media_id: this.media.id,
           watchlist: true
         })
-        .then(() => {
+        .then(response => {
+          console.log(response);
           this.checkWatchList();
-        })
-
-        .catch(error => {
-          console.log(error);
         });
       this.loading = false;
     },
@@ -67,14 +70,13 @@ export default {
           console.log(response);
           this.checkWatchList();
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
           this.loading = false;
         });
       this.loading = false;
     }
   },
-  mounted() {
+  created() {
     this.checkWatchList();
   },
   computed: mapState([
@@ -88,4 +90,3 @@ export default {
   ])
 };
 </script>
-
