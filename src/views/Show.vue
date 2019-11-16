@@ -17,7 +17,7 @@
       </v-layout>
       <v-container grid-list-lg fluid>
         <v-layout mt-5 row wrap justify-center justify-space-around>
-          <v-flex xs6 sm3 md3 lg2 v-for="season in show.seasons" :key="season.id">
+          <v-flex xs6 sm4 md3 lg2 v-for="season in show.seasons" :key="season.id">
             <SeasonCard :season="season" :show="show"></SeasonCard>
             <v-spacer></v-spacer>
           </v-flex>
@@ -56,7 +56,6 @@ export default {
           this.show = response.data;
           this.posterPath = this.posterUrl + this.show.poster_path;
           this.trailerId = this.show.videos.results[0].key;
-          console.log(this.trailerId);
         })
         .catch(error => {
           console.log(error);
