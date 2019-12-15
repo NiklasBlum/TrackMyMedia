@@ -24,8 +24,11 @@
     </v-hover>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{show.name}}</v-list-item-title>
-        <v-list-item-subtitle>{{show.first_air_date}}</v-list-item-subtitle>
+        <v-list-item-title class="title">{{ show.name }}</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ getHumanDate(show.first_air_date) }}
+          {{ getHumanDate(watchedAt) }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-divider></v-divider>
@@ -36,8 +39,8 @@
       <v-btn v-if="!watched" @click="setShowAsWatched">
         <v-icon>mdi-check-bold</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
-      <CheckWatchList v-if="show" :media="show"></CheckWatchList>
+      <v-spacer />
+      <CheckWatchList :media="show" :mediaType="'tv'" />
     </v-card-actions>
   </v-card>
 </template>
@@ -46,6 +49,7 @@
 import CheckWatchList from "./CheckWatchList";
 import { mapState } from "vuex";
 import db from "@/firebase/init";
+import moment from "moment";
 
 export default {
   components: {
@@ -56,38 +60,73 @@ export default {
   },
   data() {
     return {
+      loading: false,
       watched: false,
+      watchedAt: null,
       notFoundPic: require("../assets/no-image.png")
     };
   },
   methods: {
+    getHumanDate(date) {
+      if (date) {
+        if (date.seconds) {
+          return moment(date.seconds * 1000).format("DD.MM.YYYY");
+        } else {
+          return moment(date).format("DD.MM.YYYY");
+        }
+      } else {
+        return "-";
+      }
+    },
     checkShowWatchState() {
+      this.loading = true;
       db.collection("tv")
         .get()
         .then(snapshot => {
           snapshot.forEach(snapShow => {
             if (snapShow.id == this.show.id.toString()) {
-              this.watched = snapShow.data().finished;
+              this.watched = snapShow.data().watched;
+              this.watchedAt = snapShow.data().watchedAt;
             }
           });
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     setShowAsWatched() {
+      this.loading = true;
       db.collection("tv")
         .doc(this.show.id.toString())
         .set({
-          finished: true,
+          media_id: this.show.id,
+          watched: true,
+          watchedAt: new Date(Date.now()),
           title: this.show.original_name
         })
-        .then((this.watched = true));
+        .then(() => {
+          this.watched = true;
+          this.watchedAt = new Date(Date.now());
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     setShowAsNotWatched() {
+      this.loading = true;
       db.collection("tv")
         .doc(this.show.id.toString())
         .update({
-          finished: false
+          watched: false,
+          watchedAt: null
         })
-        .then((this.watched = false));
+        .then(() => {
+          this.watched = false;
+          this.watchedAt = null;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   },
   created() {

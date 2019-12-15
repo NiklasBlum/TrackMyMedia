@@ -2,15 +2,27 @@
   <v-container fluid grid-list-lg>
     <v-layout column align-center>
       <v-flex>
-        <MediaTabs @emmittedMediaChange="getMedia" />
+        <MediaFilter @currentMediaChanged="getMedia" />
       </v-flex>
     </v-layout>
     <v-layout mt-3 row align-center justify-space-between>
       <v-flex xs12 sm3 md3>
-        <v-select :items="years" v-model="year" item-text="name" item-value="id" label="Year"></v-select>
+        <v-select
+          :items="years"
+          v-model="year"
+          item-text="name"
+          item-value="id"
+          label="Year"
+        ></v-select>
       </v-flex>
       <v-flex xs12 sm3 md3>
-        <v-select :items="genres" v-model="genre" item-text="name" item-value="id" label="Genre"></v-select>
+        <v-select
+          :items="genres"
+          v-model="genre"
+          item-text="name"
+          item-value="id"
+          label="Genre"
+        ></v-select>
       </v-flex>
       <v-flex xs12 sm3 md3>
         <v-select
@@ -39,13 +51,13 @@
         </v-flex>
       </v-layout>
     </div>
-    <Pagination @pageChanged="getMedia" />
+    <Pagination @pageChanged="pageChanged" v-show="showPagination" />
   </v-container>
 </template>
 
 <script>
 import Pagination from "@/components/Pagination";
-import MediaTabs from "@/components/MediaTabs";
+import MediaFilter from "@/components/MediaFilter";
 import axios from "axios";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
@@ -53,11 +65,13 @@ export default {
   components: {
     MovieCard,
     SeriesCard,
-    MediaTabs,
+    MediaFilter,
     Pagination
   },
   data() {
     return {
+      showPagination: false,
+      page: 1,
       selectedYear: "",
       selectedGenre: "",
       selectedFilter: "",
@@ -85,9 +99,14 @@ export default {
     };
   },
   methods: {
+    pageChanged(page) {
+      this.page = page;
+      this.getMedia();
+    },
     getMedia() {
+      this.showPagination = false;
       this.media = null;
-      this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}`;
+      this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&page=${this.page}`;
 
       if (this.selectedFilter) {
         this.searchQuery += `&sort_by=${this.selectedFilter}`;
@@ -104,8 +123,8 @@ export default {
         .then(response => {
           this.media = response.data.results;
         })
-        .catch(err => {
-          console.log(err);
+        .finally(() => {
+          this.showPagination = true;
         });
     }
   },
@@ -157,4 +176,3 @@ export default {
   }
 };
 </script>
-

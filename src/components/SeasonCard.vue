@@ -5,7 +5,10 @@
         <v-img v-if="season.poster_path" :src="posterUrl + season.poster_path">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="/show/ + show.id + /season/ +season.season_number">
+              <v-btn
+                large
+                :to="/show/ + show.id + /season/ + season.season_number"
+              >
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -14,7 +17,10 @@
         <v-img v-else :src="notFoundPic">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="/show/ + show.id + /season/ +season.season_number">
+              <v-btn
+                large
+                :to="/show/ + show.id + /season/ + season.season_number"
+              >
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -24,16 +30,31 @@
     </v-hover>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{season.name}}</v-list-item-title>
-        <v-list-item-subtitle>{{season.air_date}}</v-list-item-subtitle>
+        <v-list-item-title class="headline">{{
+          season.name
+        }}</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ getHumanDate(season.air_date) }}</v-list-item-subtitle
+        >
       </v-list-item-content>
     </v-list-item>
-
     <v-card-actions>
-      <v-btn v-if="watched" light color="cyan" block @click="setSeasonAsNotWatched">
+      <v-btn
+        v-if="watched"
+        light
+        color="cyan"
+        block
+        @click="setSeasonAsNotWatched"
+        :loading="loading"
+      >
         <v-icon large>mdi-check-all</v-icon>
       </v-btn>
-      <v-btn v-if="!watched" block @click="setSeasonAsWatched">
+      <v-btn
+        v-if="!watched"
+        block
+        @click="setSeasonAsWatched"
+        :loading="loading"
+      >
         <v-icon large>mdi-check-bold</v-icon>
       </v-btn>
     </v-card-actions>
@@ -43,6 +64,7 @@
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/init";
+import moment from "moment";
 
 export default {
   props: {
@@ -51,13 +73,26 @@ export default {
   },
   data() {
     return {
+      loading: false,
       watched: false,
       mySeason: null,
       notFoundPic: require("../assets/no-image.png")
     };
   },
   methods: {
+    getHumanDate(date) {
+      if (date) {
+        if (date.seconds) {
+          return moment(date.seconds * 1000).format("DD.MM.YYYY");
+        } else {
+          return moment(date).format("DD.MM.YYYY");
+        }
+      } else {
+        return null;
+      }
+    },
     checkWatchStateSeason() {
+      this.loading = true;
       db.collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons")
@@ -72,6 +107,9 @@ export default {
               this.mySeason = currentSeason;
             }
           });
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     setSeasonAsWatched() {

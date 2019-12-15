@@ -1,10 +1,17 @@
 <template>
-  <v-btn-toggle v-model="currentMedia" @change="$emit('emmittedMediaChange')" rounded mandatory>
+  <v-btn-toggle
+    v-model="currentMedia"
+    rounded
+    mandatory
+    @change="$emit('currentMediaChanged')"
+  >
     <v-btn value="movie">
-      <v-icon left>mdi-movie</v-icon>Movies
+      <v-icon left>mdi-movie</v-icon>
+      Movies
     </v-btn>
     <v-btn value="tv">
-      <v-icon left>mdi-television</v-icon>Series
+      <v-icon left>mdi-television</v-icon>
+      Series
     </v-btn>
   </v-btn-toggle>
 </template>

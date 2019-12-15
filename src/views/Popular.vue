@@ -2,7 +2,7 @@
   <v-container grid-list-lg fluid>
     <v-layout column align-center>
       <v-flex>
-        <MediaTabs @emmittedMediaChange="getPopular" />
+        <MediaFilter @currentMediaChanged="getPopular" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
@@ -20,19 +20,14 @@
       </v-layout>
     </div>
     <v-layout mt-5>
-      <v-pagination
-        v-show="showPagination"
-        v-model="page"
-        :length="10"
-        prev-icon="mdi-menu-left"
-        next-icon="mdi-menu-right"
-      ></v-pagination>
+      <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import MediaTabs from "@/components/MediaTabs";
+import Pagination from "@/components/Pagination.vue";
+import MediaFilter from "@/components/MediaFilter";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import axios from "axios";
@@ -41,7 +36,8 @@ export default {
   components: {
     MovieCard,
     SeriesCard,
-    MediaTabs
+    MediaFilter,
+    Pagination
   },
   data() {
     return {
@@ -51,6 +47,10 @@ export default {
     };
   },
   methods: {
+    pageChanged(page) {
+      this.page = page;
+      this.getPopular();
+    },
     getPopular() {
       this.showPagination = false;
       this.media = null;
@@ -60,24 +60,14 @@ export default {
         .then(response => {
           this.media = response.data.results;
         })
-        .catch(err => {
-          console.log(err);
+        .finally(() => {
+          this.showPagination = true;
         });
     }
   },
-  watch: {
-    page() {
-      this.getPopular();
-    }
-  },
   created() {
-    this.showPagination = false;
     this.getPopular();
-  },
-  updated() {
-    this.showPagination = true;
   },
   computed: mapState(["baseUrl", "apiKey", "currentMedia", "language"])
 };
 </script>
-

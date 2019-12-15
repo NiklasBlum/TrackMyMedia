@@ -3,17 +3,33 @@
     <v-container fluid>
       <v-layout row justify-center>
         <v-flex xs12 sm5 md4 lg3 align-self-center grow>
-          <v-img v-if="this.episode.still_path" :src="this.posterUrlOrg + this.episode.still_path"></v-img>
+          <v-img
+            v-if="this.episode.still_path"
+            :src="this.posterUrlOrg + this.episode.still_path"
+          ></v-img>
         </v-flex>
         <v-flex xs12 sm12 md6 lg7>
-          <v-card-title>{{this.episode.episode_number}} | {{this.episode.name}}</v-card-title>
-          <v-card-text>{{this.episode.overview}}</v-card-text>
+          <v-card-title
+            >{{ this.episode.episode_number }} |
+            {{ this.episode.name }}</v-card-title
+          >
+          <v-card-text>{{ this.episode.overview }}</v-card-text>
         </v-flex>
         <v-flex xs12 sm12 md2 lg2>
-          <v-btn v-if="!watched" block height="100%" @click="setEpisodeAsWatched">
+          <v-btn
+            v-if="!watched"
+            block
+            height="100%"
+            @click="setEpisodeAsWatched"
+          >
             <v-icon large>mdi-check-all</v-icon>
           </v-btn>
-          <v-btn v-if="watched" block height="100%" @click="setEpisodeAsNotWatched">
+          <v-btn
+            v-if="watched"
+            block
+            height="100%"
+            @click="setEpisodeAsNotWatched"
+          >
             <v-icon large>mdi-cancel</v-icon>
           </v-btn>
         </v-flex>
@@ -89,4 +105,3 @@ export default {
   computed: mapState(["posterUrlOrg"])
 };
 </script>
-

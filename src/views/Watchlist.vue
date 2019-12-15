@@ -2,95 +2,84 @@
   <v-container fluid grid-list-lg>
     <v-layout column align-center>
       <v-flex>
-        <MediaTabs @emmittedMediaChange="getWatchlist" />
+        <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="show in watchlist" :key="show.id">
+        <v-flex xs6 sm3 md3 lg2 v-for="show in tmdbMedia" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia === 'movie'">
       <v-layout row wrap justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="movie in watchlist" :key="movie.id">
+        <v-flex xs6 sm3 md3 lg2 v-for="movie in tmdbMedia" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>
       </v-layout>
     </div>
-    <v-layout mt-5>
-      <v-pagination
-        v-show="showPagination"
-        v-model="page"
-        :length="10"
-        prev-icon="mdi-menu-left"
-        next-icon="mdi-menu-right"
-      ></v-pagination>
-    </v-layout>
   </v-container>
 </template>
 
 <script>
-import MediaTabs from "@/components/MediaTabs";
+import MediaFilter from "@/components/MediaFilter";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
+import db from "@/firebase/init";
 export default {
   components: {
-    MediaTabs,
+    MediaFilter,
     MovieCard,
     SeriesCard
   },
   data() {
     return {
-      watchlist: null,
-      localMedia: "movies",
-      page: 1,
-      showPagination: false
+      fireBaseMedia: [],
+      tmdbMedia: []
     };
   },
-  watch: {
-    page() {
-      this.getWatchlist();
-    }
-  },
   methods: {
-    getWatchlist() {
-      this.showPagination = false;
-      this.watchlist = null;
-      if (this.currentMedia == "movie") {
-        this.localMedia = "movies";
-      } else {
-        this.localMedia = "tv";
-      }
-      let searchQuery = `${this.baseAccountUrl}${this.accountId}/watchlist/${this.localMedia}?api_key=${this.apiKey}&language=${this.language}&session_id=${this.sessionId}&page=${this.page}`;
-
+    getWatchlistFromFirestore() {
+      this.tmdbMedia = [];
+      this.fireBaseMedia = [];
+      db.collection("watchlist")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            if (
+              doc.data().media_type == this.currentMedia &&
+              doc.data().watchlist == true
+            ) {
+              this.fireBaseMedia.push(doc.data());
+              this.getMediaFromTmdb(doc.data().media_id);
+            }
+          });
+        });
+    },
+    getMediaFromTmdb(id) {
+      let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios
-        .get(searchQuery)
+        .get(query)
         .then(response => {
-          this.watchlist = response.data.results;
+          this.tmdbMedia.push(response.data);
         })
-        .catch(err => {
-          console.log(err);
+        .catch(error => {
+          console.log(error);
         });
     }
   },
   computed: mapState([
-    "baseAccountUrl",
-    "accountId",
-    "sessionId",
+    "baseUrl",
+    "posterUrl",
+    "currentMedia",
     "apiKey",
-    "language",
-    "currentMedia"
+    "language"
   ]),
   created() {
-    this.getWatchlist();
-  },
-  updated() {
-    this.showPagination = true;
+    this.getWatchlistFromFirestore();
   }
 };
 </script>
-

@@ -1,20 +1,26 @@
 <template>
   <v-app>
-    <NavBar />
+    <AppBar />
+    <!-- Sizes your content based upon application components -->
     <v-content>
+      <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <router-view />
+        <!-- If using vue-router -->
+        <router-view></router-view>
       </v-container>
     </v-content>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import NavBar from "./components/NavBar.vue";
-import { mapState } from "vuex";
+import AppBar from "@/components/AppBar.vue";
 export default {
   components: {
-    NavBar
+    AppBar
   }
 };
 </script>

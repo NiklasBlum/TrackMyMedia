@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue"
+import Vuex from "vuex"
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -15,15 +15,11 @@ export default new Vuex.Store({
     language: "de-DE",
     apiKey: "1f8b7310d5aba63d03369c54c3e4ccd5",
     sessionId: "ced41823e994afd59517d8bcd13c48e36a9a906d",
-    accountId: "8149935",
-    darkMode: false,
+    accountId: "8149935"
   },
   mutations: {
-    setLightMode(state, mode) {
-      state.darkMode = mode
-    },
     setCurrentMedia(state, media) {
-      state.currentMedia = media
-    },
-  },
-})
+      state.currentMedia = media;
+    }
+  }
+});

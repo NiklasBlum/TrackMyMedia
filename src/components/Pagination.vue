@@ -1,5 +1,10 @@
 <template>
-  <v-pagination v-model="page" :length="10" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"></v-pagination>
+  <v-pagination
+    v-model="page"
+    :length="10"
+    prev-icon="mdi-menu-left"
+    next-icon="mdi-menu-right"
+  ></v-pagination>
 </template>
 
 <script>
@@ -16,6 +21,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

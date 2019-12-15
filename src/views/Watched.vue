@@ -2,7 +2,7 @@
   <v-container grid-list-lg>
     <v-layout column align-center>
       <v-flex>
-        <MediaTabs @emmittedMediaChange="getMediaFromFireStore" />
+        <MediaFilter @currentMediaChanged="getMediaFromFireStore" />
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
@@ -28,12 +28,12 @@ import { mapState } from "vuex";
 import db from "@/firebase/init";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
-import MediaTabs from "@/components/MediaTabs.vue";
+import MediaFilter from "@/components/MediaFilter.vue";
 export default {
   components: {
     MovieCard,
     SeriesCard,
-    MediaTabs
+    MediaFilter
   },
   data() {
     return {
@@ -49,10 +49,10 @@ export default {
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            let media = doc.data();
-            media.firebaseId = doc.id;
-            this.fireBaseMedia.push(media);
-            this.getMediaFromTmdb(media.firebaseId);
+            if (doc.data().watched == true) {
+              this.fireBaseMedia.push(doc.data());
+              this.getMediaFromTmdb(doc.data().media_id);
+            }
           });
         });
     },
@@ -76,8 +76,7 @@ export default {
     "posterUrl",
     "currentMedia",
     "apiKey",
-    "language",
-    "media"
+    "language"
   ])
 };
 </script>

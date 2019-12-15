@@ -1,8 +1,12 @@
 <template>
-  <v-parallax v-if="this.show" :src="this.posterUrlOrg + this.show.backdrop_path" height="100%">
+  <v-parallax
+    v-if="this.show"
+    :src="this.posterUrlOrg + this.show.backdrop_path"
+    height="100%"
+  >
     <v-container fluid grid-list-lg>
-      <v-layout row wrap justify-center>
-        <v-flex xs5 sm5 md2>
+      <v-layout row justify-center>
+        <v-flex xs7 sm5 md2>
           <SeriesCard v-if="this.show" :show="this.show" />
         </v-flex>
         <v-flex xs12 sm7 md10>
@@ -11,13 +15,20 @@
               <h1>Plot</h1>
             </v-card-title>
             <v-spacer></v-spacer>
-            <v-card-text>{{this.show.overview}}</v-card-text>
+            <v-card-text>{{ this.show.overview }}</v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
       <v-container grid-list-lg fluid>
         <v-layout mt-5 row wrap justify-center justify-space-around>
-          <v-flex xs6 sm4 md3 lg2 v-for="season in show.seasons" :key="season.id">
+          <v-flex
+            xs6
+            sm4
+            md3
+            lg2
+            v-for="season in show.seasons"
+            :key="season.id"
+          >
             <SeasonCard :season="season" :show="show"></SeasonCard>
             <v-spacer></v-spacer>
           </v-flex>
@@ -28,7 +39,6 @@
 </template>
 
 <script>
-import CheckWatchList from "../components/CheckWatchList";
 import axios from "axios";
 import { mapState } from "vuex";
 import SeasonCard from "../components/SeasonCard";
@@ -36,7 +46,6 @@ import SeriesCard from "@/components/SeriesCard";
 
 export default {
   components: {
-    CheckWatchList,
     SeasonCard,
     SeriesCard
   },
