@@ -44,6 +44,11 @@ const routes = [
     path: "/show/:id/season/:number",
     name: "season",
     component: () => import("../views/Episode.vue")
+  },
+  {
+    path: "/auth",
+    name: "auth",
+    component: () => import("../views/Auth.vue")
   }
 ];
 
