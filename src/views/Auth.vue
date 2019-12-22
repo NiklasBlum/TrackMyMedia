@@ -1,18 +1,21 @@
 <template>
   <v-container fluid>
-    <LoginForm class="mb-3" /> <v-spacer></v-spacer> <RegistrationForm
-  /></v-container>
+    <Login class="mb-3" />
+
+    <Registration class="mb-3" />
+    <Logout />
+  </v-container>
 </template>
 
 <script>
-import LoginForm from "@/components/Auth/LoginForm.vue";
-import RegistrationForm from "@/components//Auth/RegistrationForm.vue";
+import Login from "@/components/Auth/Login.vue";
+import Registration from "@/components/Auth/Registration.vue";
+import Logout from "@/components/Auth/Logout.vue";
 export default {
   components: {
-    LoginForm,
-    RegistrationForm
+    Login,
+    Registration,
+    Logout
   }
 };
 </script>
-
-<style lang="scss" scoped></style>

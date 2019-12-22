@@ -40,7 +40,7 @@
 
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/init";
+import db from "@/firebase/firestore";
 
 export default {
   props: {

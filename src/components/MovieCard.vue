@@ -56,7 +56,8 @@
 <script>
 import CheckWatchList from "./CheckWatchList";
 import { mapState } from "vuex";
-import db from "@/firebase/init";
+
+import firestore from "@/firebase/firestore";
 import moment from "moment";
 
 export default {
@@ -88,7 +89,8 @@ export default {
     },
     checkMovieWatchState() {
       this.loading = true;
-      db.collection("movie")
+      firestore
+        .collection("movie")
         .get()
         .then(snapshot => {
           snapshot.forEach(snapMovie => {
@@ -104,7 +106,8 @@ export default {
     },
     setMovieAsWatched() {
       this.loading = true;
-      db.collection("movie")
+      firestore
+        .collection("movie")
         .doc(this.movie.id.toString())
         .set({
           media_id: this.movie.id,
@@ -123,7 +126,8 @@ export default {
     },
     setMovieAsNotWatched() {
       this.loading = true;
-      db.collection("movie")
+      firestore
+        .collection("movie")
         .doc(this.movie.id.toString())
         .delete()
         .then(() => {

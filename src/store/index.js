@@ -5,6 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    //Auth
+    loggedIn: false,
+    //TMDB
     baseUrl: "https://api.themoviedb.org/3/",
     baseAccountUrl: "https://api.themoviedb.org/3/account/",
     baseDiscoverUrl: "https://api.themoviedb.org/3/discover/",
@@ -20,6 +23,9 @@ export default new Vuex.Store({
   mutations: {
     setCurrentMedia(state, media) {
       state.currentMedia = media;
+    },
+    setLogingState(state, loggedIn) {
+      state.loggedIn = loggedIn;
     }
   }
 });

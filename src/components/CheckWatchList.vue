@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import db from "@/firebase/init";
+import db from "@/firebase/firestore";
 
 export default {
   props: {

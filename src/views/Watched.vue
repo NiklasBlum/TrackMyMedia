@@ -25,7 +25,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import db from "@/firebase/init";
+import db from "@/firebase/firestore";
 import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import MediaFilter from "@/components/MediaFilter.vue";

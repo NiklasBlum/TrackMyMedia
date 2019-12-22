@@ -48,7 +48,7 @@
 <script>
 import CheckWatchList from "./CheckWatchList";
 import { mapState } from "vuex";
-import db from "@/firebase/init";
+import db from "@/firebase/firestore";
 import moment from "moment";
 
 export default {

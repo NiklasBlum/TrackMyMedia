@@ -4,7 +4,7 @@
     :length="10"
     prev-icon="mdi-menu-left"
     next-icon="mdi-menu-right"
-  ></v-pagination>
+  />
 </template>
 
 <script>
