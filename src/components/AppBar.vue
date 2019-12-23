@@ -1,13 +1,13 @@
 <template>
   <nav>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="sideNav = !sideNav" />
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
           <v-icon left>mdi-radar</v-icon>Track My Media
         </router-link>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         text
         class="hidden-sm-and-down"
@@ -18,6 +18,19 @@
         <v-icon left>{{ item.icon }}</v-icon>
         {{ item.title }}
       </v-btn>
+      <Login />
+      <v-menu left bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title> Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-navigation-drawer
       app
@@ -45,7 +58,12 @@
 </template>
 
 <script>
+import Login from "@/components/Auth/Login.vue";
+
 export default {
+  components: {
+    Login
+  },
   data() {
     return {
       sideNav: false,
