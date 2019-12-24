@@ -21,6 +21,16 @@ import AppBar from "@/components/AppBar.vue";
 export default {
   components: {
     AppBar
+  },
+  computed: {
+    user: {
+      get() {
+        return this.$store.state.user;
+      },
+      set(user) {
+        this.$store.commit("setUser", user);
+      }
+    }
   }
 };
 </script>

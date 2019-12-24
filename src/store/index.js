@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     //Auth
+    user: null,
     loggedIn: false,
     //TMDB
     baseUrl: "https://api.themoviedb.org/3/",
@@ -26,6 +27,10 @@ export default new Vuex.Store({
     },
     setLogingState(state, loggedIn) {
       state.loggedIn = loggedIn;
+    },
+    setUser(state, user) {
+      state.user = user;
     }
-  }
+  },
+
 });
