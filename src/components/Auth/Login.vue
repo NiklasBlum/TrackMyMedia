@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -71,7 +71,7 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(() => {
-          this.$router.replace({ name: "home" });
+          this.$router.replace("/");
           this.email = null;
           this.password = null;
         })
@@ -87,7 +87,9 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(this.$router.replace("/search"));
+        .then(() => {
+          this.$router.replace("/");
+        });
     }
   }
 };

@@ -1,24 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '*',
-    redirect: '/auth'
-  },
-  {
-    path: '/',
-    redirect: '/auth'
-  },
-  {
-    path: "/auth",
-    name: "auth",
-    component: () => import("../views/Auth.vue")
-  },
   {
     path: "/search",
     name: "home",
@@ -27,6 +15,20 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '*',
+    redirect: '/search'
+  },
+  {
+    path: '/',
+    redirect: '/search'
+  },
+  {
+    path: "/auth",
+    name: "auth",
+    component: () => import("../views/Auth.vue")
+  },
+
   {
     path: "/discover",
     name: "discover",
@@ -96,8 +98,8 @@ router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) next('auth');
-  else if (!requiresAuth && currentUser) next({ name: "home" });
+  if (requiresAuth && !currentUser) next("auth");
+  else if (!requiresAuth && currentUser) next("home");
   else next();
 });
 

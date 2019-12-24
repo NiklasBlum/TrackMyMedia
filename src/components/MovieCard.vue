@@ -57,7 +57,7 @@
 import CheckWatchList from "./CheckWatchList";
 import { mapState } from "vuex";
 
-import firestore from "@/firebase/firestore";
+import firestore from "@/firebase/config";
 import moment from "moment";
 
 export default {

@@ -28,7 +28,7 @@ import MovieCard from "@/components/MovieCard.vue";
 import SeriesCard from "@/components/SeriesCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
-import db from "@/firebase/firestore";
+import db from "@/firebase/config";
 export default {
   components: {
     MediaFilter,

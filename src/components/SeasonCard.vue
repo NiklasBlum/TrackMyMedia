@@ -63,7 +63,7 @@
 
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/firestore";
+import db from "@/firebase/config";
 import moment from "moment";
 
 export default {

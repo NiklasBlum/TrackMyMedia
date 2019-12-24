@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+
 export default {
   methods: {
     logout() {
@@ -11,8 +12,7 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          console.log("logged out!");
-          this.$router.replace("home");
+          this.$router.replace("auth");
         })
         .catch(err => {
           console.log(err);

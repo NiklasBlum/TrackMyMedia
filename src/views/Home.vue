@@ -9,7 +9,8 @@
           :placeholder="'Search for ' + this.currentMedia + ' and press enter.'"
           v-model="searchText"
           @keyup.enter="getMedia"
-        ></v-text-field>
+          :loading="loading"
+        />
       </v-col>
     </v-row>
     <div v-if="currentMedia === 'movie' && this.loading == false">
@@ -59,7 +60,9 @@ export default {
           .then(response => {
             this.media = response.data.results;
           })
-          .finally(() => (this.loading = false));
+          .finally(() => {
+            this.loading = false;
+          });
       }
     }
   },

@@ -13,7 +13,7 @@
           item-text="name"
           item-value="id"
           label="Year"
-        ></v-select>
+        />
       </v-flex>
       <v-flex xs12 sm3 md3>
         <v-select
@@ -22,7 +22,7 @@
           item-text="name"
           item-value="id"
           label="Genre"
-        ></v-select>
+        />
       </v-flex>
       <v-flex xs12 sm3 md3>
         <v-select
@@ -31,23 +31,23 @@
           item-text="name"
           item-value="param"
           label="Sorting"
-        ></v-select>
+        />
       </v-flex>
       <v-flex xs12 sm3 md3 text-xs-center align-center>
-        <v-btn @click="getMedia">Search</v-btn>
+        <v-btn @click="getMedia" :loading="loading">Search</v-btn>
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
       <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
-          <SeriesCard :show="show"></SeriesCard>
+          <SeriesCard :show="show" />
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia == 'movie'">
       <v-layout row>
         <v-flex xs6 sm3 md3 lg2 v-for="movie in media" :key="movie.id">
-          <MovieCard :movie="movie"></MovieCard>
+          <MovieCard :movie="movie" />
         </v-flex>
       </v-layout>
     </div>
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       showPagination: false,
       page: 1,
       selectedYear: "",
@@ -104,6 +105,7 @@ export default {
       this.getMedia();
     },
     getMedia() {
+      this.loading = true;
       this.showPagination = false;
       this.media = null;
       this.searchQuery = `${this.baseDiscoverUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&page=${this.page}`;
@@ -124,6 +126,7 @@ export default {
           this.media = response.data.results;
         })
         .finally(() => {
+          this.loading = false;
           this.showPagination = true;
         });
     }

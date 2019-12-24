@@ -40,7 +40,7 @@
 
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/firestore";
+import db from "@/firebase/config";
 
 export default {
   props: {
@@ -99,7 +99,6 @@ export default {
     }
   },
   created() {
-    console.log(this.episode);
     this.CheckWatchStateEpisode();
   },
   computed: mapState(["posterUrlOrg"])

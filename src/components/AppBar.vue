@@ -18,19 +18,7 @@
         <v-icon left>{{ item.icon }}</v-icon>
         {{ item.title }}
       </v-btn>
-      <Login />
-      <v-menu left bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title> Logout</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <Logout />
     </v-app-bar>
     <v-navigation-drawer
       app
@@ -58,11 +46,11 @@
 </template>
 
 <script>
-import Login from "@/components/Auth/Login.vue";
+import Logout from "@/components/Auth/Logout.vue";
 
 export default {
   components: {
-    Login
+    Logout
   },
   data() {
     return {
