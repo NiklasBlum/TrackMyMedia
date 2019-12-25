@@ -16,12 +16,12 @@ const routes = [
     }
   },
   {
-    path: '*',
-    redirect: '/search'
+    path: "*",
+    redirect: "/search"
   },
   {
-    path: '/',
-    redirect: '/search'
+    path: "/",
+    redirect: "/search"
   },
   {
     path: "/auth",
@@ -84,9 +84,8 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  },
+  }
 ];
-
 
 const router = new VueRouter({
   mode: "history",
@@ -94,14 +93,14 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser;
-  console.log(currentUser);
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) next("auth");
-  else if (!requiresAuth && currentUser) next("home");
-  else next();
+  if (requiresAuth && !(await firebase.getCurrentUser())) {
+    next("auth");
+  } else {
+    next();
+  }
 });
 
 export default router;
