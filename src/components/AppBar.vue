@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar app>
+    <v-app-bar app class="cyan darken-4">
       <v-app-bar-nav-icon @click="sideNav = !sideNav" />
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
@@ -20,12 +20,7 @@
       </v-btn>
       <Logout />
     </v-app-bar>
-    <v-navigation-drawer
-      app
-      class="indigo darken-4"
-      v-model="sideNav"
-      temporary
-    >
+    <v-navigation-drawer app class="cyan darken-4" v-model="sideNav" temporary>
       <v-list nav dense>
         <v-list-item-group>
           <v-list-item
