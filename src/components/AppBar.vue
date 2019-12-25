@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="sideNav = !sideNav" />
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-          <v-icon left>mdi-radar</v-icon>Track My Media
+          <v-icon left>mdi-movie-open</v-icon>Track My Media
         </router-link>
       </v-toolbar-title>
       <v-spacer />
