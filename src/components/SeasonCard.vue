@@ -93,7 +93,9 @@ export default {
     },
     checkWatchStateSeason() {
       this.loading = true;
-      db.collection("tv")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons")
         .get()
@@ -113,29 +115,41 @@ export default {
         });
     },
     setSeasonAsWatched() {
-      db.collection("tv")
+      this.loading = true;
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons")
         .doc(this.season.season_number.toString())
         .set({
           finished: true
         })
-        .then((this.watched = true));
+        .then((this.watched = true))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     setSeasonAsNotWatched() {
-      db.collection("tv")
+      this.loading = true;
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons")
         .doc(this.season.season_number.toString())
         .update({
           finished: false
         })
-        .then((this.watched = false));
+        .then((this.watched = false))
+        .finally(() => {
+          this.loading = false;
+        });
     }
   },
   created() {
     this.checkWatchStateSeason();
   },
-  computed: mapState(["posterUrl"])
+  computed: mapState(["posterUrl", "user"])
 };
 </script>

@@ -90,6 +90,8 @@ export default {
     checkMovieWatchState() {
       this.loading = true;
       firestore
+        .collection("users")
+        .doc(this.user.uid)
         .collection("movie")
         .get()
         .then(snapshot => {
@@ -107,6 +109,8 @@ export default {
     setMovieAsWatched() {
       this.loading = true;
       firestore
+        .collection("users")
+        .doc(this.user.uid)
         .collection("movie")
         .doc(this.movie.id.toString())
         .set({
@@ -127,6 +131,8 @@ export default {
     setMovieAsNotWatched() {
       this.loading = true;
       firestore
+        .collection("users")
+        .doc(this.user.uid)
         .collection("movie")
         .doc(this.movie.id.toString())
         .delete()
@@ -142,6 +148,6 @@ export default {
   created() {
     this.checkMovieWatchState();
   },
-  computed: mapState(["posterUrl"])
+  computed: mapState(["posterUrl", "user"])
 };
 </script>

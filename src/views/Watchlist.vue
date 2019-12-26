@@ -45,7 +45,9 @@ export default {
     getWatchlistFromFirestore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      db.collection("watchlist")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("watchlist")
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
@@ -76,7 +78,8 @@ export default {
     "posterUrl",
     "currentMedia",
     "apiKey",
-    "language"
+    "language",
+    "user"
   ]),
   created() {
     this.getWatchlistFromFirestore();

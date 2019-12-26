@@ -75,12 +75,14 @@ export default {
           return moment(date).format("DD.MM.YYYY");
         }
       } else {
-        return "-";
+        return null;
       }
     },
     checkShowWatchState() {
       this.loading = true;
-      db.collection("tv")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .get()
         .then(snapshot => {
           snapshot.forEach(snapShow => {
@@ -96,7 +98,9 @@ export default {
     },
     setShowAsWatched() {
       this.loading = true;
-      db.collection("tv")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.show.id.toString())
         .set({
           media_id: this.show.id,
@@ -114,7 +118,9 @@ export default {
     },
     setShowAsNotWatched() {
       this.loading = true;
-      db.collection("tv")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.show.id.toString())
         .update({
           watched: false,
@@ -132,6 +138,6 @@ export default {
   created() {
     this.checkShowWatchState();
   },
-  computed: mapState(["posterUrl"])
+  computed: mapState(["posterUrl", "user"])
 };
 </script>

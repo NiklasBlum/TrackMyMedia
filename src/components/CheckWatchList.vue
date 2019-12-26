@@ -17,6 +17,7 @@
 
 <script>
 import db from "@/firebase/config";
+import { mapState } from "vuex";
 
 export default {
   props: {
@@ -32,7 +33,9 @@ export default {
   methods: {
     checkWatchList() {
       this.loading = true;
-      db.collection("watchlist")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("watchlist")
         .get()
         .then(snapshot => {
           snapshot.forEach(snap => {
@@ -45,7 +48,9 @@ export default {
     },
     addToWatchlist() {
       this.loading = true;
-      db.collection("watchlist")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("watchlist")
         .doc(this.media.id.toString())
         .set({
           media_type: this.mediaType,
@@ -57,7 +62,9 @@ export default {
     },
     removeFromWatchList() {
       this.loading = true;
-      db.collection("watchlist")
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("watchlist")
         .doc(this.media.id.toString())
         .update({
           watchlist: false
@@ -68,6 +75,7 @@ export default {
   },
   created() {
     this.checkWatchList();
-  }
+  },
+  computed: mapState(["user"])
 };
 </script>

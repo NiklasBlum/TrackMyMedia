@@ -21,6 +21,7 @@
             block
             height="100%"
             @click="setEpisodeAsWatched"
+            :loading="loading"
           >
             <v-icon large>mdi-check-all</v-icon>
           </v-btn>
@@ -29,6 +30,7 @@
             block
             height="100%"
             @click="setEpisodeAsNotWatched"
+            :loading="loading"
           >
             <v-icon large>mdi-cancel</v-icon>
           </v-btn>
@@ -48,13 +50,16 @@ export default {
   },
   data() {
     return {
+      loading: false,
       watched: null
     };
   },
-
   methods: {
     CheckWatchStateEpisode() {
-      db.collection("tv")
+      this.loading = true;
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.episode.show_id.toString())
         .collection("seasons")
         .doc(this.episode.season_number.toString())
@@ -66,26 +71,26 @@ export default {
               this.watched = true;
             }
           });
+        })
+        .finally(() => {
+          this.loading = false;
         });
-      // snapshot.forEach(snapSeason => {
-      //   if (snapSeason.id == this.season.season_number) {
-      //     let currentSeason = snapSeason.data();
-      //     currentSeason.id = snapSeason.id;
-      //     currentSeason.finished = snapSeason.data().finished;
-      //     this.watched = snapSeason.data().finished;
-      //     this.mySeason = currentSeason;
-      //   }
-      // });
     },
     setEpisodeAsWatched() {
-      db.collection("tv")
+      this.loading = true;
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
         .doc(this.episode.show_id.toString())
         .collection("seasons")
         .doc(this.episode.season_number.toString())
         .collection("episodes")
         .doc(this.episode.episode_number.toString())
         .set({})
-        .then((this.watched = true));
+        .then((this.watched = true))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     setEpisodeAsNotWatched() {
       db.collection("tv")
@@ -95,12 +100,15 @@ export default {
         .collection("episodes")
         .doc(this.episode.episode_number.toString())
         .delete()
-        .then((this.watched = false));
+        .then((this.watched = false))
+        .finally(() => {
+          this.loading = false;
+        });
     }
   },
   created() {
     this.CheckWatchStateEpisode();
   },
-  computed: mapState(["posterUrlOrg"])
+  computed: mapState(["posterUrlOrg", "user"])
 };
 </script>

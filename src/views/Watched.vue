@@ -45,7 +45,9 @@ export default {
     getMediaFromFireStore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      db.collection(this.currentMedia)
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection(this.currentMedia)
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
@@ -76,7 +78,8 @@ export default {
     "posterUrl",
     "currentMedia",
     "apiKey",
-    "language"
+    "language",
+    "user"
   ])
 };
 </script>
