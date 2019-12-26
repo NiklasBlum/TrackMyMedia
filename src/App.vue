@@ -39,8 +39,10 @@ export default {
         });
     }
   },
-  created() {
-    if (this.user) this.checkIfFirstLogin();
+  watch: {
+    user() {
+      if (this.user) this.checkIfFirstLogin();
+    }
   },
   computed: { ...mapState(["user"]) }
 };
