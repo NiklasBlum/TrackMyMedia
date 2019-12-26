@@ -11,7 +11,7 @@
                 <v-btn large color="red" @click="signInWithGoogle()">
                   <v-icon>mdi-google</v-icon>
                 </v-btn>
-                <v-btn large color="blue">
+                <v-btn large color="blue" @click="signInWithFacebook()">
                   <v-icon>mdi-facebook</v-icon>
                 </v-btn>
               </v-btn-toggle>
@@ -84,6 +84,15 @@ export default {
     },
     signInWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(() => {
+          this.$router.replace("/");
+        });
+    },
+    signInWithFacebook() {
+      const provider = new firebase.auth.FacebookAuthProvider();
       firebase
         .auth()
         .signInWithPopup(provider)

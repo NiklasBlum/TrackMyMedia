@@ -13,20 +13,35 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import db from "@/firebase/config";
 import AppBar from "@/components/AppBar.vue";
 export default {
   components: {
     AppBar
   },
-  computed: {
-    user: {
-      get() {
-        return this.$store.state.user;
-      },
-      set(user) {
-        this.$store.commit("setUser", user);
-      }
+  methods: {
+    checkIfFirstLogin() {
+      db.collection("users")
+        .doc(this.user.uid)
+        .get()
+        .then(snapshot => {
+          //Check if fields already exists
+          if (!snapshot.data()) {
+            db.collection("users")
+              .doc(this.user.uid)
+              .set({
+                name: this.user.displayName,
+                email: this.user.email,
+                firstLogin: new Date(Date.now())
+              });
+          }
+        });
     }
-  }
+  },
+  created() {
+    if (this.user) this.checkIfFirstLogin();
+  },
+  computed: { ...mapState(["user"]) }
 };
 </script>

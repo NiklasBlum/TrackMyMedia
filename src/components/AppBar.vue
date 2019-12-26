@@ -18,7 +18,7 @@
         <v-icon left>{{ item.icon }}</v-icon>
         {{ item.title }}
       </v-btn>
-      <Logout />
+      <UserInfo />
     </v-app-bar>
     <v-navigation-drawer app class="cyan darken-4" v-model="sideNav" temporary>
       <v-list nav dense>
@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import Logout from "@/components/Auth/Logout.vue";
+import UserInfo from "@/components/UserInfo.vue";
 
 export default {
   components: {
-    Logout
+    UserInfo
   },
   data() {
     return {
