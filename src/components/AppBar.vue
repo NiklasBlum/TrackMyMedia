@@ -53,7 +53,7 @@ export default {
       menuItems: [
         { icon: "mdi-magnify", title: "Search", link: "/" },
         { icon: "mdi-file-find", title: "Discover", link: "/discover" },
-        { icon: "mdi-finance", title: "Popular", link: "/popular" },
+        { icon: "mdi-fire", title: "Popular", link: "/popular" },
         { icon: "mdi-clock", title: "Watchlist", link: "/watchlist" },
         { icon: "mdi-check-all", title: "Watched", link: "/watched" }
       ]
