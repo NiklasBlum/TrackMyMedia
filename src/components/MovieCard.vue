@@ -33,7 +33,7 @@
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-actions>
       <v-btn
         v-if="watched"
@@ -48,7 +48,7 @@
         <v-icon>mdi-check-bold</v-icon>
       </v-btn>
       <v-spacer />
-      <CheckWatchList :media="movie" :mediaType="'movie'"></CheckWatchList>
+      <CheckWatchList :media="movie" :mediaType="'movie'" />
     </v-card-actions>
   </v-card>
 </template>
@@ -56,7 +56,6 @@
 <script>
 import CheckWatchList from "./CheckWatchList";
 import { mapState } from "vuex";
-
 import firestore from "@/firebase/config";
 import moment from "moment";
 
@@ -106,6 +105,7 @@ export default {
           this.loading = false;
         });
     },
+
     setMovieAsWatched() {
       this.loading = true;
       firestore
@@ -122,7 +122,6 @@ export default {
         .then(() => {
           this.watched = true;
           this.watchedAt = new Date(Date.now());
-          console.log(this.watchedAt);
         })
         .finally(() => {
           this.loading = false;

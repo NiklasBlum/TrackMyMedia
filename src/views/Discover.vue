@@ -85,6 +85,7 @@ export default {
       ],
       years: [
         { id: 0, name: "" },
+        { id: 2020, name: "2020" },
         { id: 2019, name: "2019" },
         { id: 2018, name: "2018" },
         { id: 2017, name: "2017" },
