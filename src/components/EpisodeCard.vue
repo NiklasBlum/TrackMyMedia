@@ -57,13 +57,7 @@ export default {
   methods: {
     CheckWatchStateEpisode() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.episode.show_id.toString())
-        .collection("seasons")
-        .doc(this.episode.season_number.toString())
-        .collection("episodes")
+      this.dbRef
         .get()
         .then(snapshot => {
           snapshot.forEach(snapEpisode => {
@@ -78,13 +72,7 @@ export default {
     },
     setEpisodeAsWatched() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.episode.show_id.toString())
-        .collection("seasons")
-        .doc(this.episode.season_number.toString())
-        .collection("episodes")
+      this.dbRef
         .doc(this.episode.episode_number.toString())
         .set({})
         .then((this.watched = true))
@@ -93,11 +81,7 @@ export default {
         });
     },
     setEpisodeAsNotWatched() {
-      db.collection("tv")
-        .doc(this.episode.show_id.toString())
-        .collection("seasons")
-        .doc(this.episode.season_number.toString())
-        .collection("episodes")
+      this.dbRef
         .doc(this.episode.episode_number.toString())
         .delete()
         .then((this.watched = false))
@@ -109,6 +93,18 @@ export default {
   created() {
     this.CheckWatchStateEpisode();
   },
-  computed: mapState(["posterUrlOrg", "user"])
+  computed: {
+    ...mapState(["posterUrlOrg", "user"]),
+    dbRef() {
+      return db
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
+        .doc(this.episode.show_id.toString())
+        .collection("seasons")
+        .doc(this.episode.season_number.toString())
+        .collection("episodes");
+    }
+  }
 };
 </script>

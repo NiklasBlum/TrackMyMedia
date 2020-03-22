@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-btn @click="trailerDialog = !trailerDialog">
+      <v-icon left>
+        mdi-youtube
+      </v-icon>
       Trailer
     </v-btn>
     <v-dialog v-model="trailerDialog">

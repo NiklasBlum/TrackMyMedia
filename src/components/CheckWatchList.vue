@@ -33,9 +33,7 @@ export default {
   methods: {
     checkWatchList() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("watchlist")
+      this.dbRef
         .get()
         .then(snapshot => {
           snapshot.forEach(snap => {
@@ -48,9 +46,7 @@ export default {
     },
     addToWatchlist() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("watchlist")
+      this.dbRef
         .doc(this.media.id.toString())
         .set({
           media_type: this.mediaType,
@@ -62,9 +58,7 @@ export default {
     },
     removeFromWatchList() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("watchlist")
+      this.dbRef
         .doc(this.media.id.toString())
         .update({
           watchlist: false
@@ -76,6 +70,14 @@ export default {
   created() {
     this.checkWatchList();
   },
-  computed: mapState(["user"])
+  computed: {
+    ...mapState(["user"]),
+    dbRef() {
+      return db
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("watchlist");
+    }
+  }
 };
 </script>

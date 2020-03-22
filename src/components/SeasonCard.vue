@@ -93,11 +93,7 @@ export default {
     },
     checkWatchStateSeason() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.show.id.toString())
-        .collection("seasons")
+      this.dbRef
         .get()
         .then(snapshot => {
           snapshot.forEach(snapSeason => {
@@ -116,11 +112,7 @@ export default {
     },
     setSeasonAsWatched() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.show.id.toString())
-        .collection("seasons")
+      this.dbRef
         .doc(this.season.season_number.toString())
         .set({
           finished: true
@@ -132,11 +124,7 @@ export default {
     },
     setSeasonAsNotWatched() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.show.id.toString())
-        .collection("seasons")
+      this.dbRef
         .doc(this.season.season_number.toString())
         .update({
           finished: false
@@ -150,6 +138,16 @@ export default {
   created() {
     this.checkWatchStateSeason();
   },
-  computed: mapState(["posterUrl", "user"])
+  computed: {
+    ...mapState(["posterUrl", "user"]),
+    dbRef() {
+      return db
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("tv")
+        .doc(this.show.id.toString())
+        .collection("seasons");
+    }
+  }
 };
 </script>

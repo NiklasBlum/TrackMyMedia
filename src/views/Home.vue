@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row no-gutters>
       <v-col align="center">
         <MediaFilter
@@ -13,6 +13,7 @@
           filled
           dense
           label="Search"
+          hide-details
           :placeholder="'Search for ' + this.currentMedia + ' and press enter.'"
           v-model="searchText"
           @keyup.enter="searchText !== '' ? getMedia() : ''"
@@ -23,14 +24,28 @@
     </v-row>
     <div v-if="currentMedia === 'movie' && searchText !== ''">
       <v-row>
-        <v-col sm="4" md="3" lg="2" v-for="movie in media" :key="movie.id">
+        <v-col
+          cols="6"
+          sm="4"
+          md="3"
+          lg="2"
+          v-for="movie in media"
+          :key="movie.id"
+        >
           <MovieCard :movie="movie" />
         </v-col>
       </v-row>
     </div>
     <div v-if="currentMedia === 'tv' && searchText !== ''">
       <v-row>
-        <v-col sm="4" md="3" lg="2" v-for="show in media" :key="show.id">
+        <v-col
+          cols="6"
+          sm="4"
+          md="3"
+          lg="2"
+          v-for="show in media"
+          :key="show.id"
+        >
           <SeriesCard :show="show" />
         </v-col>
       </v-row>

@@ -5,7 +5,7 @@
         <MediaFilter @currentMediaChanged="getMedia" />
       </v-col>
     </v-row>
-    <v-layout my-3 row>
+    <v-layout row my-3>
       <v-flex xs6 sm3 md3>
         <v-select
           solo
@@ -61,15 +61,15 @@
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
-      <v-layout row>
-        <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
+      <v-layout row align-center justify-space-around>
+        <v-flex xs6 sm4 md3 lg2 v-for="show in media" :key="show.id">
           <SeriesCard :show="show" />
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia == 'movie'">
-      <v-layout row>
-        <v-flex xs6 sm3 md3 lg2 v-for="movie in media" :key="movie.id">
+      <v-layout row align-center justify-space-around>
+        <v-flex xs6 sm4 md3 lg2 v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie" />
         </v-flex>
       </v-layout>

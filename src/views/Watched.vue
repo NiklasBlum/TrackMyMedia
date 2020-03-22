@@ -46,18 +46,14 @@ export default {
     getMediaFromFireStore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection(this.currentMedia)
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            if (doc.data().watched == true) {
-              this.fireBaseMedia.push(doc.data());
-              this.getMediaFromTmdb(doc.data().media_id);
-            }
-          });
+      this.dbRef.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          if (doc.data().watched == true) {
+            this.fireBaseMedia.push(doc.data());
+            this.getMediaFromTmdb(doc.data().media_id);
+          }
         });
+      });
     },
     getMediaFromTmdb(id) {
       let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
@@ -74,13 +70,23 @@ export default {
   created() {
     this.getMediaFromFireStore();
   },
-  computed: mapState([
-    "baseUrl",
-    "posterUrl",
-    "currentMedia",
-    "apiKey",
-    "language",
-    "user"
-  ])
+  computed: {
+    ...mapState([
+      "baseUrl",
+      "posterUrl",
+      "currentMedia",
+      "apiKey",
+      "language",
+      "user"
+    ]),
+    dbRef() {
+      return db
+        .collection("users")
+        .doc(this.user.uid)
+        .collection(this.currentMedia)
+        .orderBy("watchedAt")
+        .limit(10);
+    }
+  }
 };
 </script>

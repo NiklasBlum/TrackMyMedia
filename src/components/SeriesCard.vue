@@ -66,6 +66,15 @@ export default {
       notFoundPic: require("../assets/no-image.png")
     };
   },
+  computed: {
+    ...mapState(["posterUrl", "user"]),
+    dbRef() {
+      return db
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("tv");
+    }
+  },
   methods: {
     getHumanDate(date) {
       if (date) {
@@ -80,9 +89,7 @@ export default {
     },
     checkShowWatchState() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
+      this.dbRef
         .get()
         .then(snapshot => {
           snapshot.forEach(snapShow => {
@@ -98,9 +105,7 @@ export default {
     },
     setShowAsWatched() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
+      this.dbRef
         .doc(this.show.id.toString())
         .set({
           media_id: this.show.id,
@@ -118,9 +123,7 @@ export default {
     },
     setShowAsNotWatched() {
       this.loading = true;
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
+      this.dbRef
         .doc(this.show.id.toString())
         .update({
           watched: false,
@@ -137,7 +140,6 @@ export default {
   },
   created() {
     this.checkShowWatchState();
-  },
-  computed: mapState(["posterUrl", "user"])
+  }
 };
 </script>
