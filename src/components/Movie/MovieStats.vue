@@ -1,6 +1,6 @@
 <template>
   <v-card shaped>
-    <v-card-title class="blue mb-3" >Statistik</v-card-title>
+    <v-card-title class="blue mb-3">Statistik</v-card-title>
     <v-card-text>
       <v-chip large>
         <v-icon left>mdi-timer</v-icon>

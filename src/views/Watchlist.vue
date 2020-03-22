@@ -1,10 +1,11 @@
 <template>
   <v-container fluid grid-list-lg>
-    <v-layout column align-center>
-      <v-flex>
+    <v-row no-gutters>
+      <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
+
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in tmdbMedia" :key="show.id">

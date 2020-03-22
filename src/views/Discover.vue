@@ -1,13 +1,17 @@
 <template>
   <v-container fluid grid-list-lg>
-    <v-layout column align-center>
-      <v-flex>
+    <v-row no-gutters>
+      <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getMedia" />
-      </v-flex>
-    </v-layout>
-    <v-layout mt-3 row align-center justify-space-between>
-      <v-flex xs12 sm3 md3>
+      </v-col>
+    </v-row>
+    <v-layout my-3 row>
+      <v-flex xs6 sm3 md3>
         <v-select
+          solo
+          rounded
+          background-color="cyan darken-4"
+          hide-details
           :items="years"
           v-model="year"
           item-text="name"
@@ -15,8 +19,12 @@
           label="Year"
         />
       </v-flex>
-      <v-flex xs12 sm3 md3>
+      <v-flex xs6 sm3 md3>
         <v-select
+          solo
+          rounded
+          background-color="cyan darken-4"
+          hide-details
           :items="genres"
           v-model="genre"
           item-text="name"
@@ -24,8 +32,12 @@
           label="Genre"
         />
       </v-flex>
-      <v-flex xs12 sm3 md3>
+      <v-flex xs6 sm3 md3>
         <v-select
+          solo
+          hide-details
+          rounded
+          background-color="cyan darken-4"
           :items="sortBy"
           v-model="sortFilter"
           item-text="name"
@@ -33,8 +45,19 @@
           label="Sorting"
         />
       </v-flex>
-      <v-flex xs12 sm3 md3 text-xs-center align-center>
-        <v-btn @click="getMedia" :loading="loading">Search</v-btn>
+      <v-flex xs6 sm3 md3 mt-2>
+        <v-btn
+          rounded
+          block
+          @click="getMedia"
+          :loading="loading"
+          color="blue-grey"
+        >
+          <v-icon left>
+            mdi-magnify
+          </v-icon>
+          Search
+        </v-btn>
       </v-flex>
     </v-layout>
     <div v-if="currentMedia == 'tv'">
@@ -51,7 +74,9 @@
         </v-flex>
       </v-layout>
     </div>
-    <Pagination @pageChanged="pageChanged" v-show="showPagination" />
+    <v-layout mt-4>
+      <Pagination @pageChanged="pageChanged" v-show="showPagination" />
+    </v-layout>
   </v-container>
 </template>
 
@@ -89,10 +114,12 @@ export default {
         { id: 2019, name: "2019" },
         { id: 2018, name: "2018" },
         { id: 2017, name: "2017" },
-        { id: 2016, name: "2016" }
+        { id: 2016, name: "2016" },
+        { id: 2015, name: "2015" },
+        { id: 2014, name: "2014" },
+        { id: 2013, name: "2013" }
       ],
       sortBy: [
-        { param: "", name: "" },
         { param: "popularity.desc", name: "Popularity Descending" },
         { param: "popularity.asc", name: "Popularity Ascending" },
         { param: "release_date.asc", name: "Release Ascending" },

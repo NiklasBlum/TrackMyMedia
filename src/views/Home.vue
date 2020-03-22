@@ -6,12 +6,18 @@
           @currentMediaChanged="searchText !== '' ? getMedia() : ''"
         />
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" class="mt-4">
         <v-text-field
+          background-color="cyan darken-4"
+          rounded
+          filled
+          dense
+          label="Search"
           :placeholder="'Search for ' + this.currentMedia + ' and press enter.'"
           v-model="searchText"
           @keyup.enter="searchText !== '' ? getMedia() : ''"
           :loading="loading"
+          prepend-inner-icon="mdi-magnify"
         />
       </v-col>
     </v-row>

@@ -1,19 +1,20 @@
 <template>
   <v-container grid-list-lg>
-    <v-layout column align-center>
-      <v-flex>
+    <v-row no-gutters>
+      <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getMediaFromFireStore" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
+
     <div v-if="currentMedia == 'tv'">
-      <v-layout row wrap align-center justify-space-around>
+      <v-layout row align-center justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in tmdbMedia" :key="show.id">
           <SeriesCard :show="show"></SeriesCard>
         </v-flex>
       </v-layout>
     </div>
     <div v-if="currentMedia == 'movie'">
-      <v-layout row wrap align-center justify-space-around>
+      <v-layout row align-center justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="movie in tmdbMedia" :key="movie.id">
           <MovieCard :movie="movie"></MovieCard>
         </v-flex>

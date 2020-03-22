@@ -1,10 +1,10 @@
 <template>
   <v-container grid-list-lg fluid>
-    <v-layout column align-center>
-      <v-flex>
+    <v-row no-gutters>
+      <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getPopular" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap align-center justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in media" :key="show.id">
