@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import UserInfo from "@/components/UserInfo.vue";
+import UserInfo from "@/components/Navigation/UserInfo.vue";
 
 export default {
   components: {

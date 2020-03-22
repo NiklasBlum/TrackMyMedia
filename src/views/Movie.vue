@@ -32,7 +32,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import MovieCard from "@/components/MovieCard";
+import MovieCard from "@/components/Movie/MovieCard";
 import MovieStats from "@/components/Movie/MovieStats.vue";
 import MovieTrailer from "@/components/Movie/MovieTrailer.vue";
 
@@ -46,7 +46,7 @@ export default {
     return {
       tab: null,
       movie: null,
-      posterPath: require("../assets/no-image.png"),
+      posterPath: require("@/assets/no-image.png"),
       trailer: false,
       trailerId: null
     };

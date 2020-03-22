@@ -15,12 +15,16 @@
         :key="item.title"
         :to="item.link"
       >
-        <v-icon left>{{item.icon}}</v-icon>
-        {{item.title}}
+        <v-icon left>{{ item.icon }}</v-icon>
+        {{ item.title }}
       </v-btn>
-      <v-icon @click="changeLightMode">mdi-brightness-2</v-icon>
     </v-app-bar>
-    <v-navigation-drawer app class="indigo darken-4" v-model="sideNav" temporary>
+    <v-navigation-drawer
+      app
+      class="indigo darken-4"
+      v-model="sideNav"
+      temporary
+    >
       <v-list nav dense>
         <v-list-item-group>
           <v-list-item
@@ -30,8 +34,8 @@
             :to="item.link"
           >
             <v-list-item-title>
-              <v-icon left>{{item.icon}}</v-icon>
-              {{item.title}}
+              <v-icon left>{{ item.icon }}</v-icon>
+              {{ item.title }}
             </v-list-item-title>
           </v-list-item>
         </v-list-item-group>
@@ -53,11 +57,6 @@ export default {
         { icon: "mdi-check-all", title: "Watched", link: "/watched" }
       ]
     };
-  },
-  methods: {
-    changeLightMode() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-    }
   }
 };
 </script>

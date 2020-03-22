@@ -11,7 +11,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import EpisodeCard from "../components/EpisodeCard";
+import EpisodeCard from "@/components/Series/EpisodeCard";
 
 export default {
   components: {

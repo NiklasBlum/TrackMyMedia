@@ -55,8 +55,8 @@
 
 <script>
 import axios from "axios";
-import MovieCard from "@/components/MovieCard.vue";
-import SeriesCard from "@/components/SeriesCard.vue";
+import MovieCard from "@/components/Movie/MovieCard.vue";
+import SeriesCard from "@/components/Series/SeriesCard.vue";
 import MediaFilter from "@/components/MediaFilter";
 import { mapState } from "vuex";
 

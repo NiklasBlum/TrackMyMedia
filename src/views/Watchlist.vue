@@ -5,7 +5,6 @@
         <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
       </v-col>
     </v-row>
-
     <div v-if="currentMedia === 'tv'">
       <v-layout row wrap justify-space-around>
         <v-flex xs6 sm3 md3 lg2 v-for="show in tmdbMedia" :key="show.id">
@@ -25,11 +24,12 @@
 
 <script>
 import MediaFilter from "@/components/MediaFilter";
-import MovieCard from "@/components/MovieCard.vue";
-import SeriesCard from "@/components/SeriesCard.vue";
+import MovieCard from "@/components/Movie/MovieCard.vue";
+import SeriesCard from "@/components/Series/SeriesCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 import db from "@/firebase/config";
+
 export default {
   components: {
     MediaFilter,

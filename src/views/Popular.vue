@@ -26,12 +26,13 @@
 </template>
 
 <script>
-import Pagination from "@/components/Pagination.vue";
+import Pagination from "@/components/Navigation/Pagination.vue";
 import MediaFilter from "@/components/MediaFilter";
-import MovieCard from "@/components/MovieCard.vue";
-import SeriesCard from "@/components/SeriesCard.vue";
+import MovieCard from "@/components/Movie/MovieCard.vue";
+import SeriesCard from "@/components/Series/SeriesCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
+
 export default {
   components: {
     MovieCard,

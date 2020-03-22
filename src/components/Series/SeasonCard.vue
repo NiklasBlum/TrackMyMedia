@@ -76,7 +76,7 @@ export default {
       loading: false,
       watched: false,
       mySeason: null,
-      notFoundPic: require("../assets/no-image.png")
+      notFoundPic: require("@/assets/no-image.png")
     };
   },
   methods: {

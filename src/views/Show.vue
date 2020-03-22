@@ -41,8 +41,8 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import SeasonCard from "../components/SeasonCard";
-import SeriesCard from "@/components/SeriesCard";
+import SeasonCard from "../components/Series/SeasonCard";
+import SeriesCard from "@/components/Series/SeriesCard";
 
 export default {
   components: {
@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       show: null,
-      posterPath: require("../assets/no-image.png"),
+      posterPath: require("@/assets/no-image.png"),
       trailerId: null
     };
   },

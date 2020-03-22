@@ -2,10 +2,10 @@
   <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
     <v-hover>
       <template v-slot:default="{ hover }">
-        <v-img v-if="show.poster_path" :src="posterUrl + show.poster_path">
+        <v-img v-if="movie.poster_path" :src="posterUrl + movie.poster_path">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="/show/ + show.id">
+              <v-btn large :to="/movie/ + movie.id">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -14,7 +14,7 @@
         <v-img v-else :src="notFoundPic">
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn large :to="/show/ + show.id">
+              <v-btn large :to="{ path: `movie/${movie.id}` }">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </v-overlay>
@@ -24,31 +24,39 @@
     </v-hover>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="title">{{ show.name }}</v-list-item-title>
+        <v-list-item-title class="title">{{
+          movie.original_title
+        }}</v-list-item-title>
         <v-list-item-subtitle>
-          {{ getHumanDate(show.first_air_date) }}
+          {{ getHumanDate(movie.release_date) }}
           {{ getHumanDate(watchedAt) }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-actions>
-      <v-btn v-if="watched" color="cyan darken-4" @click="setShowAsNotWatched">
+      <v-btn
+        v-if="watched"
+        light
+        color="cyan"
+        @click="setMovieAsNotWatched"
+        :loading="loading"
+      >
         <v-icon>mdi-check-all</v-icon>
       </v-btn>
-      <v-btn v-if="!watched" @click="setShowAsWatched">
+      <v-btn v-if="!watched" dark @click="setMovieAsWatched" :loading="loading">
         <v-icon>mdi-check-bold</v-icon>
       </v-btn>
       <v-spacer />
-      <CheckWatchList :media="show" :mediaType="'tv'" />
+      <CheckWatchList :media="movie" :mediaType="'movie'" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import CheckWatchList from "./CheckWatchList";
+import CheckWatchList from "@/components/CheckWatchList";
 import { mapState } from "vuex";
-import db from "@/firebase/config";
+import firestore from "@/firebase/config";
 import moment from "moment";
 
 export default {
@@ -56,24 +64,15 @@ export default {
     CheckWatchList
   },
   props: {
-    show: Object
+    movie: Object
   },
   data() {
     return {
       loading: false,
       watched: false,
       watchedAt: null,
-      notFoundPic: require("../assets/no-image.png")
+      notFoundPic: require("@/assets/no-image.png")
     };
-  },
-  computed: {
-    ...mapState(["posterUrl", "user"]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("tv");
-    }
   },
   methods: {
     getHumanDate(date) {
@@ -87,15 +86,18 @@ export default {
         return null;
       }
     },
-    checkShowWatchState() {
+    checkMovieWatchState() {
       this.loading = true;
-      this.dbRef
+      firestore
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("movie")
         .get()
         .then(snapshot => {
-          snapshot.forEach(snapShow => {
-            if (snapShow.id == this.show.id.toString()) {
-              this.watched = snapShow.data().watched;
-              this.watchedAt = snapShow.data().watchedAt;
+          snapshot.forEach(snapMovie => {
+            if (snapMovie.id == this.movie.id.toString()) {
+              this.watched = snapMovie.data().watched;
+              this.watchedAt = snapMovie.data().watchedAt;
             }
           });
         })
@@ -103,15 +105,18 @@ export default {
           this.loading = false;
         });
     },
-    setShowAsWatched() {
+    setMovieAsWatched() {
       this.loading = true;
-      this.dbRef
-        .doc(this.show.id.toString())
+      firestore
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("movie")
+        .doc(this.movie.id.toString())
         .set({
-          media_id: this.show.id,
+          media_id: this.movie.id,
           watched: true,
           watchedAt: new Date(Date.now()),
-          title: this.show.original_name
+          title: this.movie.original_title
         })
         .then(() => {
           this.watched = true;
@@ -121,14 +126,14 @@ export default {
           this.loading = false;
         });
     },
-    setShowAsNotWatched() {
+    setMovieAsNotWatched() {
       this.loading = true;
-      this.dbRef
-        .doc(this.show.id.toString())
-        .update({
-          watched: false,
-          watchedAt: null
-        })
+      firestore
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("movie")
+        .doc(this.movie.id.toString())
+        .delete()
         .then(() => {
           this.watched = false;
           this.watchedAt = null;
@@ -139,7 +144,8 @@ export default {
     }
   },
   created() {
-    this.checkShowWatchState();
-  }
+    this.checkMovieWatchState();
+  },
+  computed: mapState(["posterUrl", "user"])
 };
 </script>

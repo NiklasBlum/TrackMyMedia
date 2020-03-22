@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/Navigation/Pagination";
 import MediaFilter from "@/components/MediaFilter";
 import axios from "axios";
-import MovieCard from "@/components/MovieCard.vue";
-import SeriesCard from "@/components/SeriesCard.vue";
+import MovieCard from "@/components/Movie/MovieCard.vue";
+import SeriesCard from "@/components/Series/SeriesCard.vue";
 export default {
   components: {
     MovieCard,
