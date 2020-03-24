@@ -1,17 +1,17 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-card v-if="movie">
-      <v-card-title>
+      <v-card-title class="black">
         <h1>{{ movie.title }}</h1>
       </v-card-title>
       <v-card-text>
         <v-row>
-          <v-col xs="12" sm="4" md="3" lg="2">
+          <v-col cols="12" sm="4" md="3" lg="3">
             <MovieCard :movie="movie" />
           </v-col>
           <v-col>
             <v-card shaped class="black mb-3">
-              <v-card-title>Plot</v-card-title>
+              <v-card-title class="blue mb-3">Plot</v-card-title>
               <v-card-text>
                 {{ this.movie.overview }}
               </v-card-text>

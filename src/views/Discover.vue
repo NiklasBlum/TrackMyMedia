@@ -9,8 +9,8 @@
       <v-flex xs6 sm3 md3>
         <v-select
           solo
+          light
           rounded
-          background-color="cyan darken-4"
           hide-details
           :items="years"
           v-model="year"
@@ -22,8 +22,8 @@
       <v-flex xs6 sm3 md3>
         <v-select
           solo
+          light
           rounded
-          background-color="cyan darken-4"
           hide-details
           :items="genres"
           v-model="genre"
@@ -35,9 +35,9 @@
       <v-flex xs6 sm3 md3>
         <v-select
           solo
+          light
           hide-details
           rounded
-          background-color="cyan darken-4"
           :items="sortBy"
           v-model="sortFilter"
           item-text="name"
@@ -51,7 +51,7 @@
           block
           @click="getMedia"
           :loading="loading"
-          color="blue-grey"
+          color="cyan darken-4"
         >
           <v-icon left>
             mdi-magnify
@@ -81,9 +81,9 @@
 </template>
 
 <script>
+import axios from "axios";
 import Pagination from "@/components/Navigation/Pagination";
 import MediaFilter from "@/components/MediaFilter";
-import axios from "axios";
 import MovieCard from "@/components/Movie/MovieCard.vue";
 import SeriesCard from "@/components/Series/SeriesCard.vue";
 export default {

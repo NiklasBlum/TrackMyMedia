@@ -8,7 +8,8 @@
       </v-col>
       <v-col cols="12" class="mt-4">
         <v-text-field
-          background-color="cyan darken-4"
+          light
+          background-color="white"
           rounded
           filled
           dense

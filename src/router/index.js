@@ -64,7 +64,7 @@ const routes = [
   {
     path: "/movie/:id",
     name: "movie",
-    component: () => import("../views/Movie.vue"),
+    component: () => import("../views/MovieDetails.vue"),
     meta: {
       requiresAuth: true
     }
