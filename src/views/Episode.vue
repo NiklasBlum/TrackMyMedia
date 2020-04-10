@@ -1,10 +1,10 @@
 <template>
   <v-container fluid grid-list-lg>
-    <v-layout row>
-      <v-flex v-for="episode in episodes" :key="episode.id">
+    <v-row>
+      <v-col v-for="episode in episodes" :key="episode.id">
         <EpisodeCard :episode="episode"></EpisodeCard>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -22,9 +22,6 @@ export default {
       episodes: null
     };
   },
-  created() {
-    this.getDetails(this.$route.params);
-  },
   methods: {
     getDetails(params) {
       let searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
@@ -38,6 +35,9 @@ export default {
         });
     }
   },
-  computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"])
+  computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"]),
+  created() {
+    this.getDetails(this.$route.params);
+  }
 };
 </script>

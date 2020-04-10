@@ -6,10 +6,10 @@
   >
     <v-container fluid grid-list-lg>
       <v-layout row justify-center>
-        <v-flex xs7 sm5 md2>
+        <v-flex xs12 sm5 md3>
           <SeriesCard v-if="this.show" :show="this.show" />
         </v-flex>
-        <v-flex xs12 sm7 md10>
+        <v-flex xs12 sm7 md9>
           <v-card flat color="blue-grey darken-2">
             <v-card-title>
               <h1>Plot</h1>
@@ -22,7 +22,7 @@
       <v-container grid-list-lg fluid>
         <v-layout mt-5 row wrap justify-center justify-space-around>
           <v-flex
-            xs6
+            xs12
             sm4
             md3
             lg2

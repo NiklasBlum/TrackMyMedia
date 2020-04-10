@@ -30,12 +30,12 @@
     </v-hover>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{
-          season.name
-        }}</v-list-item-title>
+        <v-list-item-title class="headline">
+          {{ season.name }}
+        </v-list-item-title>
         <v-list-item-subtitle>
-          {{ getHumanDate(season.air_date) }}</v-list-item-subtitle
-        >
+          {{ getGermanDate(season.air_date) }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-card-actions>
@@ -64,8 +64,7 @@
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/config";
-import moment from "moment";
-
+import dateFormatter from "@/dateFormatter";
 export default {
   props: {
     season: Object,
@@ -80,16 +79,8 @@ export default {
     };
   },
   methods: {
-    getHumanDate(date) {
-      if (date) {
-        if (date.seconds) {
-          return moment(date.seconds * 1000).format("DD.MM.YYYY");
-        } else {
-          return moment(date).format("DD.MM.YYYY");
-        }
-      } else {
-        return null;
-      }
+    getGermanDate(date) {
+      return dateFormatter.getGermanDate(date);
     },
     checkWatchStateSeason() {
       this.loading = true;

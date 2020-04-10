@@ -6,13 +6,21 @@
           <v-img
             v-if="this.episode.still_path"
             :src="this.posterUrlOrg + this.episode.still_path"
-          ></v-img>
+          />
         </v-flex>
+
         <v-flex xs12 sm12 md6 lg7>
-          <v-card-title
-            >{{ this.episode.episode_number }} |
-            {{ this.episode.name }}</v-card-title
-          >
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="title">
+                {{ episode.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ getGermanDate(episode.air_date) }}
+                <!-- {{ getHumanDate(watchedAt) }} -->
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
           <v-card-text>{{ this.episode.overview }}</v-card-text>
         </v-flex>
         <v-flex xs12 sm12 md2 lg2>
@@ -43,6 +51,7 @@
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/config";
+import dateFormatter from "@/dateFormatter";
 
 export default {
   props: {
@@ -55,6 +64,9 @@ export default {
     };
   },
   methods: {
+    getGermanDate(date) {
+      return dateFormatter.getGermanDate(date);
+    },
     CheckWatchStateEpisode() {
       this.loading = true;
       this.dbRef
@@ -90,9 +102,7 @@ export default {
         });
     }
   },
-  created() {
-    this.CheckWatchStateEpisode();
-  },
+
   computed: {
     ...mapState(["posterUrlOrg", "user"]),
     dbRef() {
@@ -105,6 +115,9 @@ export default {
         .doc(this.episode.season_number.toString())
         .collection("episodes");
     }
+  },
+  created() {
+    this.CheckWatchStateEpisode();
   }
 };
 </script>
