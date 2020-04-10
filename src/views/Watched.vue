@@ -5,20 +5,19 @@
         <MediaFilter @currentMediaChanged="getMediaFromFireStore" />
       </v-col>
     </v-row>
-
-    <div v-if="currentMedia == 'tv'">
-      <v-layout row align-center justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="show in tmdbMedia" :key="show.id">
-          <SeriesCard :show="show"></SeriesCard>
-        </v-flex>
-      </v-layout>
+    <div v-if="currentMedia === 'tv'">
+      <v-row>
+        <v-col sm="6" md="4" lg="3" v-for="show in tmdbMedia" :key="show.id">
+          <SeriesCard :show="show" />
+        </v-col>
+      </v-row>
     </div>
-    <div v-if="currentMedia == 'movie'">
-      <v-layout row align-center justify-space-around>
-        <v-flex xs6 sm3 md3 lg2 v-for="movie in tmdbMedia" :key="movie.id">
-          <MovieCard :movie="movie"></MovieCard>
-        </v-flex>
-      </v-layout>
+    <div v-if="currentMedia === 'movie'">
+      <v-row class="align-center justify-space-around">
+        <v-col sm="6" md="4" lg="3" v-for="movie in tmdbMedia" :key="movie.id">
+          <MovieCard :movie="movie" />
+        </v-col>
+      </v-row>
     </div>
   </v-container>
 </template>

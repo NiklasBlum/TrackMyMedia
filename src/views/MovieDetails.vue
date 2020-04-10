@@ -24,6 +24,11 @@
             <MovieTrailer :trailerId="trailerId" />
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <MediaRating :AverageVote="movie.vote_average" />
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>
@@ -35,12 +40,14 @@ import { mapState } from "vuex";
 import MovieCard from "@/components/Movie/MovieCard";
 import MovieStats from "@/components/Movie/MovieStats.vue";
 import MovieTrailer from "@/components/Movie/MovieTrailer.vue";
+import MediaRating from "@/components/MediaRating.vue";
 
 export default {
   components: {
     MovieCard,
     MovieStats,
-    MovieTrailer
+    MovieTrailer,
+    MediaRating
   },
   data() {
     return {
@@ -61,6 +68,7 @@ export default {
         .get(searchQuery)
         .then(response => {
           this.movie = response.data;
+          console.log(this.movie);
           this.posterPath = this.posterUrl + this.movie.poster_path;
           this.trailerId = this.movie.videos.results[0].key;
         })

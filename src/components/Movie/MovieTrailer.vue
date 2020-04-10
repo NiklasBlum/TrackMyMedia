@@ -7,8 +7,8 @@
       Trailer
     </v-btn>
     <v-dialog v-model="trailerDialog">
-      <youtube :video-id="trailerId" resize fitParent></youtube
-    ></v-dialog>
+      <youtube :video-id="trailerId" resize fitParent />
+    </v-dialog>
   </div>
 </template>
 

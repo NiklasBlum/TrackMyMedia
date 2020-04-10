@@ -9,12 +9,12 @@
             {{ runtime }} min
           </v-chip>
         </v-col>
-        <v-col
-          ><v-chip large>
+        <v-col>
+          <v-chip large>
             <v-icon left>mdi-bell-ring-outline</v-icon>
             {{ releaseState }}
-          </v-chip></v-col
-        >
+          </v-chip>
+        </v-col>
       </v-row>
     </v-card-text>
   </v-card>
