@@ -60,19 +60,19 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <div v-if="currentMedia == 'tv'">
-      <v-layout row align-center justify-space-around>
-        <v-flex xs6 sm4 md3 lg2 v-for="show in media" :key="show.id">
+    <div v-if="currentMedia === 'tv'">
+      <v-row>
+        <v-col sm="6" md="4" lg="3" v-for="show in media" :key="show.id">
           <SeriesCard :show="show" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </div>
-    <div v-if="currentMedia == 'movie'">
-      <v-layout row align-center justify-space-around>
-        <v-flex xs6 sm4 md3 lg2 v-for="movie in media" :key="movie.id">
+    <div v-if="currentMedia === 'movie'">
+      <v-row class="align-center justify-space-around">
+        <v-col sm="6" md="4" lg="3" v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </div>
     <v-layout mt-4>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
@@ -86,6 +86,8 @@ import Pagination from "@/components/Navigation/Pagination";
 import MediaFilter from "@/components/MediaFilter";
 import MovieCard from "@/components/Movie/MovieCard.vue";
 import SeriesCard from "@/components/Series/SeriesCard.vue";
+import { mapState } from "vuex";
+
 export default {
   components: {
     MovieCard,
@@ -160,26 +162,8 @@ export default {
     }
   },
   computed: {
-    baseDiscoverUrl: {
-      get() {
-        return this.$store.state.baseDiscoverUrl;
-      }
-    },
-    currentMedia: {
-      get() {
-        return this.$store.state.currentMedia;
-      }
-    },
-    apiKey: {
-      get() {
-        return this.$store.state.apiKey;
-      }
-    },
-    language: {
-      get() {
-        return this.$store.state.language;
-      }
-    },
+    ...mapState(["baseDiscoverUrl", "currentMedia", "apiKey", "language"]),
+
     year: {
       get() {
         return this.selectedYear;

@@ -26,12 +26,12 @@
       <v-list-item-content>
         <v-list-item-title class="title">{{ show.name }}</v-list-item-title>
         <v-list-item-subtitle>
-          {{ getHumanDate(show.first_air_date) }}
-          {{ getHumanDate(watchedAt) }}
+          {{ getGermanDate(show.first_air_date) }}
+          {{ getGermanDate(watchedAt) }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-actions>
       <v-btn v-if="watched" color="cyan darken-4" @click="setShowAsNotWatched">
         <v-icon>mdi-check-all</v-icon>
@@ -49,7 +49,7 @@
 import CheckWatchList from "@/components/CheckWatchList";
 import { mapState } from "vuex";
 import db from "@/firebase/config";
-import moment from "moment";
+import dateFormatter from "@/dateFormatter";
 
 export default {
   components: {
@@ -76,16 +76,8 @@ export default {
     }
   },
   methods: {
-    getHumanDate(date) {
-      if (date) {
-        if (date.seconds) {
-          return moment(date.seconds * 1000).format("DD.MM.YYYY");
-        } else {
-          return moment(date).format("DD.MM.YYYY");
-        }
-      } else {
-        return null;
-      }
+    getGermanDate(date) {
+      return dateFormatter.getGermanDate(date);
     },
     checkShowWatchState() {
       this.loading = true;

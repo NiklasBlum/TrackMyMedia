@@ -23,30 +23,22 @@
       </template>
     </v-hover>
     <v-list-item>
+      <v-list-item-avatar>
+        <MediaRating :AverageVote="movie.vote_average" />
+      </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="title">{{
-          movie.original_title
-        }}</v-list-item-title>
+        <v-list-item-title class="title">
+          {{ movie.original_title }}
+        </v-list-item-title>
         <v-list-item-subtitle>
-          {{ getHumanDate(movie.release_date) }}
-          {{ getHumanDate(watchedAt) }}
+          {{ getGermanDate(movie.release_date) }}
+          <!-- {{ getHumanDate(watchedAt) }} -->
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-divider />
     <v-card-actions>
-      <v-btn
-        v-if="watched"
-        light
-        color="cyan"
-        @click="setMovieAsNotWatched"
-        :loading="loading"
-      >
-        <v-icon>mdi-check-all</v-icon>
-      </v-btn>
-      <v-btn v-if="!watched" dark @click="setMovieAsWatched" :loading="loading">
-        <v-icon>mdi-check-bold</v-icon>
-      </v-btn>
+      <MovieWatchState :movie="movie" @watchStateChanged="watched = $event" />
       <v-spacer />
       <CheckWatchList :media="movie" :mediaType="'movie'" />
     </v-card-actions>
@@ -55,97 +47,34 @@
 
 <script>
 import CheckWatchList from "@/components/CheckWatchList";
+import MovieWatchState from "@/components/Movie/MovieWatchState.vue";
+import MediaRating from "@/components/MediaRating.vue";
 import { mapState } from "vuex";
-import firestore from "@/firebase/config";
-import moment from "moment";
+import dateFormatter from "@/dateFormatter";
 
 export default {
   components: {
-    CheckWatchList
+    CheckWatchList,
+    MovieWatchState,
+    MediaRating
   },
   props: {
     movie: Object
   },
   data() {
     return {
-      loading: false,
       watched: false,
       watchedAt: null,
       notFoundPic: require("@/assets/no-image.png")
     };
   },
   methods: {
-    getHumanDate(date) {
-      if (date) {
-        if (date.seconds) {
-          return moment(date.seconds * 1000).format("DD.MM.YYYY");
-        } else {
-          return moment(date).format("DD.MM.YYYY");
-        }
-      } else {
-        return null;
-      }
-    },
-    checkMovieWatchState() {
-      this.loading = true;
-      firestore
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("movie")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(snapMovie => {
-            if (snapMovie.id == this.movie.id.toString()) {
-              this.watched = snapMovie.data().watched;
-              this.watchedAt = snapMovie.data().watchedAt;
-            }
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    setMovieAsWatched() {
-      this.loading = true;
-      firestore
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("movie")
-        .doc(this.movie.id.toString())
-        .set({
-          media_id: this.movie.id,
-          watched: true,
-          watchedAt: new Date(Date.now()),
-          title: this.movie.original_title
-        })
-        .then(() => {
-          this.watched = true;
-          this.watchedAt = new Date(Date.now());
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    setMovieAsNotWatched() {
-      this.loading = true;
-      firestore
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("movie")
-        .doc(this.movie.id.toString())
-        .delete()
-        .then(() => {
-          this.watched = false;
-          this.watchedAt = null;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    getGermanDate(date) {
+      return dateFormatter.getGermanDate(date);
     }
   },
-  created() {
-    this.checkMovieWatchState();
-  },
-  computed: mapState(["posterUrl", "user"])
+  computed: {
+    ...mapState(["posterUrl"])
+  }
 };
 </script>

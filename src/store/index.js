@@ -13,7 +13,9 @@ export default new Vuex.Store({
     baseAccountUrl: "https://api.themoviedb.org/3/account/",
     baseDiscoverUrl: "https://api.themoviedb.org/3/discover/",
     baseSearchUrl: "https://api.themoviedb.org/3/search/",
-    posterUrl: "https://image.tmdb.org/t/p/w300_and_h450_bestv2",
+    //old
+    //posterUrl: "https://image.tmdb.org/t/p/w300_and_h450_bestv2",
+    posterUrl: "https://image.tmdb.org/t/p/w500_and_h282_face",
     posterUrlOrg: "https://image.tmdb.org/t/p/original",
     currentMedia: "movie",
     language: "de-DE",
