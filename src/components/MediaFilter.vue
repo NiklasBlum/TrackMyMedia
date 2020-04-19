@@ -25,8 +25,8 @@ export default {
       },
       set(media) {
         this.$store.commit("setCurrentMedia", media);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

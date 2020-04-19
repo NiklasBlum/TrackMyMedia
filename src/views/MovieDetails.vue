@@ -1,8 +1,8 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-card v-if="movie">
-      <v-card-title class="black">
-        <h1>{{ movie.title }}</h1>
+      <v-card-title>
+        <div class="display-1">{{ movie.title }}</div>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -21,7 +21,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <MovieTrailer :trailerId="trailerId" />
+            <Trailer :trailerId="trailerId" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -34,13 +34,13 @@ import axios from "axios";
 import { mapState } from "vuex";
 import MovieCard from "@/components/Movie/MovieCard";
 import MovieStats from "@/components/Movie/MovieStats.vue";
-import MovieTrailer from "@/components/Movie/MovieTrailer.vue";
+import Trailer from "@/components/Trailer.vue";
 
 export default {
   components: {
     MovieCard,
     MovieStats,
-    MovieTrailer
+    Trailer,
   },
   data() {
     return {
@@ -48,7 +48,7 @@ export default {
       movie: null,
       posterPath: require("@/assets/no-image.png"),
       trailer: false,
-      trailerId: null
+      trailerId: null,
     };
   },
   created() {
@@ -59,22 +59,22 @@ export default {
       let searchQuery = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
       axios
         .get(searchQuery)
-        .then(response => {
+        .then((response) => {
           this.movie = response.data;
           this.posterPath = this.posterUrl + this.movie.poster_path;
           this.trailerId = this.movie.videos.results[0].key;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
+    },
   },
   computed: mapState([
     "baseUrl",
     "posterUrl",
     "currentMedia",
     "apiKey",
-    "language"
-  ])
+    "language",
+  ]),
 };
 </script>

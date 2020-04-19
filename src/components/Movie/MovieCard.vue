@@ -2,7 +2,11 @@
   <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
     <v-hover>
       <template v-slot:default="{ hover }">
-        <v-img v-if="movie.poster_path" :src="posterUrl + movie.poster_path">
+        <v-img
+          min-height="185px"
+          v-if="movie.poster_path"
+          :src="posterUrl + movie.poster_path"
+        >
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
               <v-btn large :to="/movie/ + movie.id">
@@ -28,7 +32,7 @@
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="title">
-          {{ movie.original_title }}
+          {{ movie.title }}
         </v-list-item-title>
         <v-list-item-subtitle>
           {{ getGermanDate(movie.release_date) }}
@@ -38,7 +42,11 @@
     </v-list-item>
     <v-divider />
     <v-card-actions>
-      <MovieWatchState :movie="movie" @watchStateChanged="watched = $event" />
+      <MediaWatchState
+        :media="movie"
+        :mediaType="'movie'"
+        @watchStateChanged="watched = $event"
+      />
       <v-spacer />
       <CheckWatchList :media="movie" :mediaType="'movie'" />
     </v-card-actions>
@@ -47,7 +55,7 @@
 
 <script>
 import CheckWatchList from "@/components/CheckWatchList";
-import MovieWatchState from "@/components/Movie/MovieWatchState.vue";
+import MediaWatchState from "@/components/MediaWatchState.vue";
 import MediaRating from "@/components/MediaRating.vue";
 import { mapState } from "vuex";
 import dateFormatter from "@/dateFormatter";
@@ -55,26 +63,26 @@ import dateFormatter from "@/dateFormatter";
 export default {
   components: {
     CheckWatchList,
-    MovieWatchState,
-    MediaRating
+    MediaWatchState,
+    MediaRating,
   },
   props: {
-    movie: Object
+    movie: Object,
   },
   data() {
     return {
       watched: false,
       watchedAt: null,
-      notFoundPic: require("@/assets/no-image.png")
+      notFoundPic: require("@/assets/no-image.png"),
     };
   },
   methods: {
     getGermanDate(date) {
       return dateFormatter.getGermanDate(date);
-    }
+    },
   },
   computed: {
-    ...mapState(["posterUrl"])
-  }
+    ...mapState(["posterUrl"]),
+  },
 };
 </script>

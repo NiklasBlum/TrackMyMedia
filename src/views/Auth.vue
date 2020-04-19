@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card>
+    <v-card shaped>
       <v-card-title>Authentication</v-card-title>
       <v-card-text>
         <v-tabs v-model="tabs" centered>
@@ -20,12 +20,12 @@ import Registration from "@/components/Auth/Registration.vue";
 export default {
   components: {
     Login,
-    Registration
+    Registration,
   },
   data() {
     return {
-      tabs: "login"
+      tabs: "login",
     };
-  }
+  },
 };
 </script>

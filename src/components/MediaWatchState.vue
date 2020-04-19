@@ -4,12 +4,12 @@
       v-if="watched"
       light
       color="cyan"
-      @click="setMovieAsNotWatched"
+      @click="setMediaAsNotWatched"
       :loading="loading"
     >
       <v-icon>mdi-check-all</v-icon>
     </v-btn>
-    <v-btn v-if="!watched" dark @click="setMovieAsWatched" :loading="loading">
+    <v-btn v-if="!watched" dark @click="setMediaAsWatched" :loading="loading">
       <v-icon>mdi-check-bold</v-icon>
     </v-btn>
   </div>
@@ -21,25 +21,26 @@ import db from "@/firebase/config";
 
 export default {
   props: {
-    movie: Object
+    media: Object,
+    mediaType: String,
   },
   data() {
     return {
       loading: false,
       watched: false,
-      watchedAt: null
+      watchedAt: null,
     };
   },
   methods: {
-    checkMovieWatchState() {
+    checkMediaWatchState() {
       this.loading = true;
       this.dbRef
         .get()
-        .then(snapshot => {
-          snapshot.forEach(snapMovie => {
-            if (snapMovie.id == this.movie.id.toString()) {
-              this.watched = snapMovie.data().watched;
-              this.watchedAt = snapMovie.data().watchedAt;
+        .then((snapshot) => {
+          snapshot.forEach((snapItem) => {
+            if (snapItem.id == this.media.id.toString()) {
+              this.watched = snapItem.data().watched;
+              this.watchedAt = snapItem.data().watchedAt;
             }
           });
         })
@@ -47,15 +48,22 @@ export default {
           this.loading = false;
         });
     },
-    setMovieAsWatched() {
+    setMediaAsWatched() {
+      let mediaTitle;
+      if (this.media.title) {
+        mediaTitle = this.media.title;
+      }
+      if (this.media.name) {
+        mediaTitle = this.media.name;
+      }
       this.loading = true;
       this.dbRef
-        .doc(this.movie.id.toString())
+        .doc(this.media.id.toString())
         .set({
-          media_id: this.movie.id,
+          media_id: this.media.id,
           watched: true,
           watchedAt: new Date(Date.now()),
-          title: this.movie.original_title
+          title: mediaTitle,
         })
         .then(() => {
           this.watched = true;
@@ -65,10 +73,10 @@ export default {
           this.loading = false;
         });
     },
-    setMovieAsNotWatched() {
+    setMediaAsNotWatched() {
       this.loading = true;
       this.dbRef
-        .doc(this.movie.id.toString())
+        .doc(this.media.id.toString())
         .delete()
         .then(() => {
           this.watched = false;
@@ -77,15 +85,15 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    }
+    },
   },
   watch: {
     watched() {
       this.$emit("watchStateChanged", this.watched);
-    }
+    },
   },
   created() {
-    this.checkMovieWatchState();
+    this.checkMediaWatchState();
   },
   computed: {
     ...mapState(["user"]),
@@ -93,8 +101,8 @@ export default {
       return db
         .collection("users")
         .doc(this.user.uid)
-        .collection("movie");
-    }
-  }
+        .collection(this.mediaType);
+    },
+  },
 };
 </script>

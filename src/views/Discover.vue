@@ -93,7 +93,7 @@ export default {
     MovieCard,
     SeriesCard,
     MediaFilter,
-    Pagination
+    Pagination,
   },
   data() {
     return {
@@ -108,7 +108,9 @@ export default {
         { id: 0, name: "" },
         { id: 28, name: "Action" },
         { id: 12, name: "Adventure" },
-        { id: 27, name: "Horror" }
+        { id: 27, name: "Horror" },
+        { id: 27, name: "Horror" },
+        { id: 99, name: "Documentary" },
       ],
       years: [
         { id: 0, name: "" },
@@ -119,14 +121,14 @@ export default {
         { id: 2016, name: "2016" },
         { id: 2015, name: "2015" },
         { id: 2014, name: "2014" },
-        { id: 2013, name: "2013" }
+        { id: 2013, name: "2013" },
       ],
       sortBy: [
         { param: "popularity.desc", name: "Popularity Descending" },
         { param: "popularity.asc", name: "Popularity Ascending" },
         { param: "release_date.asc", name: "Release Ascending" },
-        { param: "release_date.desc", name: "Release Descending" }
-      ]
+        { param: "release_date.desc", name: "Release Descending" },
+      ],
     };
   },
   methods: {
@@ -152,14 +154,14 @@ export default {
 
       axios
         .get(this.searchQuery)
-        .then(response => {
+        .then((response) => {
           this.media = response.data.results;
         })
         .finally(() => {
           this.loading = false;
           this.showPagination = true;
         });
-    }
+    },
   },
   computed: {
     ...mapState(["baseDiscoverUrl", "currentMedia", "apiKey", "language"]),
@@ -170,7 +172,7 @@ export default {
       },
       set(year) {
         this.selectedYear = year;
-      }
+      },
     },
     genre: {
       get() {
@@ -178,7 +180,7 @@ export default {
       },
       set(genre) {
         this.selectedGenre = genre;
-      }
+      },
     },
     sortFilter: {
       get() {
@@ -186,8 +188,8 @@ export default {
       },
       set(filter) {
         this.selectedFilter = filter;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

@@ -3,12 +3,8 @@
     <v-container fluid>
       <v-layout row justify-center>
         <v-flex xs12 sm5 md4 lg3 align-self-center grow>
-          <v-img
-            v-if="this.episode.still_path"
-            :src="this.posterUrlOrg + this.episode.still_path"
-          />
+          <v-img :src="this.posterUrlOrg + this.episode.still_path" />
         </v-flex>
-
         <v-flex xs12 sm12 md6 lg7>
           <v-list-item>
             <v-list-item-content>
@@ -55,12 +51,12 @@ import dateFormatter from "@/dateFormatter";
 
 export default {
   props: {
-    episode: Object
+    episode: Object,
   },
   data() {
     return {
       loading: false,
-      watched: null
+      watched: null,
     };
   },
   methods: {
@@ -71,8 +67,8 @@ export default {
       this.loading = true;
       this.dbRef
         .get()
-        .then(snapshot => {
-          snapshot.forEach(snapEpisode => {
+        .then((snapshot) => {
+          snapshot.forEach((snapEpisode) => {
             if (snapEpisode.id == this.episode.episode_number.toString()) {
               this.watched = true;
             }
@@ -100,9 +96,8 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    }
+    },
   },
-
   computed: {
     ...mapState(["posterUrlOrg", "user"]),
     dbRef() {
@@ -114,10 +109,11 @@ export default {
         .collection("seasons")
         .doc(this.episode.season_number.toString())
         .collection("episodes");
-    }
+    },
   },
   created() {
     this.CheckWatchStateEpisode();
-  }
+    console.log(this.episode);
+  },
 };
 </script>

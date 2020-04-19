@@ -1,8 +1,8 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-row>
-      <v-col v-for="episode in episodes" :key="episode.id">
-        <EpisodeCard :episode="episode"></EpisodeCard>
+      <v-col v-for="episode in episodes" :key="episode.id" cols="12">
+        <EpisodeCard :episode="episode" />
       </v-col>
     </v-row>
   </v-container>
@@ -15,11 +15,11 @@ import EpisodeCard from "@/components/Series/EpisodeCard";
 
 export default {
   components: {
-    EpisodeCard
+    EpisodeCard,
   },
   data() {
     return {
-      episodes: null
+      episodes: null,
     };
   },
   methods: {
@@ -27,17 +27,17 @@ export default {
       let searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
       axios
         .get(searchQuery)
-        .then(response => {
+        .then((response) => {
           this.episodes = response.data.episodes;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
+    },
   },
   computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"]),
   created() {
     this.getDetails(this.$route.params);
-  }
+  },
 };
 </script>
