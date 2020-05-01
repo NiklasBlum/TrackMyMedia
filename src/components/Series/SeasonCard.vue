@@ -1,41 +1,13 @@
 <template>
   <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
-    <v-hover>
-      <template v-slot:default="{ hover }">
-        <v-img v-if="season.poster_path" :src="posterUrl + season.poster_path">
-          <v-fade-transition>
-            <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn
-                large
-                :to="/show/ + show.id + /season/ + season.season_number"
-              >
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
-            </v-overlay>
-          </v-fade-transition>
-        </v-img>
-        <v-img v-else :src="notFoundPic">
-          <v-fade-transition>
-            <v-overlay v-if="hover" absolute color="#036358">
-              <v-btn
-                large
-                :to="/show/ + show.id + /season/ + season.season_number"
-              >
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
-            </v-overlay>
-          </v-fade-transition>
-        </v-img>
-      </template>
-    </v-hover>
+    <PosterImage
+      :imagePath="season.poster_path"
+      :routePath="/show/ + show.id + /season/ + season.season_number"
+    />
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">
-          {{ season.name }}
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          {{ getGermanDate(season.air_date) }}
-        </v-list-item-subtitle>
+        <v-list-item-title class="headline">{{ season.name }}</v-list-item-title>
+        <v-list-item-subtitle>{{ getGermanDate(season.air_date) }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-card-actions>
@@ -49,12 +21,7 @@
       >
         <v-icon large>mdi-check-all</v-icon>
       </v-btn>
-      <v-btn
-        v-if="!watched"
-        block
-        @click="setSeasonAsWatched"
-        :loading="loading"
-      >
+      <v-btn v-if="!watched" block @click="setSeasonAsWatched" :loading="loading">
         <v-icon large>mdi-check-bold</v-icon>
       </v-btn>
     </v-card-actions>
@@ -65,7 +32,11 @@
 import { mapState } from "vuex";
 import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
+import PosterImage from "@/components/PosterImage.vue";
 export default {
+  components: {
+    PosterImage
+  },
   props: {
     season: Object,
     show: Object

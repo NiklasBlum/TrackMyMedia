@@ -3,14 +3,13 @@
     <v-container fluid>
       <v-layout row justify-center>
         <v-flex xs12 sm5 md4 lg3 align-self-center grow>
-          <v-img :src="this.posterUrlOrg + this.episode.still_path" />
+          <PosterImage :imagePath="episode.still_path" />
+          <!-- <v-img :src="this.posterUrlOrg + this.episode.still_path" /> -->
         </v-flex>
         <v-flex xs12 sm12 md6 lg7>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="title">
-                {{ episode.name }}
-              </v-list-item-title>
+              <v-list-item-title class="title">{{ episode.name }}</v-list-item-title>
               <v-list-item-subtitle>
                 {{ getGermanDate(episode.air_date) }}
                 <!-- {{ getHumanDate(watchedAt) }} -->
@@ -48,15 +47,18 @@
 import { mapState } from "vuex";
 import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
-
+import PosterImage from "@/components/PosterImage.vue";
 export default {
+  components: {
+    PosterImage
+  },
   props: {
-    episode: Object,
+    episode: Object
   },
   data() {
     return {
       loading: false,
-      watched: null,
+      watched: null
     };
   },
   methods: {
@@ -67,8 +69,8 @@ export default {
       this.loading = true;
       this.dbRef
         .get()
-        .then((snapshot) => {
-          snapshot.forEach((snapEpisode) => {
+        .then(snapshot => {
+          snapshot.forEach(snapEpisode => {
             if (snapEpisode.id == this.episode.episode_number.toString()) {
               this.watched = true;
             }
@@ -96,7 +98,7 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
+    }
   },
   computed: {
     ...mapState(["posterUrlOrg", "user"]),
@@ -109,11 +111,10 @@ export default {
         .collection("seasons")
         .doc(this.episode.season_number.toString())
         .collection("episodes");
-    },
+    }
   },
   created() {
     this.CheckWatchStateEpisode();
-    console.log(this.episode);
-  },
+  }
 };
 </script>
