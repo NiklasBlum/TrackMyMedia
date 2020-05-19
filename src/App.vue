@@ -3,7 +3,9 @@
     <AppBar v-if="user" />
     <v-content>
       <v-container fluid>
-        <router-view />
+        <keep-alive max="3">
+          <router-view :key="$route.fullPath"/>
+        </keep-alive>
       </v-container>
     </v-content>
   </v-app>
@@ -15,31 +17,31 @@ import db from "@/firebase/config";
 import AppBar from "@/components/Navigation/AppBar.vue";
 export default {
   components: {
-    AppBar
+    AppBar,
   },
   methods: {
     checkIfFirstLogin() {
       db.collection("users")
         .doc(this.user.uid)
         .get()
-        .then(snapshot => {
+        .then((snapshot) => {
           if (!snapshot.data()) {
             db.collection("users")
               .doc(this.user.uid)
               .set({
                 name: this.user.displayName,
                 email: this.user.email,
-                firstLogin: new Date(Date.now())
+                firstLogin: new Date(Date.now()),
               });
           }
         });
-    }
+    },
   },
   watch: {
     user() {
       if (this.user) this.checkIfFirstLogin();
-    }
+    },
   },
-  computed: { ...mapState(["user"]) }
+  computed: { ...mapState(["user"]) },
 };
 </script>
