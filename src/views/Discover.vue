@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-lg>
+  <div>
     <v-row no-gutters>
       <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getMedia" />
@@ -46,17 +46,8 @@
         />
       </v-flex>
       <v-flex xs6 sm3 md3 mt-2>
-        <v-btn
-          rounded
-          block
-          @click="getMedia"
-          :loading="loading"
-          color="cyan darken-4"
-        >
-          <v-icon left>
-            mdi-magnify
-          </v-icon>
-          Search
+        <v-btn rounded block @click="getMedia" :loading="loading" color="cyan darken-4">
+          <v-icon left>mdi-magnify</v-icon>Search
         </v-btn>
       </v-flex>
     </v-layout>
@@ -77,7 +68,7 @@
     <v-layout mt-4>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -93,7 +84,7 @@ export default {
     MovieCard,
     SeriesCard,
     MediaFilter,
-    Pagination,
+    Pagination
   },
   data() {
     return {
@@ -110,7 +101,7 @@ export default {
         { id: 12, name: "Adventure" },
         { id: 27, name: "Horror" },
         { id: 27, name: "Horror" },
-        { id: 99, name: "Documentary" },
+        { id: 99, name: "Documentary" }
       ],
       years: [
         { id: 0, name: "" },
@@ -121,14 +112,14 @@ export default {
         { id: 2016, name: "2016" },
         { id: 2015, name: "2015" },
         { id: 2014, name: "2014" },
-        { id: 2013, name: "2013" },
+        { id: 2013, name: "2013" }
       ],
       sortBy: [
         { param: "popularity.desc", name: "Popularity Descending" },
         { param: "popularity.asc", name: "Popularity Ascending" },
         { param: "release_date.asc", name: "Release Ascending" },
-        { param: "release_date.desc", name: "Release Descending" },
-      ],
+        { param: "release_date.desc", name: "Release Descending" }
+      ]
     };
   },
   methods: {
@@ -154,14 +145,14 @@ export default {
 
       axios
         .get(this.searchQuery)
-        .then((response) => {
+        .then(response => {
           this.media = response.data.results;
         })
         .finally(() => {
           this.loading = false;
           this.showPagination = true;
         });
-    },
+    }
   },
   computed: {
     ...mapState(["baseDiscoverUrl", "currentMedia", "apiKey", "language"]),
@@ -172,7 +163,7 @@ export default {
       },
       set(year) {
         this.selectedYear = year;
-      },
+      }
     },
     genre: {
       get() {
@@ -180,7 +171,7 @@ export default {
       },
       set(genre) {
         this.selectedGenre = genre;
-      },
+      }
     },
     sortFilter: {
       get() {
@@ -188,8 +179,8 @@ export default {
       },
       set(filter) {
         this.selectedFilter = filter;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

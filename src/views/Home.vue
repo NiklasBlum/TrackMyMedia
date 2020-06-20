@@ -1,10 +1,8 @@
 <template>
-  <v-container fluid>
+  <div>
     <v-row no-gutters>
       <v-col align="center">
-        <MediaFilter
-          @currentMediaChanged="searchText !== '' ? getMedia() : ''"
-        />
+        <MediaFilter @currentMediaChanged="searchText !== '' ? getMedia() : ''" />
       </v-col>
       <v-col cols="12" class="mt-4">
         <v-text-field
@@ -37,7 +35,7 @@
         </v-col>
       </v-row>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>

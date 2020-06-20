@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg fluid>
+  <div>
     <v-row no-gutters>
       <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getPopular" />
@@ -22,7 +22,7 @@
     <v-layout mt-5>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

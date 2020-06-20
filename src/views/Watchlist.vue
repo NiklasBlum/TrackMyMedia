@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-lg>
+  <div>
     <v-row no-gutters>
       <v-col align="center" class="mb-4">
         <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
@@ -19,7 +19,7 @@
         </v-col>
       </v-row>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -20,6 +20,11 @@
           <Trailer :trailerId="trailerId" />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <Reviews :reviews="reviews" />
+        </v-col>
+      </v-row>
     </v-card-text>
     <v-container grid-list-lg fluid>
       <v-layout mt-5 row wrap justify-center justify-space-around>
@@ -37,17 +42,22 @@ import { mapState } from "vuex";
 import SeasonCard from "../components/Series/SeasonCard";
 import SeriesCard from "@/components/Series/SeriesCard";
 import Trailer from "@/components/Trailer.vue";
+import TmdbService from "@/services/TmdbService";
+import Reviews from "@/components/Reviews.vue";
+
 export default {
   components: {
     SeasonCard,
     SeriesCard,
-    Trailer
+    Trailer,
+    Reviews
   },
   data() {
     return {
       show: null,
       posterPath: require("@/assets/no-image.png"),
-      trailerId: null
+      trailerId: null,
+      reviews: []
     };
   },
   methods: {
@@ -58,16 +68,21 @@ export default {
         .then(response => {
           this.show = response.data;
           this.posterPath = this.posterUrl + this.show.poster_path;
-          this.trailerId = this.show.videos.results[0].key;
-          console.log(response.data);
+          if (this.show.videos.results.length > 0) {
+            this.trailerId = this.show.videos.results[0].key;
+          }
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    async getReviews(id) {
+      this.reviews = await TmdbService.getReviews("tv", id);
     }
   },
   created() {
     this.getDetails(this.$route.params.id);
+    this.getReviews(this.$route.params.id);
   },
   computed: mapState([
     "baseUrl",
