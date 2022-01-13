@@ -13,7 +13,7 @@
             <v-card-title class="blue mb-3">Plot</v-card-title>
             <v-card-text>{{ this.movie.overview }}</v-card-text>
           </v-card>
-          <MovieStats :runtime="movie.runtime" :releaseState="movie.status" />
+          <MediaStats :runtime="movie.runtime" :releaseState="movie.status" />
         </v-col>
       </v-row>
       <v-row>
@@ -34,7 +34,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import MovieCard from "@/components/Movie/MovieCard";
-import MovieStats from "@/components/Movie/MovieStats.vue";
+import MediaStats from "@/components/MediaStats.vue";
 import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
@@ -42,7 +42,7 @@ import Reviews from "@/components/Reviews.vue";
 export default {
   components: {
     MovieCard,
-    MovieStats,
+    MediaStats,
     Trailer,
     Reviews
   },

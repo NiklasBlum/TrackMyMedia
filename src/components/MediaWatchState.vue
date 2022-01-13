@@ -1,16 +1,26 @@
 <template>
   <div>
     <v-btn
+      class="px-2"
       v-if="watched"
       light
-      color="cyan"
+      color="green accent-4
+"
       @click="setMediaAsNotWatched"
       :loading="loading"
     >
       <v-icon>mdi-check-all</v-icon>
+      <small class="ms-1">{{ getGermanDate(watchedAt) }}</small>
     </v-btn>
-    <v-btn v-if="!watched" dark @click="setMediaAsWatched" :loading="loading">
+    <v-btn
+      class="px-2"
+      v-if="!watched"
+      dark
+      @click="setMediaAsWatched"
+      :loading="loading"
+    >
       <v-icon>mdi-check-bold</v-icon>
+      <small class="ms-1">Add to history</small>
     </v-btn>
   </div>
 </template>
@@ -18,7 +28,7 @@
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/config";
-
+import dateFormatter from "@/dateFormatter";
 export default {
   props: {
     media: Object,
@@ -32,6 +42,9 @@ export default {
     };
   },
   methods: {
+    getGermanDate(date) {
+      return dateFormatter.getGermanDate(date);
+    },
     checkMediaWatchState() {
       this.loading = true;
       this.dbRef

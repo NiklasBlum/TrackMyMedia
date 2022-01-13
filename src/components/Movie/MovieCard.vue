@@ -1,5 +1,5 @@
 <template>
-  <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
+  <v-card :class="{ 'green darken-4': watched, 'blue-grey darken-4': !watched }">
     <PosterImage
       :imagePath="movie.poster_path"
       :mediaType="'movie'"
@@ -19,7 +19,11 @@
     </v-list-item>
     <v-divider />
     <v-card-actions>
-      <MediaWatchState :media="movie" :mediaType="'movie'" @watchStateChanged="watched = $event" />
+      <MediaWatchState
+        :media="movie"
+        :mediaType="'movie'"
+        @watchStateChanged="watched = $event"
+      />
       <v-spacer />
       <CheckWatchList :media="movie" :mediaType="'movie'" />
     </v-card-actions>
@@ -38,21 +42,21 @@ export default {
     CheckWatchList,
     MediaWatchState,
     MediaRating,
-    PosterImage
+    PosterImage,
   },
   props: {
-    movie: Object
+    movie: Object,
   },
   data() {
     return {
       watched: false,
-      watchedAt: null
+      watchedAt: null,
     };
   },
   methods: {
     getGermanDate(date) {
       return dateFormatter.getGermanDate(date);
-    }
-  }
+    },
+  },
 };
 </script>

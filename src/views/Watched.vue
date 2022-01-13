@@ -7,14 +7,28 @@
     </v-row>
     <div v-if="currentMedia === 'tv'">
       <v-row>
-        <v-col sm="6" md="4" lg="3" v-for="show in tmdbMedia" :key="show.id">
+        <v-col
+          sm="6"
+          md="4"
+          lg="3"
+          xl="2"
+          v-for="show in tmdbMedia"
+          :key="show.id"
+        >
           <SeriesCard :show="show" />
         </v-col>
       </v-row>
     </div>
     <div v-if="currentMedia === 'movie'">
       <v-row class="align-center justify-space-around">
-        <v-col sm="6" md="4" lg="3" v-for="movie in tmdbMedia" :key="movie.id">
+        <v-col
+          sm="6"
+          md="4"
+          lg="3"
+          xl="2"
+          v-for="movie in tmdbMedia"
+          :key="movie.id"
+        >
           <MovieCard :movie="movie" />
         </v-col>
       </v-row>
@@ -33,20 +47,20 @@ export default {
   components: {
     MovieCard,
     SeriesCard,
-    MediaFilter
+    MediaFilter,
   },
   data() {
     return {
       fireBaseMedia: [],
-      tmdbMedia: []
+      tmdbMedia: [],
     };
   },
   methods: {
     getMediaFromFireStore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      this.dbRef.get().then(snapshot => {
-        snapshot.forEach(doc => {
+      this.dbRef.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
           if (doc.data().watched == true) {
             this.fireBaseMedia.push(doc.data());
             this.getMediaFromTmdb(doc.data().media_id);
@@ -58,13 +72,13 @@ export default {
       let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios
         .get(query)
-        .then(response => {
+        .then((response) => {
           this.tmdbMedia.push(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
+    },
   },
   created() {
     this.getMediaFromFireStore();
@@ -76,16 +90,16 @@ export default {
       "currentMedia",
       "apiKey",
       "language",
-      "user"
+      "user",
     ]),
     dbRef() {
       return db
         .collection("users")
         .doc(this.user.uid)
         .collection(this.currentMedia)
-        .orderBy("watchedAt")
-        .limit(10);
-    }
-  }
+        .orderBy("title")
+        .limit(30);
+    },
+  },
 };
 </script>

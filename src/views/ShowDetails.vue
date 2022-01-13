@@ -13,6 +13,11 @@
             <v-card-title class="blue mb-3">Plot</v-card-title>
             <v-card-text>{{ this.show.overview }}</v-card-text>
           </v-card>
+          <MediaStats
+            :id="show.id"
+            :runtime="null"
+            :releaseState="show.status"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -28,7 +33,14 @@
     </v-card-text>
     <v-container grid-list-lg fluid>
       <v-layout mt-5 row wrap justify-center justify-space-around>
-        <v-flex xs12 sm4 md3 lg2 v-for="season in show.seasons" :key="season.id">
+        <v-flex
+          xs12
+          sm4
+          md3
+          lg2
+          v-for="season in show.seasons"
+          :key="season.id"
+        >
           <SeasonCard :season="season" :show="show" />
         </v-flex>
       </v-layout>
@@ -44,20 +56,22 @@ import SeriesCard from "@/components/Series/SeriesCard";
 import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
+import MediaStats from "@/components/MediaStats.vue";
 
 export default {
   components: {
     SeasonCard,
     SeriesCard,
     Trailer,
-    Reviews
+    Reviews,
+    MediaStats,
   },
   data() {
     return {
       show: null,
       posterPath: require("@/assets/no-image.png"),
       trailerId: null,
-      reviews: []
+      reviews: [],
     };
   },
   methods: {
@@ -65,20 +79,21 @@ export default {
       let searchQuery = `${this.baseUrl}tv/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
       axios
         .get(searchQuery)
-        .then(response => {
+        .then((response) => {
           this.show = response.data;
+          console.log(this.show);
           this.posterPath = this.posterUrl + this.show.poster_path;
           if (this.show.videos.results.length > 0) {
             this.trailerId = this.show.videos.results[0].key;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
     async getReviews(id) {
       this.reviews = await TmdbService.getReviews("tv", id);
-    }
+    },
   },
   created() {
     this.getDetails(this.$route.params.id);
@@ -91,7 +106,7 @@ export default {
     "apiKey",
     "language",
     "media",
-    "posterUrlOrg"
-  ])
+    "posterUrlOrg",
+  ]),
 };
 </script>

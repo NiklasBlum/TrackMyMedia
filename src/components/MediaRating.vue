@@ -4,7 +4,7 @@
     size="40"
     width="5"
     :value="AverageVote * 10"
-    color="green"
+    :color="AverageVote * 10 >= 75 ? 'green' : 'red darken-1'"
   >
     {{ AverageVote * 10 }}
   </v-progress-circular>
@@ -13,7 +13,7 @@
 <script>
 export default {
   props: {
-    AverageVote: Number
-  }
+    AverageVote: Number,
+  },
 };
 </script>

@@ -5,11 +5,11 @@ export default {
       if (date.seconds) {
         return moment(date.seconds * 1000)
           .locale("de")
-          .format("LL");
+          .format("DD.MM.YYYY");
       } else {
         return moment(date)
           .locale("de")
-          .format("LL");
+          .format("DD.MM.YYYY");
       }
     }
   },
