@@ -2,45 +2,35 @@
   <v-card>
     <v-card-title>Login</v-card-title>
     <v-card-text>
-      <v-expansion-panels multiple>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Social Login</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-row align="center" justify="center">
-              <v-btn-toggle rounded>
-                <v-btn large color="red" @click="signInWithGoogle()">
-                  <v-icon>mdi-google</v-icon>
-                </v-btn>
-                <v-btn large color="blue" @click="signInWithFacebook()">
-                  <v-icon>mdi-facebook</v-icon>
-                </v-btn>
-              </v-btn-toggle>
-            </v-row>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            With Email
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-form>
-              <v-text-field
-                label="Email"
-                v-model="email"
-                required
-                :rules="[v => !!v || 'Email is required']"
-              />
-              <v-text-field
-                label="Password"
-                v-model="password"
-                type="password"
-                required
-                :rules="[v => !!v || 'Password is required']"
-              />
-            </v-form>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <v-row>
+        <v-col cols="12" class="text-center">
+          <v-btn rounded large color="red" @click="signInWithGoogle()">
+            <v-icon>mdi-google</v-icon>
+            Login with Google
+          </v-btn>
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <v-btn rounded large color="blue" @click="signInWithFacebook()">
+            <v-icon>mdi-facebook</v-icon>
+            Login with Facebook
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-form>
+        <v-text-field
+          label="Email"
+          v-model="email"
+          required
+          :rules="[(v) => !!v || 'Email is required']"
+        />
+        <v-text-field
+          label="Password"
+          v-model="password"
+          type="password"
+          required
+          :rules="[(v) => !!v || 'Password is required']"
+        />
+      </v-form>
     </v-card-text>
     <v-card-actions>
       <v-btn block :loading="loading" @click="signIn">Login</v-btn>
@@ -61,7 +51,7 @@ export default {
       email: null,
       password: null,
       isValid: false,
-      error: null
+      error: null,
     };
   },
   methods: {
@@ -75,7 +65,7 @@ export default {
           this.email = null;
           this.password = null;
         })
-        .catch(err => {
+        .catch((err) => {
           this.error = err.message;
         })
         .finally(() => {
@@ -99,7 +89,7 @@ export default {
         .then(() => {
           this.$router.replace("/");
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,7 +1,9 @@
 <template>
   <v-container fluid>
-    <v-card shaped>
-      <v-card-title>Authentication</v-card-title>
+    <v-card shaped color="blue darken-4">
+      <v-card-title>
+        <v-icon left>mdi-movie-open</v-icon>Track My Media
+      </v-card-title>
       <v-card-text>
         <v-tabs v-model="tabs" centered>
           <v-tab href="#login"> Login </v-tab>

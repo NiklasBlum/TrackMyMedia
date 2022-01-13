@@ -7,10 +7,10 @@
       :loading="loading"
       @click="removeFromWatchList"
     >
-      <v-icon>mdi-clock</v-icon>
+      <v-icon>mdi-clock-check</v-icon>
     </v-btn>
     <v-btn v-if="!onWatchlist" :loading="loading" @click="addToWatchlist">
-      <v-icon>mdi-clock</v-icon>
+      <v-icon>mdi-clock-plus</v-icon>
     </v-btn>
   </div>
 </template>

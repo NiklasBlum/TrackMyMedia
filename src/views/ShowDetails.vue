@@ -30,21 +30,37 @@
           <Reviews :reviews="reviews" />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header color="blue">
+                Staffeln
+              </v-expansion-panel-header>
+              <v-expansion-panel-content color="blue-grey darken-2">
+                <v-row justify="center">
+                  <v-col
+                    xs="12"
+                    sm="4"
+                    md="4"
+                    lg="2"
+                    v-for="season in show.seasons"
+                    :key="season.id"
+                  >
+                    <SeasonCard :season="season" :show="show" />
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-col>
+      </v-row>
     </v-card-text>
-    <v-container grid-list-lg fluid>
-      <v-layout mt-5 row wrap justify-center justify-space-around>
-        <v-flex
-          xs12
-          sm4
-          md3
-          lg2
-          v-for="season in show.seasons"
-          :key="season.id"
-        >
-          <SeasonCard :season="season" :show="show" />
-        </v-flex>
-      </v-layout>
-    </v-container>
+
+    <v-layout mt-5 row wrap justify-center justify-space-around>
+      <v-flex xs12 sm4 md3 lg2 v-for="season in show.seasons" :key="season.id">
+      </v-flex>
+    </v-layout>
   </v-card>
 </template>
 

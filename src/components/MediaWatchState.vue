@@ -9,7 +9,7 @@
       @click="setMediaAsNotWatched"
       :loading="loading"
     >
-      <v-icon>mdi-check-all</v-icon>
+      <v-icon>mdi-eye-check</v-icon>
       <small class="ms-1">{{ getGermanDate(watchedAt) }}</small>
     </v-btn>
     <v-btn
@@ -19,7 +19,7 @@
       @click="setMediaAsWatched"
       :loading="loading"
     >
-      <v-icon>mdi-check-bold</v-icon>
+      <v-icon>mdi-eye-plus</v-icon>
       <small class="ms-1">Add to history</small>
     </v-btn>
   </div>

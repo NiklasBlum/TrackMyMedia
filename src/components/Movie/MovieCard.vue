@@ -1,5 +1,7 @@
 <template>
-  <v-card :class="{ 'green darken-4': watched, 'blue-grey darken-4': !watched }">
+  <v-card
+    :class="{ 'green darken-4': watched, 'blue-grey darken-4': !watched }"
+  >
     <PosterImage
       :imagePath="movie.poster_path"
       :mediaType="'movie'"

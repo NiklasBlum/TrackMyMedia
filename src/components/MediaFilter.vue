@@ -11,7 +11,7 @@
     </v-btn>
     <v-btn value="tv">
       <v-icon left>mdi-television</v-icon>
-      Series
+      Show
     </v-btn>
   </v-btn-toggle>
 </template>
