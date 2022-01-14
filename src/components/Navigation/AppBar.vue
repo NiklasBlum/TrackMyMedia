@@ -18,7 +18,9 @@
         <v-icon left>{{ item.icon }}</v-icon>
         {{ item.title }}
       </v-btn>
-      <UserInfo />
+      <div class="ml-2">
+        <UserInfo />
+      </div>
     </v-app-bar>
     <v-navigation-drawer app class="cyan darken-4" v-model="sideNav" temporary>
       <v-list nav dense>
@@ -45,7 +47,7 @@ import UserInfo from "@/components/Navigation/UserInfo.vue";
 
 export default {
   components: {
-    UserInfo
+    UserInfo,
   },
   data() {
     return {
@@ -54,10 +56,10 @@ export default {
         { icon: "mdi-magnify", title: "Search", link: "/" },
         { icon: "mdi-file-find", title: "Discover", link: "/discover" },
         { icon: "mdi-fire", title: "Popular", link: "/popular" },
-        { icon: "mdi-clock", title: "Watchlist", link: "/watchlist" },
-        { icon: "mdi-check-all", title: "Watched", link: "/watched" }
-      ]
+        { icon: "mdi-clock-check", title: "Watchlist", link: "/watchlist" },
+        { icon: "mdi-eye-check", title: "Watched", link: "/watched" },
+      ],
     };
-  }
+  },
 };
 </script>

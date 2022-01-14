@@ -4,14 +4,13 @@
   >
     <PosterImage :imagePath="show.poster_path" :routePath="/show/ + show.id" />
     <v-list-item>
-       <v-list-item-avatar>
+      <v-list-item-avatar>
         <MediaRating :AverageVote="show.vote_average" />
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="title">{{ show.name }}</v-list-item-title>
         <v-list-item-subtitle>
           {{ getGermanDate(show.first_air_date) }}
-          {{ getGermanDate(watchedAt) }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -39,21 +38,18 @@ export default {
     CheckWatchList,
     MediaWatchState,
     PosterImage,
-    MediaRating
+    MediaRating,
   },
   props: {
     show: Object,
   },
   data() {
     return {
-      loading: false,
       watched: false,
-      watchedAt: null,
     };
   },
   methods: {
     getGermanDate(date) {
-      console.log(this.show);
       return dateFormatter.getGermanDate(date);
     },
   },

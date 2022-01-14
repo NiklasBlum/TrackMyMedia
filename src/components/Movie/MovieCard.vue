@@ -15,7 +15,6 @@
         <v-list-item-title class="title">{{ movie.title }}</v-list-item-title>
         <v-list-item-subtitle>
           {{ getGermanDate(movie.release_date) }}
-          <!-- {{ getHumanDate(watchedAt) }} -->
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -52,7 +51,6 @@ export default {
   data() {
     return {
       watched: false,
-      watchedAt: null,
     };
   },
   methods: {

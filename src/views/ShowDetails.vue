@@ -5,11 +5,11 @@
     </v-card-title>
     <v-card-text>
       <v-row>
-        <v-col cols="12" sm="4" md="3" lg="3">
+        <v-col cols="12" sm="6" md="3" lg="3">
           <SeriesCard :show="this.show" />
         </v-col>
         <v-col>
-          <v-card shaped class="black mb-3">
+          <v-card class="black mb-3">
             <v-card-title class="blue mb-3">Plot</v-card-title>
             <v-card-text>{{ this.show.overview }}</v-card-text>
           </v-card>
@@ -25,34 +25,31 @@
           <Trailer :trailerId="trailerId" />
         </v-col>
       </v-row>
+
       <v-row>
         <v-col>
-          <Reviews :reviews="reviews" />
+          <v-card class="black">
+            <v-card-title class="blue"> Staffeln </v-card-title>
+            <v-card-text>
+              <v-row justify="center">
+                <v-col
+                  xs="12"
+                  sm="4"
+                  md="4"
+                  lg="2"
+                  v-for="season in show.seasons"
+                  :key="season.id"
+                >
+                  <SeasonCard :season="season" :show="show" />
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header color="blue">
-                Staffeln
-              </v-expansion-panel-header>
-              <v-expansion-panel-content color="blue-grey darken-2">
-                <v-row justify="center">
-                  <v-col
-                    xs="12"
-                    sm="4"
-                    md="4"
-                    lg="2"
-                    v-for="season in show.seasons"
-                    :key="season.id"
-                  >
-                    <SeasonCard :season="season" :show="show" />
-                  </v-col>
-                </v-row>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+          <Reviews :reviews="reviews" />
         </v-col>
       </v-row>
     </v-card-text>

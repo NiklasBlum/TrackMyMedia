@@ -1,7 +1,11 @@
 <template>
   <v-hover>
     <template v-slot:default="{ hover }">
-      <v-img :src="posterFormattedUrl" :lazy-src="posterFormattedUrl" :aspect-ratio="16 / 9">
+      <v-img
+        :src="posterFormattedUrl"
+        :lazy-src="posterFormattedUrl"
+        :aspect-ratio="16 / 9"
+      >
         <template v-slot:placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
             <v-progress-circular indeterminate color="grey lighten-5" />
@@ -24,11 +28,11 @@ import { mapState } from "vuex";
 export default {
   props: {
     routePath: String,
-    imagePath: String
+    imagePath: String,
   },
   data() {
     return {
-      notFoundPic: require("@/assets/no-image.png")
+      notFoundPic: require("@/assets/no-image.png"),
       //Todo
       //router views
     };
@@ -39,7 +43,7 @@ export default {
       return this.imagePath != null
         ? this.posterUrl + this.imagePath
         : this.notFoundPic;
-    }
-  }
+    },
+  },
 };
 </script>

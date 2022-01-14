@@ -6,8 +6,12 @@
     />
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{ season.name }}</v-list-item-title>
-        <v-list-item-subtitle>{{ getGermanDate(season.air_date) }}</v-list-item-subtitle>
+        <v-list-item-title class="headline">
+          {{ season.name }}
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          {{ getGermanDate(season.air_date) }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-card-actions>
@@ -19,10 +23,15 @@
         @click="setSeasonAsNotWatched"
         :loading="loading"
       >
-        <v-icon large>mdi-check-all</v-icon>
+        <v-icon large>mdi-eye-check</v-icon>
       </v-btn>
-      <v-btn v-if="!watched" block @click="setSeasonAsWatched" :loading="loading">
-        <v-icon large>mdi-check-bold</v-icon>
+      <v-btn
+        v-if="!watched"
+        block
+        @click="setSeasonAsWatched"
+        :loading="loading"
+      >
+        <v-icon large>mdi-eye-plus</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -35,18 +44,18 @@ import dateFormatter from "@/dateFormatter";
 import PosterImage from "@/components/PosterImage.vue";
 export default {
   components: {
-    PosterImage
+    PosterImage,
   },
   props: {
     season: Object,
-    show: Object
+    show: Object,
   },
   data() {
     return {
       loading: false,
       watched: false,
       mySeason: null,
-      notFoundPic: require("@/assets/no-image.png")
+      notFoundPic: require("@/assets/no-image.png"),
     };
   },
   methods: {
@@ -57,8 +66,8 @@ export default {
       this.loading = true;
       this.dbRef
         .get()
-        .then(snapshot => {
-          snapshot.forEach(snapSeason => {
+        .then((snapshot) => {
+          snapshot.forEach((snapSeason) => {
             if (snapSeason.id == this.season.season_number) {
               let currentSeason = snapSeason.data();
               currentSeason.id = snapSeason.id;
@@ -77,7 +86,7 @@ export default {
       this.dbRef
         .doc(this.season.season_number.toString())
         .set({
-          finished: true
+          finished: true,
         })
         .then((this.watched = true))
         .finally(() => {
@@ -89,13 +98,13 @@ export default {
       this.dbRef
         .doc(this.season.season_number.toString())
         .update({
-          finished: false
+          finished: false,
         })
         .then((this.watched = false))
         .finally(() => {
           this.loading = false;
         });
-    }
+    },
   },
   created() {
     this.checkWatchStateSeason();
@@ -109,7 +118,7 @@ export default {
         .collection("tv")
         .doc(this.show.id.toString())
         .collection("seasons");
-    }
-  }
+    },
+  },
 };
 </script>

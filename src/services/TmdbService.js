@@ -4,24 +4,37 @@ import axios from "axios";
 export default {
     async getReviews(mediaType, id) {
         let searchQuery = `${store.state.baseUrl}${mediaType}/${id}/reviews?api_key=${store.state.apiKey}&language=en-US&page=1`;
-        let reviews = await axios.get(searchQuery);
+        let response = await axios.get(searchQuery);
 
-        if (reviews.data) {
-            return reviews.data.results;
+        if (response.data) {
+            return response.data.results;
         }
         return null;
     },
-    getDetails(mediaType, id) {
-        let searchQuery = `${this.baseUrl}${mediaType}/${id}?api_key=${store.state.apiKey}&language=${store.state.language}&append_to_response=videos`;
-        axios
-            .get(searchQuery)
-            .then(response => {
-                this.movie = response.data;
-                this.posterPath = this.posterUrl + this.movie.poster_path;
-                this.trailerId = this.movie.videos.results[0].key;
-            })
-            .catch(error => {
-                console.log(error);
-            });
+
+    async getEpisodes(showId, seasonNumber) {
+        let searchQuery = `${store.state.baseUrl}tv/${showId}/season/${seasonNumber}?api_key=${store.state.apiKey}&language=${store.state.language}`;
+
+        let response = await axios.get(searchQuery);
+        if (response.data) {
+            return response.data.episodes
+        }
+        return null;
     },
+
+    async getFreeStreamingProviders(mediaType, mediaId) {
+        let searchQuery = `${store.state.baseUrl}${mediaType}/${mediaId}/watch/providers?api_key=${store.state.apiKey}`;
+        console.log(searchQuery);
+        let response = await axios.get(searchQuery);
+        try {
+            if (response.data) {
+                return response.data.results.DE.flatrate;
+            }
+        } catch (error) {
+            return null;
+        }
+
+
+    },
+
 }

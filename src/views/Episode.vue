@@ -1,6 +1,11 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-row>
+      <v-col>
+        <v-chip class="secondary text-h4" large v-if="this.episodes != null">
+          <div text-h4>{{ this.episodes.length }} Folgen</div>
+        </v-chip>
+      </v-col>
       <v-col v-for="episode in episodes" :key="episode.id" cols="12">
         <EpisodeCard :episode="episode" />
       </v-col>
@@ -9,9 +14,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
 import EpisodeCard from "@/components/Series/EpisodeCard";
+import TmdbService from "@/services/TmdbService";
 
 export default {
   components: {
@@ -23,21 +28,13 @@ export default {
     };
   },
   methods: {
-    getDetails(params) {
-      let searchQuery = `${this.baseUrl}tv/${params.id}/season/${params.number}?api_key=${this.apiKey}&language=${this.language}`;
-      axios
-        .get(searchQuery)
-        .then((response) => {
-          this.episodes = response.data.episodes;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    async getEpisodes(showId, seasonNumber) {
+      this.episodes = await TmdbService.getEpisodes(showId, seasonNumber);
     },
   },
   computed: mapState(["baseUrl", "currentMedia", "apiKey", "language"]),
   created() {
-    this.getDetails(this.$route.params);
+    this.getEpisodes(this.$route.params.id, this.$route.params.number);
   },
 };
 </script>

@@ -1,44 +1,47 @@
 <template>
   <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
     <v-container fluid>
-      <v-layout row justify-center>
-        <v-flex xs12 sm5 md4 lg3 align-self-center grow>
+      <v-row justify="center">
+        <v-col xs="12" sm="5" md="4" lg="3" align-self="center">
           <PosterImage :imagePath="episode.still_path" />
-        </v-flex>
-        <v-flex xs12 sm12 md6 lg7>
+        </v-col>
+        <v-col xs="12" sm="12" md="6" lg="7">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="title">{{
-                episode.name
-              }}</v-list-item-title>
+              <v-list-item-title class="title">
+                {{ this.episode.episode_number }} | {{ episode.name }}
+              </v-list-item-title>
               <v-list-item-subtitle>
                 {{ getGermanDate(episode.air_date) }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-card-text>{{ this.episode.overview }}</v-card-text>
-        </v-flex>
-        <v-flex xs12 sm12 md2 lg2>
+        </v-col>
+        <v-col cols="12" xs="12" sm="12" md="2" lg="2">
           <v-btn
+            elevation="24"
             v-if="!watched"
             block
             height="100%"
             @click="setEpisodeAsWatched"
             :loading="loading"
           >
-            <v-icon large>mdi-check-all</v-icon>
+            <v-icon large>mdi-eye-plus</v-icon>
           </v-btn>
           <v-btn
+            elevation="24"
+            :class="{ 'cyan darken-4': watched, '': !watched }"
             v-if="watched"
             block
             height="100%"
             @click="setEpisodeAsNotWatched"
             :loading="loading"
           >
-            <v-icon large>mdi-cancel</v-icon>
+            <v-icon large>mdi-eye-check</v-icon>
           </v-btn>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-card>
 </template>
