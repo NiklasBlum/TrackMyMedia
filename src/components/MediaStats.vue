@@ -4,19 +4,19 @@
     <v-card-text>
       <v-container fluid>
         <v-row class="text-center">
-          <v-col v-if="id != null">
+          <v-col cols="12" v-if="id != null">
             <v-chip>
               <v-icon left>mdi-identifier</v-icon>
               {{ id }}
             </v-chip>
           </v-col>
-          <v-col v-if="runtime != null">
+          <v-col cols="12" v-if="runtime != null">
             <v-chip>
               <v-icon left>mdi-timer</v-icon>
               {{ runtime }} min
             </v-chip>
           </v-col>
-          <v-col v-if="releaseState != null">
+          <v-col cols="12" v-if="releaseState != null">
             <v-chip>
               <v-icon left>mdi-bell-ring-outline</v-icon>
               {{ releaseState }}

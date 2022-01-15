@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <AppBar v-if="user" />
-    <v-content>
+    <v-main>
       <v-container fluid>
         <keep-alive max="3">
           <router-view :key="$route.fullPath"/>
         </keep-alive>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

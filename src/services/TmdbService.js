@@ -24,7 +24,7 @@ export default {
 
     async getFreeStreamingProviders(mediaType, mediaId) {
         let searchQuery = `${store.state.baseUrl}${mediaType}/${mediaId}/watch/providers?api_key=${store.state.apiKey}`;
-        console.log(searchQuery);
+
         let response = await axios.get(searchQuery);
         try {
             if (response.data) {
@@ -33,8 +33,5 @@ export default {
         } catch (error) {
             return null;
         }
-
-
     },
-
 }

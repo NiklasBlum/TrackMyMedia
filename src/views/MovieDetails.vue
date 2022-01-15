@@ -5,27 +5,21 @@
     </v-card-title>
     <v-card-text>
       <v-row justify="center">
-        <v-col cols="12" sm="6" md="5" lg="3">
+        <v-col cols="12" sm="5" md="6" lg="4">
           <MovieCard :movie="movie" />
         </v-col>
-        <v-col cols="12" sm="6">
-          <v-card class="black mb-3">
-            <v-card-title class="blue mb-3">Plot</v-card-title>
-            <v-card-text>{{ this.movie.overview }}</v-card-text>
-          </v-card>
+        <v-col cols="12" sm="7" md="6" lg="4">
+          <Plot :description="this.movie.overview" />
         </v-col>
-        <v-col>
+        <v-col cols="12" sm="12" md="6" lg="2">
           <MediaStats
             :runtime="movie.runtime"
             :releaseState="movie.status"
             :id="movie.id"
           />
         </v-col>
-        <v-col v-if="this.movie != null">
-          <MediaStreamingProvider
-            :mediaType="'movie'"
-            :mediaId="this.movie.id"
-          />
+        <v-col cols="12" md="6" lg="2" v-if="this.freeStreamingProviders">
+          <MediaStreamingProvider :providers="this.freeStreamingProviders" />
         </v-col>
       </v-row>
 
@@ -52,6 +46,8 @@ import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
 import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
+import Plot from "@/components/Plot.vue";
+
 export default {
   components: {
     MovieCard,
@@ -59,6 +55,7 @@ export default {
     Trailer,
     Reviews,
     MediaStreamingProvider,
+    Plot,
   },
   data() {
     return {
@@ -68,11 +65,13 @@ export default {
       trailer: false,
       trailerId: null,
       reviews: [],
+      freeStreamingProviders: null,
     };
   },
   created() {
     this.getDetails(this.$route.params.id);
     this.getReviews(this.$route.params.id);
+    this.getFreeStreamingProviders(this.$route.params.id);
   },
   methods: {
     getDetails(id) {
@@ -88,8 +87,14 @@ export default {
           console.log(error);
         });
     },
-    async getReviews(id) {
-      this.reviews = await TmdbService.getReviews("movie", id);
+    async getReviews(movieId) {
+      this.reviews = await TmdbService.getReviews("movie", movieId);
+    },
+    async getFreeStreamingProviders(movieId) {
+      this.freeStreamingProviders = await TmdbService.getFreeStreamingProviders(
+        "movie",
+        movieId
+      );
     },
   },
   computed: mapState([

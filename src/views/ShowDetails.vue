@@ -9,10 +9,9 @@
           <SeriesCard :show="this.show" />
         </v-col>
         <v-col>
-          <v-card class="black mb-3">
-            <v-card-title class="blue mb-3">Plot</v-card-title>
-            <v-card-text>{{ this.show.overview }}</v-card-text>
-          </v-card>
+          <Plot :description="this.show.overview" />
+        </v-col>
+        <v-col cols="5">
           <MediaStats
             :id="show.id"
             :runtime="null"
@@ -70,6 +69,7 @@ import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
 import MediaStats from "@/components/MediaStats.vue";
+import Plot from "@/components/Plot.vue";
 
 export default {
   components: {
@@ -78,6 +78,7 @@ export default {
     Trailer,
     Reviews,
     MediaStats,
+    Plot,
   },
   data() {
     return {
