@@ -7,14 +7,14 @@
     </v-row>
     <div v-if="currentMedia === 'tv'">
       <v-row>
-        <v-col sm="6" md="4" lg="3" v-for="show in media" :key="show.id">
+        <v-col sm="6" md="3" lg="3" v-for="show in media" :key="show.id">
           <SeriesCard :show="show" />
         </v-col>
       </v-row>
     </div>
     <div v-if="currentMedia === 'movie'">
       <v-row class="align-center justify-space-around">
-        <v-col sm="6" md="4" lg="3" v-for="movie in media" :key="movie.id">
+        <v-col sm="6" md="3" lg="3" v-for="movie in media" :key="movie.id">
           <MovieCard :movie="movie" />
         </v-col>
       </v-row>
@@ -38,13 +38,13 @@ export default {
     MovieCard,
     SeriesCard,
     MediaFilter,
-    Pagination
+    Pagination,
   },
   data() {
     return {
       media: null,
       showPagination: false,
-      page: 1
+      page: 1,
     };
   },
   methods: {
@@ -58,17 +58,17 @@ export default {
       let searchQuery = `${this.baseUrl}${this.currentMedia}/popular?api_key=${this.apiKey}&language=${this.language}&page=${this.page}`;
       axios
         .get(searchQuery)
-        .then(response => {
+        .then((response) => {
           this.media = response.data.results;
         })
         .finally(() => {
           this.showPagination = true;
         });
-    }
+    },
   },
   created() {
     this.getPopular();
   },
-  computed: mapState(["baseUrl", "apiKey", "currentMedia", "language"])
+  computed: mapState(["baseUrl", "apiKey", "currentMedia", "language"]),
 };
 </script>

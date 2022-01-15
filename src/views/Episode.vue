@@ -1,16 +1,18 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-row>
+  <div>
+    <v-row dense>
       <v-col>
-        <v-chip class="secondary text-h4" large v-if="this.episodes != null">
-          <div text-h4>{{ this.episodes.length }} Folgen</div>
+        <v-chip class="secondary text-h5" large v-if="this.episodes != null">
+          {{ this.episodes.length }} Folgen
         </v-chip>
       </v-col>
+    </v-row>
+    <v-row dense>
       <v-col v-for="episode in episodes" :key="episode.id" cols="12">
         <EpisodeCard :episode="episode" />
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

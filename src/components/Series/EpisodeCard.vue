@@ -1,24 +1,33 @@
 <template>
-  <v-card :class="{ 'cyan darken-4': watched, '': !watched }">
+  <v-card :class="{ 'cyan darken-4': watched, 'blue-grey darken-4': !watched }">
     <v-container fluid>
       <v-row justify="center">
-        <v-col xs="12" sm="5" md="4" lg="3" align-self="center">
+        <v-col xs="12" sm="5" md="4" lg="2" align-self="center">
           <PosterImage :imagePath="episode.still_path" />
         </v-col>
-        <v-col xs="12" sm="12" md="6" lg="7">
+        <v-col xs="12" sm="12" md="6" lg="8">
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="title">
-                {{ this.episode.episode_number }} | {{ episode.name }}
+                Folge {{ this.episode.episode_number }}
               </v-list-item-title>
               <v-list-item-subtitle>
-                {{ getGermanDate(episode.air_date) }}
+                Erschienen am {{ getGermanDate(episode.air_date) }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-card-text>{{ this.episode.overview }}</v-card-text>
+          <v-expansion-panels>
+            <v-expansion-panel class="">
+              <v-expansion-panel-header>
+                {{ episode.name }}
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                {{ this.episode.overview }}
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-col>
-        <v-col cols="12" xs="12" sm="12" md="2" lg="2">
+        <v-col xs="12" sm="12" md="2" lg="2">
           <v-btn
             elevation="24"
             v-if="!watched"
@@ -60,6 +69,7 @@ export default {
   },
   data() {
     return {
+      panel: [0],
       loading: false,
       watched: null,
       showId: this.$route.params.id,

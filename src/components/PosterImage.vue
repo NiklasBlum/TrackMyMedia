@@ -7,7 +7,7 @@
         :aspect-ratio="16 / 9"
       >
         <template v-slot:placeholder>
-          <v-row class="fill-height ma-0" align="center" justify="center">
+          <v-row class="ma-0" align="center" justify="center">
             <v-progress-circular indeterminate color="grey lighten-5" />
           </v-row>
         </template>
@@ -33,8 +33,6 @@ export default {
   data() {
     return {
       notFoundPic: require("@/assets/no-image.png"),
-      //Todo
-      //router views
     };
   },
   computed: {
