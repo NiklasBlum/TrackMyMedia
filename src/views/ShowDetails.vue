@@ -30,8 +30,9 @@
           <v-card class="black">
             <v-card-title class="blue"> Staffeln </v-card-title>
             <v-card-text>
-              <v-row justify="center">
+              <v-row justify="center" class="px-3 py-3">
                 <v-col
+                cols="6"
                   xs="12"
                   sm="4"
                   md="4"

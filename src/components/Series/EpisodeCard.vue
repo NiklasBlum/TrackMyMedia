@@ -2,10 +2,10 @@
   <v-card :class="{ 'cyan darken-4': watched, 'blue-grey darken-4': !watched }">
     <v-container fluid>
       <v-row justify="center">
-        <v-col xs="12" sm="5" md="4" lg="2" align-self="center">
+        <v-col cols="12" xs="12" sm="5" md="4" lg="2" align-self="center">
           <PosterImage :imagePath="episode.still_path" />
         </v-col>
-        <v-col xs="12" sm="12" md="6" lg="8">
+        <v-col cols="12" xs="12" sm="12" md="6" lg="8">
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="title">
@@ -27,7 +27,7 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </v-col>
-        <v-col xs="12" sm="12" md="2" lg="2">
+        <v-col cols="12" xs="12" sm="12" md="2" lg="2">
           <v-btn
             elevation="24"
             v-if="!watched"
@@ -85,7 +85,6 @@ export default {
         .get()
         .then((snapshot) => {
           snapshot.forEach((snapEpisode) => {
-            console.log(snapEpisode);
             if (snapEpisode.id == this.episode.episode_number.toString()) {
               this.watched = true;
             }

@@ -5,59 +5,62 @@
         <MediaFilter @currentMediaChanged="getMedia" />
       </v-col>
     </v-row>
-
-    <v-row align="center">
-      <v-col xs="6" sm="3">
-        <v-select
-          solo
-          light
-          rounded
-          hide-details
-          :items="years"
-          v-model="year"
-          item-text="name"
-          item-value="id"
-          label="Year"
-        />
-      </v-col>
-      <v-col>
-        <v-select
-          solo
-          light
-          rounded
-          hide-details
-          :items="genres"
-          v-model="genre"
-          item-text="name"
-          item-value="id"
-          label="Genre"
-        />
-      </v-col>
-      <v-col>
-        <v-select
-          solo
-          light
-          hide-details
-          rounded
-          :items="sortBy"
-          v-model="sortFilter"
-          item-text="name"
-          item-value="param"
-          label="Sorting"
-        />
-      </v-col>
-      <v-col>
-        <v-btn
-          rounded
-          block
-          @click="getMedia"
-          :loading="loading"
-          color="cyan darken-4"
-        >
-          <v-icon left>mdi-magnify</v-icon>Search
-        </v-btn>
-      </v-col>
-    </v-row>
+    <div class="my-3">
+      <v-sheet rounded elevation="10" class="grey darken-2">
+        <v-row align="center" class="px-3">
+          <v-col cols="12" xs="12" sm="6" md="3">
+            <v-select
+              solo
+              light
+              rounded
+              hide-details
+              :items="years"
+              v-model="year"
+              item-text="name"
+              item-value="id"
+              label="Year"
+            />
+          </v-col>
+          <v-col cols="12" xs="12" sm="6" md="3">
+            <v-select
+              solo
+              light
+              rounded
+              hide-details
+              :items="genres"
+              v-model="genre"
+              item-text="name"
+              item-value="id"
+              label="Genre"
+            />
+          </v-col>
+          <v-col cols="12" xs="12" sm="6" md="3">
+            <v-select
+              solo
+              light
+              hide-details
+              rounded
+              :items="sortBy"
+              v-model="sortFilter"
+              item-text="name"
+              item-value="param"
+              label="Sorting"
+            />
+          </v-col>
+          <v-col>
+            <v-btn
+              rounded
+              block
+              @click="getMedia"
+              :loading="loading"
+              color="cyan darken-4"
+            >
+              <v-icon left>mdi-magnify</v-icon>Search
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-sheet>
+    </div>
 
     <div v-if="currentMedia === 'tv'">
       <v-row>
@@ -73,7 +76,7 @@
         </v-col>
       </v-row>
     </div>
-    <v-layout mt-4>
+    <v-layout mt-4 justify-center>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
   </div>

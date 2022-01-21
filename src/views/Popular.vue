@@ -19,7 +19,7 @@
         </v-col>
       </v-row>
     </div>
-    <v-layout mt-5>
+    <v-layout mt-5 justify-center>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
   </div>
