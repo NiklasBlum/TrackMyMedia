@@ -17,7 +17,9 @@ export default {
                     tmdbId: media.id,
                     mediaType: mediaType,
                     title: mediaType == 'movie' ? media.title : media.name,
-                    onWatchlist: onWatchlist
+                    onWatchlist: onWatchlist,
+                    watched: false,
+                    watchedAt: null
                 })
             }
             else {
@@ -62,6 +64,50 @@ export default {
             }
         } catch (error) {
             console.log('Error when settings User: ', error);
+        }
+    },
+
+    async getMediaWatchState(mediaId, mediaType) {
+        const query = db.collection("media")
+            .where("userId", "==", store.state.user.uid)
+            .where("tmdbId", "==", mediaId)
+            .where("mediaType", "==", mediaType);
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                return {
+                    watched: false,
+                    watchedAt: null
+                }
+            }
+            return {
+                watched: querySnapshot.docs[0].data().watched,
+                watchedAt: querySnapshot.docs[0].data().watchedAt
+            }
+        } catch (error) {
+            console.log('Error getting watchlist: ', error);
+        }
+    },
+
+    async setMediaWatchState(mediaId, mediaType) {
+        const query = db.collection("media")
+            .where("userId", "==", store.state.user.uid)
+            .where("tmdbId", "==", mediaId)
+            .where("mediaType", "==", mediaType);
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                return {
+                    watched: false,
+                    watchedAt: null
+                }
+            }
+            return {
+                watched: querySnapshot.docs[0].data().watched,
+                watchedAt: querySnapshot.docs[0].data().watchedAt
+            }
+        } catch (error) {
+            console.log('Error getting watchlist: ', error);
         }
     }
 }

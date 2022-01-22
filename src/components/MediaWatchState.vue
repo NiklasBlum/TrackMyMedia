@@ -55,6 +55,8 @@
 import { mapState } from "vuex";
 import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
+import FirestoreService from "@/services/FirestoreService.js";
+
 export default {
   props: {
     media: Object,
@@ -74,19 +76,12 @@ export default {
     },
     checkMediaWatchState() {
       this.loading = true;
-      this.dbRef
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((snapItem) => {
-            if (snapItem.id == this.media.id.toString()) {
-              this.watched = snapItem.data().watched;
-              this.watchedAt = snapItem.data().watchedAt;
-            }
-          });
+      FirestoreService.getMediaWatchState(this.media.id, this.mediaType)
+        .then((res) => {
+          console.log(res.watchedAt);
+          (this.watched = res.watched), (this.watchedAt = res.watchedAt);
         })
-        .finally(() => {
-          this.loading = false;
-        });
+        .finally(() => (this.loading = false));
     },
     setMediaAsWatched() {
       let mediaTitle;
