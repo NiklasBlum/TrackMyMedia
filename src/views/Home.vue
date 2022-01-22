@@ -23,24 +23,17 @@
         />
       </v-col>
     </v-row>
-    <div v-if="currentMedia === 'movie' && searchText !== ''">
+    <div v-if="searchText !== ''">
       <v-row>
         <v-col
           sm="6"
           md="4"
           lg="3"
           xl="2"
-          v-for="movie in media"
-          :key="movie.id"
+          v-for="mediaItem in media"
+          :key="mediaItem.id"
         >
-          <MovieCard :movie="movie" />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-if="currentMedia === 'tv' && searchText !== ''">
-      <v-row>
-        <v-col sm="6" md="4" lg="3" xl="2" v-for="show in media" :key="show.id">
-          <SeriesCard :show="show" />
+          <MediaCard :media="mediaItem" :mediaType="currentMedia" />
         </v-col>
       </v-row>
     </div>
@@ -49,16 +42,14 @@
 
 <script>
 import axios from "axios";
-import MovieCard from "@/components/Movie/MovieCard.vue";
-import SeriesCard from "@/components/Series/SeriesCard.vue";
 import MediaFilter from "@/components/MediaFilter";
+import MediaCard from "@/components/MediaCard";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    MovieCard,
-    SeriesCard,
     MediaFilter,
+    MediaCard,
   },
   data() {
     return {

@@ -5,11 +5,11 @@
       light
       color="cyan"
       :loading="loading"
-      @click="removeFromWatchList"
+      @click="setWatchlist(false)"
     >
       <v-icon>mdi-clock-check</v-icon>
     </v-btn>
-    <v-btn v-if="!onWatchlist" :loading="loading" @click="addToWatchlist">
+    <v-btn v-if="!onWatchlist" :loading="loading" @click="setWatchlist(true)">
       <v-icon>mdi-clock-plus</v-icon>
     </v-btn>
   </div>
@@ -31,37 +31,23 @@ export default {
     };
   },
   methods: {
-    checkWatchList() {
+    getWatchList() {
       this.loading = true;
-      FirestoreService.getIsOnWatchlist(this.media.id, this.mediaType)
+      FirestoreService.getWatchlistState(this.media.id, this.mediaType)
         .then((onWatchlist) => {
           this.onWatchlist = onWatchlist;
         })
         .finally(() => (this.loading = false));
     },
-    addToWatchlist() {
+    setWatchlist(setState) {
       this.loading = true;
-      FirestoreService.setMediaWatchlistState(
-        this.media.id,
-        this.mediaType,
-        true
-      )
-        .then((this.onWatchlist = true))
-        .finally(() => (this.loading = false));
-    },
-    removeFromWatchList() {
-      this.loading = true;
-      FirestoreService.setMediaWatchlistState(
-        this.media.id,
-        this.mediaType,
-        false
-      )
-        .then((this.onWatchlist = false))
+      FirestoreService.setWatchlistState(this.media, this.mediaType, setState)
+        .then((this.onWatchlist = setState))
         .finally(() => (this.loading = false));
     },
   },
   created() {
-    this.checkWatchList();
+    this.getWatchList();
   },
   computed: {
     ...mapState(["user"]),

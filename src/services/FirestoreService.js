@@ -3,29 +3,38 @@ import store from "@/store"
 
 export default {
 
-    setMediaWatchlistState(mediaId, mediaType, onWatchlist) {
-        return db.collection("users")
-            .doc(store.state.user.uid)
-            .collection("watchlist")
-            .doc(mediaId.toString())
-            .set({
-                media_type: mediaType,
-                watchlist: onWatchlist,
-                media_id: mediaId
-            })
-            .catch((error) => {
-                console.error("error settingWatchlistState: ", error);
-            });
+    async setWatchlistState(media, mediaType, onWatchlist) {
+        const query = db.collection("media")
+            .where("userId", "==", store.state.user.uid)
+            .where("tmdbId", "==", media.id)
+            .where("mediaType", "==", mediaType);
+
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                db.collection("media").add({
+                    userId: store.state.user.uid,
+                    tmdbId: media.id,
+                    mediaType: mediaType,
+                    title: mediaType == 'movie' ? media.title : media.name,
+                    onWatchlist: onWatchlist
+                })
+            }
+            else {
+                db.collection("media").doc(querySnapshot.docs[0].id).update({
+                    onWatchlist: onWatchlist
+                })
+            }
+        } catch (error) {
+            console.log('Error getting watchlist: ', error);
+        }
     },
 
-    async getIsOnWatchlist(mediaId, mediaType) {
-        const query = db.collection("users")
-            .doc(store.state.user.uid)
-            .collection("watchlist")
-            .where("watchlist", "==", true)
-            .where("media_id", "==", mediaId)
-            .where("media_type", "==", mediaType);
-
+    async getWatchlistState(mediaId, mediaType) {
+        const query = db.collection("media")
+            .where("userId", "==", store.state.user.uid)
+            .where("tmdbId", "==", mediaId)
+            .where("mediaType", "==", mediaType);
         try {
             const querySnapshot = await query.get();
             if (querySnapshot.empty) {
@@ -36,6 +45,23 @@ export default {
             }
         } catch (error) {
             console.log('Error getting watchlist: ', error);
+        }
+    },
+
+    async createUserIfNotExists() {
+        const query = db.collection("user").where("userId", "==", store.state.user.uid);
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                db.collection("user").add({
+                    userId: store.state.user.uid,
+                    name: store.state.user.displayName,
+                    email: store.state.user.email,
+                    firstLogin: new Date(Date.now()),
+                })
+            }
+        } catch (error) {
+            console.log('Error when settings User: ', error);
         }
     }
 }
