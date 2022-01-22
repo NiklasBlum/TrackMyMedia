@@ -1,29 +1,56 @@
 <template>
   <div>
-    <v-btn
-      class="px-2"
-      v-if="watched"
-      light
-      color="green accent-4"
-      @click="setMediaAsNotWatched"
-      :loading="loading"
+    <v-menu
+      v-model="menu"
+      :close-on-content-click="false"
+      :nudge-width="200"
+      offset-x
     >
-      <v-icon>mdi-eye-check</v-icon>
-      <small class="ms-1">{{ getGermanDate(watchedAt) }}</small>
-    </v-btn>
-    <v-btn
-      class="px-2"
-      v-if="!watched"
-      dark
-      @click="setMediaAsWatched"
-      :loading="loading"
-    >
-      <v-icon>mdi-eye-plus</v-icon>
-      <small class="ms-1">Add to history</small>
-    </v-btn>
+      <template v-slot:activator="{ on, attrs }">
+        <div class="split-btn">
+          <v-btn v-if="!watched" @click="setMediaAsWatched" :loading="loading">
+            <v-icon left>mdi-eye-check</v-icon>
+            <small>Add to History</small>
+          </v-btn>
+          <v-btn
+            v-if="watched"
+            color="green accent-4"
+            @click="setMediaAsNotWatched"
+            :loading="loading"
+          >
+            <v-icon left>mdi-eye-check</v-icon>
+            <small>{{ getGermanDate(watchedAt) }}</small>
+          </v-btn>
+          <v-btn class="actions-btn secondary" v-on="on" v-bind="attrs">
+            <v-icon>mdi-calendar-clock</v-icon>
+          </v-btn>
+        </div>
+      </template>
+      <v-card class="teal">
+        <div class="text-center">When did you watch this?</div>
+        <v-divider></v-divider>
+        <v-list align="center" class="teal">
+          <v-btn>Now</v-btn>
+          <v-btn>Specific date</v-btn>
+          <v-btn>Now</v-btn>
+        </v-list>
+      </v-card>
+    </v-menu>
   </div>
 </template>
 
+<style>
+.actions-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0 !important;
+  min-width: 35px !important;
+  margin-left: -3.5px;
+}
+.split-btn {
+  display: inline-block;
+}
+</style>
 <script>
 import { mapState } from "vuex";
 import db from "@/firebase/config";

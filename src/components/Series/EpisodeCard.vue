@@ -96,6 +96,7 @@ export default {
     },
     setEpisodeAsWatched() {
       this.loading = true;
+
       this.dbRef
         .doc(this.episode.episode_number.toString())
         .set({})
