@@ -4,8 +4,7 @@
       class="px-2"
       v-if="watched"
       light
-      color="green accent-4
-"
+      color="green accent-4"
       @click="setMediaAsNotWatched"
       :loading="loading"
     >

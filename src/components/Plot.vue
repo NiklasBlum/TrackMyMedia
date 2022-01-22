@@ -1,7 +1,7 @@
 <template>
-  <v-card class="black mb-3">
-    <v-card-title class="blue mb-3">Plot</v-card-title>
-    <v-card-text>{{ this.description }}</v-card-text>
+  <v-card class="black">
+    <v-card-title class="blue">Plot</v-card-title>
+    <v-card-text class="pt-3">{{ this.description }} </v-card-text>
   </v-card>
 </template>
 

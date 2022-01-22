@@ -5,18 +5,21 @@
     </v-card-title>
     <v-card-text>
       <v-row>
-        <v-col cols="12" sm="6" md="3" lg="3">
+        <v-col cols="12" sm="5" md="6" lg="4">
           <SeriesCard :show="this.show" />
         </v-col>
-        <v-col>
+        <v-col cols="12" sm="7" md="6" lg="4">
           <Plot :description="this.show.overview" />
         </v-col>
-        <v-col cols="5">
+        <v-col cols="12" sm="6" md="6" lg="2">
           <MediaStats
             :id="show.id"
             :runtime="null"
             :releaseState="show.status"
           />
+        </v-col>
+        <v-col cols="12" sm="6" md="6" lg="2" v-if="this.freeStreamingProviders">
+          <MediaStreamingProvider :providers="this.freeStreamingProviders" />
         </v-col>
       </v-row>
       <v-row>
@@ -30,9 +33,9 @@
           <v-card class="black">
             <v-card-title class="blue"> Staffeln </v-card-title>
             <v-card-text>
-              <v-row justify="center" class="px-3 py-3">
+              <v-row justify="center" class="pt-3">
                 <v-col
-                cols="6"
+                  cols="6"
                   xs="12"
                   sm="4"
                   md="4"
@@ -71,6 +74,7 @@ import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
 import MediaStats from "@/components/MediaStats.vue";
 import Plot from "@/components/Plot.vue";
+import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
 
 export default {
   components: {
@@ -80,6 +84,7 @@ export default {
     Reviews,
     MediaStats,
     Plot,
+    MediaStreamingProvider,
   },
   data() {
     return {
@@ -87,6 +92,7 @@ export default {
       posterPath: require("@/assets/no-image.png"),
       trailerId: null,
       reviews: [],
+      freeStreamingProviders: null,
     };
   },
   methods: {
@@ -109,10 +115,17 @@ export default {
     async getReviews(id) {
       this.reviews = await TmdbService.getReviews("tv", id);
     },
+    async getFreeStreamingProviders(showId) {
+      this.freeStreamingProviders = await TmdbService.getFreeStreamingProviders(
+        "tv",
+        showId
+      );
+    },
   },
   created() {
     this.getDetails(this.$route.params.id);
     this.getReviews(this.$route.params.id);
+    this.getFreeStreamingProviders(this.$route.params.id);
   },
   computed: mapState([
     "baseUrl",

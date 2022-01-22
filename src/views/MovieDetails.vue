@@ -45,8 +45,8 @@ import MediaStats from "@/components/MediaStats.vue";
 import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
-import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
 import Plot from "@/components/Plot.vue";
+import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
 
 export default {
   components: {
@@ -54,8 +54,8 @@ export default {
     MediaStats,
     Trailer,
     Reviews,
-    MediaStreamingProvider,
     Plot,
+    MediaStreamingProvider,
   },
   data() {
     return {
