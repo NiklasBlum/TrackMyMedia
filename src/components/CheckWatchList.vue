@@ -16,68 +16,55 @@
 </template>
 
 <script>
-import db from "@/firebase/config";
 import { mapState } from "vuex";
+import FirestoreService from "@/services/FirestoreService.js";
 
 export default {
   props: {
     media: Object,
-    mediaType: String
+    mediaType: String,
   },
   data() {
     return {
       loading: false,
-      onWatchlist: false
+      onWatchlist: false,
     };
   },
   methods: {
     checkWatchList() {
       this.loading = true;
-      this.dbRef
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(snap => {
-            if (snap.id == this.media.id.toString()) {
-              this.onWatchlist = snap.data().watchlist;
-            }
-          });
+      FirestoreService.getIsOnWatchlist(this.media.id, this.mediaType)
+        .then((onWatchlist) => {
+          this.onWatchlist = onWatchlist;
         })
         .finally(() => (this.loading = false));
     },
     addToWatchlist() {
       this.loading = true;
-      this.dbRef
-        .doc(this.media.id.toString())
-        .set({
-          media_type: this.mediaType,
-          watchlist: true,
-          media_id: this.media.id
-        })
+      FirestoreService.setMediaWatchlistState(
+        this.media.id,
+        this.mediaType,
+        true
+      )
         .then((this.onWatchlist = true))
         .finally(() => (this.loading = false));
     },
     removeFromWatchList() {
       this.loading = true;
-      this.dbRef
-        .doc(this.media.id.toString())
-        .update({
-          watchlist: false
-        })
+      FirestoreService.setMediaWatchlistState(
+        this.media.id,
+        this.mediaType,
+        false
+      )
         .then((this.onWatchlist = false))
         .finally(() => (this.loading = false));
-    }
+    },
   },
   created() {
     this.checkWatchList();
   },
   computed: {
     ...mapState(["user"]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("watchlist");
-    }
-  }
+  },
 };
 </script>

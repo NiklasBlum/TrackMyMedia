@@ -52,14 +52,14 @@ export default {
   data() {
     return {
       fireBaseMedia: [],
-      tmdbMedia: [],
+      tmdbMedia: []
     };
   },
   methods: {
     getMediaFromFireStore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      this.dbRef.get().then((snapshot) => {
+      this.dbRef.get().then(snapshot => {
         snapshot.forEach((doc) => {
           if (doc.data().watched == true) {
             this.fireBaseMedia.push(doc.data());

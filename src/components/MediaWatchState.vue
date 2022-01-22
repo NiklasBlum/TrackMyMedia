@@ -65,6 +65,7 @@ export default {
       loading: false,
       watched: false,
       watchedAt: null,
+      menu: null,
     };
   },
   methods: {

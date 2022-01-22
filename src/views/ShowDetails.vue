@@ -108,7 +108,7 @@ export default {
             this.trailerId = this.show.videos.results[0].key;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -134,7 +134,7 @@ export default {
     "apiKey",
     "language",
     "media",
-    "posterUrlOrg",
+    "posterUrlOrg"
   ]),
 };
 </script>
