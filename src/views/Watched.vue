@@ -5,34 +5,18 @@
         <MediaFilter @currentMediaChanged="getMediaFromFireStore" />
       </v-col>
     </v-row>
-    <div v-if="currentMedia === 'tv'">
-      <v-row>
-        <v-col
-          sm="6"
-          md="4"
-          lg="3"
-          xl="2"
-          v-for="show in tmdbMedia"
-          :key="show.id"
-        >
-          <SeriesCard :show="show" />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-if="currentMedia === 'movie'">
-      <v-row class="align-center justify-space-around">
-        <v-col
-          sm="6"
-          md="4"
-          lg="3"
-          xl="2"
-          v-for="movie in tmdbMedia"
-          :key="movie.id"
-        >
-          <MovieCard :movie="movie" />
-        </v-col>
-      </v-row>
-    </div>
+    <v-row class="align-center justify-space-around">
+      <v-col
+        sm="6"
+        md="4"
+        lg="3"
+        xl="2"
+        v-for="mediaItem in tmdbMedia"
+        :key="mediaItem.id"
+      >
+        <MediaCard :media="mediaItem" :mediaType="currentMedia" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -40,26 +24,25 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import db from "@/firebase/config";
-import MovieCard from "@/components/Movie/MovieCard.vue";
-import SeriesCard from "@/components/Series/SeriesCard.vue";
 import MediaFilter from "@/components/MediaFilter.vue";
+import MediaCard from "@/components/MediaCard.vue";
 export default {
   components: {
-    MovieCard,
-    SeriesCard,
     MediaFilter,
+    MediaCard,
   },
   data() {
     return {
       fireBaseMedia: [],
-      tmdbMedia: []
+      tmdbMedia: [],
     };
   },
   methods: {
+    //TODO: new Firebase method to get all media Ids where watched=true
     getMediaFromFireStore() {
       this.tmdbMedia = [];
       this.fireBaseMedia = [];
-      this.dbRef.get().then(snapshot => {
+      this.dbRef.get().then((snapshot) => {
         snapshot.forEach((doc) => {
           if (doc.data().watched == true) {
             this.fireBaseMedia.push(doc.data());
@@ -68,6 +51,7 @@ export default {
         });
       });
     },
+    //TODO: auslagern in TmdbService
     getMediaFromTmdb(id) {
       let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios

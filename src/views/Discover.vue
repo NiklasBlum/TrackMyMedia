@@ -61,22 +61,20 @@
         </v-row>
       </v-sheet>
     </div>
-
-    <div v-if="currentMedia === 'tv'">
+    <div>
       <v-row>
-        <v-col sm="6" md="4" lg="3" v-for="show in media" :key="show.id">
-          <SeriesCard :show="show" />
+        <v-col
+          sm="6"
+          md="4"
+          lg="3"
+          v-for="mediaItem in media"
+          :key="mediaItem.id"
+        >
+          <MediaCard :media="mediaItem" :mediaType="currentMedia" />
         </v-col>
       </v-row>
     </div>
-    <div v-if="currentMedia === 'movie'">
-      <v-row class="align-center justify-space-around">
-        <v-col sm="6" md="4" lg="3" v-for="movie in media" :key="movie.id">
-          <MovieCard :movie="movie" />
-        </v-col>
-      </v-row>
-    </div>
-    <v-layout mt-4 justify-center>
+    <v-layout mt-4 justify-center v-if="this.media">
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
   </div>
@@ -86,14 +84,12 @@
 import axios from "axios";
 import Pagination from "@/components/Navigation/Pagination";
 import MediaFilter from "@/components/MediaFilter";
-import MovieCard from "@/components/Movie/MovieCard.vue";
-import SeriesCard from "@/components/Series/SeriesCard.vue";
+import MediaCard from "@/components/MediaCard.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    MovieCard,
-    SeriesCard,
+    MediaCard,
     MediaFilter,
     Pagination,
   },
@@ -159,7 +155,9 @@ export default {
       axios
         .get(this.searchQuery)
         .then((response) => {
-          this.media = response.data.results;
+          this.media =
+            response.data.results.length == 0 ? null : response.data.results;
+          console.log(this.media);
         })
         .finally(() => {
           this.loading = false;

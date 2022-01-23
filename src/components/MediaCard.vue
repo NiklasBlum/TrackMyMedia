@@ -5,7 +5,9 @@
     <PosterImage
       :imagePath="media.poster_path"
       :mediaType="mediaType"
-      :routePath="'/' + mediaType + '/' + media.id"
+      :routePath="
+        '/' + (mediaType == 'movie' ? 'movie' : 'show') + '/' + media.id
+      "
     />
     <v-list-item>
       <v-list-item-avatar>

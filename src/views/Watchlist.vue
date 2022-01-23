@@ -5,27 +5,23 @@
         <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
       </v-col>
     </v-row>
-    <div v-if="currentMedia === 'tv'">
-      <v-row>
-        <v-col sm="6" md="4" lg="3" v-for="show in tmdbMedia" :key="show.id">
-          <SeriesCard :show="show" />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-if="currentMedia === 'movie'">
-      <v-row class="align-center justify-space-around">
-        <v-col sm="6" md="4" lg="3" v-for="movie in tmdbMedia" :key="movie.id">
-          <MovieCard :movie="movie" />
-        </v-col>
-      </v-row>
-    </div>
+    <v-row class="align-center justify-space-around">
+      <v-col
+        sm="6"
+        md="4"
+        lg="3"
+        v-for="mediaItem in tmdbMedia"
+        :key="mediaItem.id"
+      >
+        <MediaCard :media="mediaItem" :mediaType="currentMedia" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import MediaFilter from "@/components/MediaFilter";
-import MovieCard from "@/components/Movie/MovieCard.vue";
-import SeriesCard from "@/components/Series/SeriesCard.vue";
+import MediaCard from "@/components/MediaCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 import db from "@/firebase/config";
@@ -33,13 +29,12 @@ import db from "@/firebase/config";
 export default {
   components: {
     MediaFilter,
-    MovieCard,
-    SeriesCard
+    MediaCard,
   },
   data() {
     return {
       fireBaseMedia: [],
-      tmdbMedia: []
+      tmdbMedia: [],
     };
   },
   methods: {
@@ -50,8 +45,8 @@ export default {
         .doc(this.user.uid)
         .collection("watchlist")
         .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
             if (
               doc.data().media_type == this.currentMedia &&
               doc.data().watchlist == true
@@ -66,13 +61,13 @@ export default {
       let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
       axios
         .get(query)
-        .then(response => {
+        .then((response) => {
           this.tmdbMedia.push(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
+    },
   },
   computed: mapState([
     "baseUrl",
@@ -80,10 +75,10 @@ export default {
     "currentMedia",
     "apiKey",
     "language",
-    "user"
+    "user",
   ]),
   created() {
     this.getWatchlistFromFirestore();
-  }
+  },
 };
 </script>

@@ -5,20 +5,18 @@
         <MediaFilter @currentMediaChanged="getPopular" />
       </v-col>
     </v-row>
-    <div v-if="currentMedia === 'tv'">
-      <v-row>
-        <v-col sm="6" md="3" lg="3" v-for="show in media" :key="show.id">
-          <SeriesCard :show="show" />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-if="currentMedia === 'movie'">
-      <v-row class="align-center justify-space-around">
-        <v-col sm="6" md="3" lg="3" v-for="movie in media" :key="movie.id">
-          <MovieCard :movie="movie" />
-        </v-col>
-      </v-row>
-    </div>
+    <v-row class="align-center justify-space-around">
+      <v-col
+        sm="6"
+        md="3"
+        lg="3"
+        v-for="mediaItem in media"
+        :key="mediaItem.id"
+      >
+        <MediaCard :media="mediaItem" :mediaType="currentMedia" />
+      </v-col>
+    </v-row>
+
     <v-layout mt-5 justify-center>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
@@ -28,15 +26,13 @@
 <script>
 import Pagination from "@/components/Navigation/Pagination.vue";
 import MediaFilter from "@/components/MediaFilter";
-import MovieCard from "@/components/Movie/MovieCard.vue";
-import SeriesCard from "@/components/Series/SeriesCard.vue";
+import MediaCard from "@/components/MediaCard.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    MovieCard,
-    SeriesCard,
+    MediaCard,
     MediaFilter,
     Pagination,
   },

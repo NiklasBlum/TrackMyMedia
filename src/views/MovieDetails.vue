@@ -6,7 +6,7 @@
     <v-card-text>
       <v-row justify="center">
         <v-col cols="12" sm="5" md="6" lg="4">
-          <MovieCard :movie="movie" />
+          <MediaCard :media="movie" :mediaType="currentMedia" />
         </v-col>
         <v-col cols="12" sm="7" md="6" lg="4">
           <Plot :description="this.movie.overview" />
@@ -40,7 +40,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import MovieCard from "@/components/Movie/MovieCard";
+import MediaCard from "@/components/MediaCard.vue";
 import MediaStats from "@/components/MediaStats.vue";
 import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
@@ -50,7 +50,7 @@ import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
 
 export default {
   components: {
-    MovieCard,
+    MediaCard,
     MediaStats,
     Trailer,
     Reviews,

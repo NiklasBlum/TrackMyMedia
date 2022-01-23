@@ -43,7 +43,7 @@ export default {
                 return false;
             }
             else {
-                return true;
+                return querySnapshot.docs[0].data().onWatchlist;
             }
         } catch (error) {
             console.log('Error getting watchlist: ', error);
@@ -89,22 +89,31 @@ export default {
         }
     },
 
-    async setMediaWatchState(mediaId, mediaType) {
+    async setMediaWatchState(media, mediaType, watchState) {
         const query = db.collection("media")
             .where("userId", "==", store.state.user.uid)
-            .where("tmdbId", "==", mediaId)
+            .where("tmdbId", "==", media.id)
             .where("mediaType", "==", mediaType);
         try {
             const querySnapshot = await query.get();
+            console.log(querySnapshot);
             if (querySnapshot.empty) {
-                return {
-                    watched: false,
-                    watchedAt: null
-                }
+                db.collection("media").add({
+                    userId: store.state.user.uid,
+                    tmdbId: media.id,
+                    mediaType: mediaType,
+                    title: mediaType == 'movie' ? media.title : media.name,
+                    onWatchlist: false,
+                    watched: watchState,
+                    watchedAt: new Date(new Date().toDateString())
+                })
             }
-            return {
-                watched: querySnapshot.docs[0].data().watched,
-                watchedAt: querySnapshot.docs[0].data().watchedAt
+            else {
+                console.log("updated media");
+                db.collection("media").doc(querySnapshot.docs[0].id).update({
+                    watched: watchState,
+                    watchedAt: watchState ? new Date(new Date().toDateString()) : null
+                })
             }
         } catch (error) {
             console.log('Error getting watchlist: ', error);

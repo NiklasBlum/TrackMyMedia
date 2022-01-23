@@ -6,7 +6,7 @@
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="5" md="6" lg="4">
-          <SeriesCard :show="this.show" />
+          <MediaCard :media="this.show" :mediaType="currentMedia" />
         </v-col>
         <v-col cols="12" sm="7" md="6" lg="4">
           <Plot :description="this.show.overview" />
@@ -18,7 +18,13 @@
             :releaseState="show.status"
           />
         </v-col>
-        <v-col cols="12" sm="6" md="6" lg="2" v-if="this.freeStreamingProviders">
+        <v-col
+          cols="12"
+          sm="6"
+          md="6"
+          lg="2"
+          v-if="this.freeStreamingProviders"
+        >
           <MediaStreamingProvider :providers="this.freeStreamingProviders" />
         </v-col>
       </v-row>
@@ -27,7 +33,6 @@
           <Trailer :trailerId="trailerId" />
         </v-col>
       </v-row>
-
       <v-row>
         <v-col>
           <v-card class="black">
@@ -68,7 +73,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import SeasonCard from "../components/Series/SeasonCard";
-import SeriesCard from "@/components/Series/SeriesCard";
+import MediaCard from "@/components/MediaCard.vue";
 import Trailer from "@/components/Trailer.vue";
 import TmdbService from "@/services/TmdbService";
 import Reviews from "@/components/Reviews.vue";
@@ -79,7 +84,7 @@ import MediaStreamingProvider from "@/components/MediaStreamingProvider.vue";
 export default {
   components: {
     SeasonCard,
-    SeriesCard,
+    MediaCard,
     Trailer,
     Reviews,
     MediaStats,
@@ -102,13 +107,12 @@ export default {
         .get(searchQuery)
         .then((response) => {
           this.show = response.data;
-          console.log(this.show);
           this.posterPath = this.posterUrl + this.show.poster_path;
           if (this.show.videos.results.length > 0) {
             this.trailerId = this.show.videos.results[0].key;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -134,7 +138,7 @@ export default {
     "apiKey",
     "language",
     "media",
-    "posterUrlOrg"
+    "posterUrlOrg",
   ]),
 };
 </script>

@@ -8,14 +8,18 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <div class="split-btn">
-          <v-btn v-if="!watched" @click="setMediaAsWatched" :loading="loading">
+          <v-btn
+            v-if="!watched"
+            @click="setMediaWatchState(true)"
+            :loading="loading"
+          >
             <v-icon left>mdi-eye-check</v-icon>
             <small>Add to History</small>
           </v-btn>
           <v-btn
             v-if="watched"
             color="green accent-4"
-            @click="setMediaAsNotWatched"
+            @click="setMediaWatchState(false)"
             :loading="loading"
           >
             <v-icon left>mdi-eye-check</v-icon>
@@ -53,7 +57,6 @@
 </style>
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
 import FirestoreService from "@/services/FirestoreService.js";
 
@@ -78,48 +81,22 @@ export default {
       this.loading = true;
       FirestoreService.getMediaWatchState(this.media.id, this.mediaType)
         .then((res) => {
-          console.log(res.watchedAt);
           (this.watched = res.watched), (this.watchedAt = res.watchedAt);
         })
         .finally(() => (this.loading = false));
     },
-    setMediaAsWatched() {
-      let mediaTitle;
-      if (this.media.title) {
-        mediaTitle = this.media.title;
-      }
-      if (this.media.name) {
-        mediaTitle = this.media.name;
-      }
+    setMediaWatchState(watchState) {
       this.loading = true;
-      this.dbRef
-        .doc(this.media.id.toString())
-        .set({
-          media_id: this.media.id,
-          watched: true,
-          watchedAt: new Date(Date.now()),
-          title: mediaTitle,
-        })
+      FirestoreService.setMediaWatchState(
+        this.media,
+        this.mediaType,
+        watchState
+      )
         .then(() => {
-          this.watched = true;
-          this.watchedAt = new Date(Date.now());
+          (this.watched = watchState),
+            (this.watchedAt = watchState ? new Date(Date.now()) : null);
         })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    setMediaAsNotWatched() {
-      this.loading = true;
-      this.dbRef
-        .doc(this.media.id.toString())
-        .delete()
-        .then(() => {
-          this.watched = false;
-          this.watchedAt = null;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .finally(() => (this.loading = false));
     },
   },
   watch: {
@@ -132,12 +109,6 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection(this.mediaType);
-    },
   },
 };
 </script>
