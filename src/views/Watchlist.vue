@@ -2,7 +2,7 @@
   <div>
     <v-row no-gutters>
       <v-col align="center" class="mb-4">
-        <MediaFilter @currentMediaChanged="getWatchlistFromFirestore" />
+        <MediaFilter @currentMediaChanged="getFirestoreTmdbIds" />
       </v-col>
     </v-row>
     <v-row class="align-center justify-space-around">
@@ -22,9 +22,9 @@
 <script>
 import MediaFilter from "@/components/MediaFilter";
 import MediaCard from "@/components/MediaCard.vue";
-import axios from "axios";
 import { mapState } from "vuex";
-import db from "@/firebase/config";
+import FirestoreService from "@/services/FirestoreService.js";
+import TmdbService from "@/services/TmdbService.js";
 
 export default {
   components: {
@@ -33,40 +33,21 @@ export default {
   },
   data() {
     return {
-      fireBaseMedia: [],
       tmdbMedia: [],
     };
   },
   methods: {
-    getWatchlistFromFirestore() {
-      this.tmdbMedia = [];
-      this.fireBaseMedia = [];
-      db.collection("users")
-        .doc(this.user.uid)
-        .collection("watchlist")
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            if (
-              doc.data().media_type == this.currentMedia &&
-              doc.data().watchlist == true
-            ) {
-              this.fireBaseMedia.push(doc.data());
-              this.getMediaFromTmdb(doc.data().media_id);
-            }
-          });
-        });
-    },
-    getMediaFromTmdb(id) {
-      let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
-      axios
-        .get(query)
-        .then((response) => {
-          this.tmdbMedia.push(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    getFirestoreTmdbIds() {
+      (this.tmdbMedia = []),
+        FirestoreService.getMediaOnWatchlistTmdbIds().then(
+          (tmdbIds) => {
+            tmdbIds.forEach((tmdbId) => {
+              TmdbService.getMediaFromTmdbById(tmdbId).then((response) => {
+                this.tmdbMedia.push(response);
+              });
+            });
+          }
+        );
     },
   },
   computed: mapState([
@@ -78,7 +59,7 @@ export default {
     "user",
   ]),
   created() {
-    this.getWatchlistFromFirestore();
+    this.getFirestoreTmdbIds();
   },
 };
 </script>

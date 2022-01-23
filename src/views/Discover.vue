@@ -157,7 +157,6 @@ export default {
         .then((response) => {
           this.media =
             response.data.results.length == 0 ? null : response.data.results;
-          console.log(this.media);
         })
         .finally(() => {
           this.loading = false;

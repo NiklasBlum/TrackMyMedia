@@ -34,4 +34,17 @@ export default {
             return null;
         }
     },
+
+    async getMediaFromTmdbById(id) {
+        let query = `${store.state.baseUrl}${store.state.currentMedia}/${id}?api_key=${store.state.apiKey}&language=${store.state.language}`;
+        let response = await axios.get(query);
+        try {
+            if (response.data) {
+
+                return response.data;
+            }
+        } catch (error) {
+            return null;
+        }
+    },
 }

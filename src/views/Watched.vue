@@ -2,7 +2,7 @@
   <div>
     <v-row no-gutters>
       <v-col align="center" class="mb-4">
-        <MediaFilter @currentMediaChanged="getMediaFromFireStore" />
+        <MediaFilter @currentMediaChanged="getWatchedFirestoreTmdbIds" />
       </v-col>
     </v-row>
     <v-row class="align-center justify-space-around">
@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
-import db from "@/firebase/config";
 import MediaFilter from "@/components/MediaFilter.vue";
 import MediaCard from "@/components/MediaCard.vue";
+import FirestoreService from "@/services/FirestoreService.js";
+import TmdbService from "@/services/TmdbService.js";
 export default {
   components: {
     MediaFilter,
@@ -33,39 +33,27 @@ export default {
   },
   data() {
     return {
-      fireBaseMedia: [],
       tmdbMedia: [],
     };
   },
   methods: {
     //TODO: new Firebase method to get all media Ids where watched=true
-    getMediaFromFireStore() {
-      this.tmdbMedia = [];
-      this.fireBaseMedia = [];
-      this.dbRef.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-          if (doc.data().watched == true) {
-            this.fireBaseMedia.push(doc.data());
-            this.getMediaFromTmdb(doc.data().media_id);
+    getWatchedFirestoreTmdbIds() {
+      (this.tmdbMedia = []),
+        FirestoreService.getMediaWatchedTmdbIds(this.currentMedia).then(
+          (tmdbIds) => {
+            tmdbIds.forEach((tmdbId) => {
+              TmdbService.getMediaFromTmdbById(tmdbId).then((response) => {
+                this.tmdbMedia.push(response);
+              });
+            });
           }
-        });
-      });
-    },
-    //TODO: auslagern in TmdbService
-    getMediaFromTmdb(id) {
-      let query = `${this.baseUrl}${this.currentMedia}/${id}?api_key=${this.apiKey}&language=${this.language}`;
-      axios
-        .get(query)
-        .then((response) => {
-          this.tmdbMedia.push(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        );
     },
   },
+
   created() {
-    this.getMediaFromFireStore();
+    this.getWatchedFirestoreTmdbIds();
   },
   computed: {
     ...mapState([
@@ -76,14 +64,6 @@ export default {
       "language",
       "user",
     ]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection(this.currentMedia)
-        .orderBy("title")
-        .limit(30);
-    },
   },
 };
 </script>

@@ -50,6 +50,37 @@ export default {
         }
     },
 
+    async getMediaOnWatchlistTmdbIds() {
+        const query = db.collection("media")
+            .where("mediaType", "==", store.state.currentMedia)
+            .where("onWatchlist", "==", true);
+
+        const tmdbIds = [];
+        await query.get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    tmdbIds.push(doc.data().tmdbId);
+                });
+            });
+        return tmdbIds;
+    },
+
+    async getMediaWatchedTmdbIds(mediaType) {
+        const query = db.collection("media")
+            .where("mediaType", "==", mediaType)
+            .where("watched", "==", true);
+
+        const tmdbIds = [];
+        await query.get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    tmdbIds.push(doc.data().tmdbId);
+                });
+            });
+        return tmdbIds;
+    },
+
+
     async createUserIfNotExists() {
         const query = db.collection("user").where("userId", "==", store.state.user.uid);
         try {
