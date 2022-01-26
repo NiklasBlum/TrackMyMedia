@@ -37,18 +37,17 @@ export default {
     };
   },
   methods: {
-    //TODO: new Firebase method to get all media Ids where watched=true
     getWatchedFirestoreTmdbIds() {
-      (this.tmdbMedia = []),
-        FirestoreService.getMediaWatchedTmdbIds(this.currentMedia).then(
-          (tmdbIds) => {
-            tmdbIds.forEach((tmdbId) => {
-              TmdbService.getMediaFromTmdbById(tmdbId).then((response) => {
-                this.tmdbMedia.push(response);
-              });
+      this.tmdbMedia = [];
+      FirestoreService.getMediaWatchedTmdbIds(this.currentMedia).then(
+        (tmdbIds) => {
+          tmdbIds.forEach((tmdbId) => {
+            TmdbService.getMediaFromTmdbById(tmdbId).then((response) => {
+              this.tmdbMedia.push(response);
             });
-          }
-        );
+          });
+        }
+      );
     },
   },
 

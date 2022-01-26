@@ -47,4 +47,19 @@ export default {
             return null;
         }
     },
+
+    async getMediaBySearch(searchText, page) {
+        this.loading = true;
+        let searchQuery = `${store.state.baseSearchUrl}${store.state.currentMedia}?api_key=${store.state.apiKey}&language=${store.state.language}
+        &page=${page}&query=${searchText}`;
+        let response = await axios.get(searchQuery);
+        try {
+            if (response.data) {
+
+                return response.data.results;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }

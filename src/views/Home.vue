@@ -3,10 +3,10 @@
     <v-row no-gutters>
       <v-col align="center">
         <MediaFilter
-          @currentMediaChanged="searchText !== '' ? getMedia() : ''"
+          @currentMediaChanged="searchText !== '' ? getMediaBySearch() : ''"
         />
       </v-col>
-      <v-col cols="12" class="mt-4">
+      <v-col cols="12" class="my-4">
         <v-text-field
           light
           background-color="white"
@@ -17,13 +17,13 @@
           hide-details
           :placeholder="'Search for ' + this.currentMedia + ' and press enter.'"
           v-model="searchText"
-          @keyup.enter="searchText !== '' ? getMedia() : ''"
+          @keyup.enter="searchText !== '' ? getMediaBySearch() : ''"
           :loading="loading"
           prepend-inner-icon="mdi-magnify"
         />
       </v-col>
     </v-row>
-    <div v-if="searchText !== ''">
+    <div v-if="this.media.length > 0">
       <v-row>
         <v-col
           sm="6"
@@ -37,38 +37,51 @@
         </v-col>
       </v-row>
     </div>
+    <v-layout mt-5 justify-center>
+      <Pagination @pageChanged="pageChanged" v-show="showPagination" />
+    </v-layout>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import MediaFilter from "@/components/MediaFilter";
 import MediaCard from "@/components/MediaCard";
 import { mapState } from "vuex";
-
+import TmdbService from "@/services/TmdbService.js";
+import Pagination from "@/components/Navigation/Pagination";
 export default {
   components: {
     MediaFilter,
     MediaCard,
+    Pagination,
   },
   data() {
     return {
       searchText: "",
       media: [],
       loading: false,
+      showPagination: false,
+      page: 1,
     };
   },
   methods: {
-    getMedia() {
+    pageChanged(page) {
+      this.page = page;
+      this.getMediaBySearch();
+    },
+    getMediaBySearch() {
+      this.showPagination = false;
+      this.media = [];
       this.loading = true;
-      let searchQuery = `${this.baseSearchUrl}${this.currentMedia}?api_key=${this.apiKey}&language=${this.language}&query=${this.searchText}`;
-      axios
-        .get(searchQuery)
+      TmdbService.getMediaBySearch(this.searchText, this.page)
         .then((response) => {
-          this.media = response.data.results;
+          this.media = response;
         })
         .finally(() => {
           this.loading = false;
+          if (this.media.length > 0) {
+            this.showPagination = true;
+          }
         });
     },
   },
