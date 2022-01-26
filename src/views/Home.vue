@@ -40,6 +40,7 @@
     <v-layout mt-5 justify-center>
       <Pagination @pageChanged="pageChanged" v-show="showPagination" />
     </v-layout>
+    <LoadingAnimation v-if="loading" />
   </div>
 </template>
 
@@ -49,11 +50,13 @@ import MediaCard from "@/components/MediaCard";
 import { mapState } from "vuex";
 import TmdbService from "@/services/TmdbService.js";
 import Pagination from "@/components/Navigation/Pagination";
+import LoadingAnimation from "@/components/LoadingAnimation";
 export default {
   components: {
     MediaFilter,
     MediaCard,
     Pagination,
+    LoadingAnimation,
   },
   data() {
     return {

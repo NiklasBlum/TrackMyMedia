@@ -65,9 +65,9 @@ export default {
         return tmdbIds;
     },
 
-    async getMediaWatchedTmdbIds(mediaType) {
+    async getMediaWatchedTmdbIds() {
         const query = db.collection("media")
-            .where("mediaType", "==", mediaType)
+            .where("mediaType", "==", store.state.currentMedia)
             .where("watched", "==", true);
 
         const tmdbIds = [];
@@ -79,7 +79,6 @@ export default {
             });
         return tmdbIds;
     },
-
 
     async createUserIfNotExists() {
         const query = db.collection("user").where("userId", "==", store.state.user.uid);
