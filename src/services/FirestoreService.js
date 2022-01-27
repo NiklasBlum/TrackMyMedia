@@ -2,7 +2,26 @@ import db from "@/firebase/config";
 import store from "@/store"
 
 export default {
+    //User -----------------------------------------------------------------------------------------------------------------------------------User Start
+    async createUserIfNotExists() {
+        const query = db.collection("user").where("userId", "==", store.state.user.uid);
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                db.collection("user").add({
+                    userId: store.state.user.uid,
+                    name: store.state.user.displayName,
+                    email: store.state.user.email,
+                    firstLogin: new Date(Date.now()),
+                })
+            }
+        } catch (error) {
+            console.log('Error when settings User: ', error);
+        }
+    },
+    //User -----------------------------------------------------------------------------------------------------------------------------------User End
 
+    //Media Watchlist ------------------------------------------------------------------------------------------------------------------------Media Watchlist Start
     async setWatchlistState(media, mediaType, onWatchlist) {
         const query = db.collection("media")
             .where("userId", "==", store.state.user.uid)
@@ -31,7 +50,6 @@ export default {
             console.log('Error getting watchlist: ', error);
         }
     },
-
     async getWatchlistState(mediaId, mediaType) {
         const query = db.collection("media")
             .where("userId", "==", store.state.user.uid)
@@ -49,7 +67,6 @@ export default {
             console.log('Error getting watchlist: ', error);
         }
     },
-
     async getMediaOnWatchlistTmdbIds() {
         const query = db.collection("media")
             .where("mediaType", "==", store.state.currentMedia)
@@ -64,11 +81,15 @@ export default {
             });
         return tmdbIds;
     },
+    //Media Watchlist ------------------------------------------------------------------------------------------------------------------------Media Watchlist End
 
-    async getMediaWatchedTmdbIds() {
+    //Media WatchState -----------------------------------------------------------------------------------------------------------------------Media WatchState Start
+    async getMediaWatchedTmdbIds(mediaType) {
+
         const query = db.collection("media")
-            .where("mediaType", "==", store.state.currentMedia)
-            .where("watched", "==", true);
+            .where("mediaType", "==", mediaType)
+            .where("watched", "==", true)
+            .orderBy("watchedAt", "desc");
 
         const tmdbIds = [];
         await query.get()
@@ -79,24 +100,6 @@ export default {
             });
         return tmdbIds;
     },
-
-    async createUserIfNotExists() {
-        const query = db.collection("user").where("userId", "==", store.state.user.uid);
-        try {
-            const querySnapshot = await query.get();
-            if (querySnapshot.empty) {
-                db.collection("user").add({
-                    userId: store.state.user.uid,
-                    name: store.state.user.displayName,
-                    email: store.state.user.email,
-                    firstLogin: new Date(Date.now()),
-                })
-            }
-        } catch (error) {
-            console.log('Error when settings User: ', error);
-        }
-    },
-
     async getMediaWatchState(mediaId, mediaType) {
         const query = db.collection("media")
             .where("userId", "==", store.state.user.uid)
@@ -118,7 +121,6 @@ export default {
             console.log('Error getting watchlist: ', error);
         }
     },
-
     async setMediaWatchState(media, mediaType, watchState) {
         const query = db.collection("media")
             .where("userId", "==", store.state.user.uid)
@@ -139,7 +141,6 @@ export default {
                 })
             }
             else {
-                console.log("updated media");
                 db.collection("media").doc(querySnapshot.docs[0].id).update({
                     watched: watchState,
                     watchedAt: watchState ? new Date(new Date().toDateString()) : null
@@ -148,5 +149,95 @@ export default {
         } catch (error) {
             console.log('Error getting watchlist: ', error);
         }
-    }
+    },
+    //Media WatchState ------------------------------------------------------------------------------------------------------------------------Media WatchState End
+
+    //Seasons ---------------------------------------------------------------------------------------------------------------------------------Seasons Start
+    async getSeasonWatchState(showTmdbId, seasonNumber) {
+        const query = db.collection("season")
+            .where("userId", "==", store.state.user.uid)
+            .where("showTmdbId", "==", showTmdbId)
+            .where("seasonNumber", "==", seasonNumber);
+        try {
+            const querySnapshot = await query.get();
+            if (querySnapshot.empty) {
+                return false;
+            }
+            return querySnapshot.docs[0].data().watched;
+        } catch (error) {
+            console.log('Error getting seasonWatchState: ', error);
+        }
+    },
+
+    async setSeasonWatchState(showTmdbId, seasonNumber, watchState) {
+        const query = db.collection("season")
+            .where("userId", "==", store.state.user.uid)
+            .where("showTmdbId", "==", showTmdbId)
+            .where("seasonNumber", "==", seasonNumber);
+        try {
+            const querySnapshot = await query.get();
+
+            if (querySnapshot.empty) {
+                db.collection("season").add({
+                    userId: store.state.user.uid,
+                    showTmdbId: showTmdbId,
+                    seasonNumber: seasonNumber,
+                    watched: watchState,
+                    watchedAt: new Date(new Date().toDateString())
+                })
+            }
+            else {
+                db.collection("season").doc(querySnapshot.docs[0].id).delete();
+            }
+        } catch (error) {
+            console.log('Error setting SeasonWatchState: ', error);
+        }
+    },
+    //Seasons ---------------------------------------------------------------------------------------------------------------------------------Seasons End
+
+    //Episodes---------------------------------------------------------------------------------------------------------------------------------Episodes Start
+    async getEpisodeWatchState(showId, seasonNumber, episodeNumber) {
+        const query = db.collection("episode")
+            .where("userId", "==", store.state.user.uid)
+            .where("showTmdbId", "==", showId)
+            .where("seasonNumber", "==", seasonNumber)
+            .where("episodeNumber", "==", episodeNumber);
+        try {
+            const querySnapshot = await query.get();
+            console.log(querySnapshot);
+            if (querySnapshot.empty) {
+                return false;
+            }
+            return querySnapshot.docs[0].data().watched;
+        } catch (error) {
+            console.log('Error getting seasonWatchState: ', error);
+        }
+    },
+    async setEpisodeWatchState(showTmdbId, seasonNumber, episodeNumber, watchState) {
+        const query = db.collection("episode")
+            .where("userId", "==", store.state.user.uid)
+            .where("showTmdbId", "==", showTmdbId)
+            .where("seasonNumber", "==", seasonNumber)
+            .where("episodeNumber", "==", episodeNumber);
+        try {
+            const querySnapshot = await query.get();
+
+            if (querySnapshot.empty) {
+                db.collection("episode").add({
+                    userId: store.state.user.uid,
+                    showTmdbId: showTmdbId,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber,
+                    watched: watchState,
+                    watchedAt: new Date(new Date().toDateString())
+                })
+            }
+            else {
+                db.collection("episode").doc(querySnapshot.docs[0].id).delete();
+            }
+        } catch (error) {
+            console.log('Error setting SeasonWatchState: ', error);
+        }
+    },
+    //Episodes---------------------------------------------------------------------------------------------------------------------------------Episodes End
 }

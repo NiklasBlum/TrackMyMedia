@@ -2,8 +2,13 @@ import store from "@/store"
 import axios from "axios";
 
 export default {
+    async getShowDetails(showId) {
+        let searchQuery = `${store.state.baseUrl}tv/${showId}?api_key=${store.state.apiKey}&language=${this.language}&append_to_response=videos`;
+        let response = await axios.get(searchQuery);
+        return response.data;
+    },
     async getReviews(mediaType, id) {
-        let searchQuery = `${store.state.baseUrl}${mediaType}/${id}/reviews?api_key=${store.state.apiKey}&language=en-US&page=1`;
+        let searchQuery = `${store.state.baseUrl}${mediaType}/${id}/reviews?api_key=${store.state.apiKey}&language=${this.language}&page=1`;
         let response = await axios.get(searchQuery);
 
         if (response.data) {

@@ -33,7 +33,7 @@
             v-if="!watched"
             block
             height="100%"
-            @click="setEpisodeAsWatched"
+            @click="setEpisodeWatchState(true)"
             :loading="loading"
           >
             <v-icon large>mdi-eye-plus</v-icon>
@@ -44,7 +44,7 @@
             v-if="watched"
             block
             height="100%"
-            @click="setEpisodeAsNotWatched"
+            @click="setEpisodeWatchState(false)"
             :loading="loading"
           >
             <v-icon large>mdi-eye-check</v-icon>
@@ -57,79 +57,61 @@
 
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
 import PosterImage from "@/components/PosterImage.vue";
+import FirestoreService from "@/services/FirestoreService.js";
+
 export default {
   components: {
     PosterImage,
   },
   props: {
     episode: Object,
+    seasonNumber: Number,
   },
   data() {
     return {
       panel: [0],
       loading: false,
-      watched: null,
-      showId: this.$route.params.id,
+      watched: false,
+      showId: parseInt(this.$route.params.id),
     };
   },
   methods: {
     getGermanDate(date) {
       return dateFormatter.getGermanDate(date);
     },
-    CheckWatchStateEpisode() {
-      this.loading = true;
-      this.dbRef
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((snapEpisode) => {
-            if (snapEpisode.id == this.episode.episode_number.toString()) {
-              this.watched = true;
-            }
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    setEpisodeAsWatched() {
+    async getEpisodeWatchState() {
       this.loading = true;
 
-      this.dbRef
-        .doc(this.episode.episode_number.toString())
-        .set({})
-        .then((this.watched = true))
-        .finally(() => {
-          this.loading = false;
-        });
+      this.watched = await FirestoreService.getEpisodeWatchState(
+        this.showId,
+        this.seasonNumber,
+        this.episode.episode_number
+      );
+
+      this.loading = false;
     },
-    setEpisodeAsNotWatched() {
-      this.dbRef
-        .doc(this.episode.episode_number.toString())
-        .delete()
-        .then((this.watched = false))
-        .finally(() => {
-          this.loading = false;
-        });
+
+    async setEpisodeWatchState(watchState) {
+      this.loading = true;
+
+      await FirestoreService.setEpisodeWatchState(
+        this.showId,
+        this.seasonNumber,
+        this.episode.episode_number,
+        watchState
+      );
+
+      this.watched = watchState;
+      this.loading = false;
     },
   },
   computed: {
     ...mapState(["posterUrlOrg", "user"]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.showId.toString())
-        .collection("seasons")
-        .doc(this.episode.season_number.toString())
-        .collection("episodes");
-    },
   },
   created() {
-    this.CheckWatchStateEpisode();
+    this.getEpisodeWatchState();
   },
 };
 </script>

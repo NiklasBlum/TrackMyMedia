@@ -61,16 +61,10 @@
         </v-col>
       </v-row>
     </v-card-text>
-
-    <v-layout mt-5 row wrap justify-center justify-space-around>
-      <v-flex xs12 sm4 md3 lg2 v-for="season in show.seasons" :key="season.id">
-      </v-flex>
-    </v-layout>
   </v-card>
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
 import SeasonCard from "../components/Series/SeasonCard";
 import MediaCard from "@/components/MediaCard.vue";
@@ -101,23 +95,16 @@ export default {
     };
   },
   methods: {
-    getDetails(id) {
-      let searchQuery = `${this.baseUrl}tv/${id}?api_key=${this.apiKey}&language=${this.language}&append_to_response=videos`;
-      axios
-        .get(searchQuery)
-        .then((response) => {
-          this.show = response.data;
-          this.posterPath = this.posterUrl + this.show.poster_path;
-          if (this.show.videos.results.length > 0) {
-            this.trailerId = this.show.videos.results[0].key;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async getDetails(showId) {
+      this.show = await TmdbService.getShowDetails(showId);
+
+      this.posterPath = this.posterUrl + this.show.poster_path;
+      if (this.show.videos.results.length > 0) {
+        this.trailerId = this.show.videos.results[0].key;
+      }
     },
-    async getReviews(id) {
-      this.reviews = await TmdbService.getReviews("tv", id);
+    async getReviews(showId) {
+      this.reviews = await TmdbService.getReviews("tv", showId);
     },
     async getFreeStreamingProviders(showId) {
       this.freeStreamingProviders = await TmdbService.getFreeStreamingProviders(

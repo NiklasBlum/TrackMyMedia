@@ -9,7 +9,10 @@
     </v-row>
     <v-row dense>
       <v-col v-for="episode in episodes" :key="episode.id" cols="12">
-        <EpisodeCard :episode="episode" />
+        <EpisodeCard
+          :episode="episode"
+          :seasonNumber="parseInt(seasonNumber)"
+        />
       </v-col>
     </v-row>
   </div>
@@ -27,6 +30,7 @@ export default {
   data() {
     return {
       episodes: null,
+      seasonNumber: this.$route.params.number,
     };
   },
   methods: {

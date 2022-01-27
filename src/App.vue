@@ -3,9 +3,11 @@
     <AppBar v-if="user" />
     <v-main>
       <v-container fluid>
-        <keep-alive max="3">
+        <!-- TODO: check if keep-alive is useful - to much traffic otherwise? -->
+        <!-- <keep-alive max="3">
           <router-view :key="$route.fullPath" />
-        </keep-alive>
+        </keep-alive> -->
+        <router-view :key="$route.fullPath" />
       </v-container>
     </v-main>
   </v-app>

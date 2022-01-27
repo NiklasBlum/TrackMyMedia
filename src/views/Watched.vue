@@ -6,7 +6,7 @@
         <MediaFilter @currentMediaChanged="getWatchedFirestoreTmdbIds" />
       </v-col>
     </v-row>
-    <v-row class="align-center justify-space-around" v-if="!loading">
+    <v-row class="align-center justify-space-around" v-if="!this.loading">
       <v-col
         sm="6"
         md="4"
@@ -45,8 +45,9 @@ export default {
     async getWatchedFirestoreTmdbIds() {
       this.loading = true;
       this.tmdbMedia = [];
-      let tmdbIds = await FirestoreService.getMediaWatchedTmdbIds();
-
+      let tmdbIds = await FirestoreService.getMediaWatchedTmdbIds(
+        this.currentMedia
+      );
       for (const id of tmdbIds) {
         let response = await TmdbService.getMediaFromTmdbById(id);
         this.tmdbMedia.push(response);
@@ -54,7 +55,7 @@ export default {
       this.loading = false;
     },
   },
-  created() {
+  mounted() {
     this.getWatchedFirestoreTmdbIds();
   },
   computed: {

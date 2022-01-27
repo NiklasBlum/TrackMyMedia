@@ -20,7 +20,7 @@
         light
         color="cyan"
         block
-        @click="setSeasonAsNotWatched"
+        @click="setSeasonWatchState(false)"
         :loading="loading"
       >
         <v-icon large>mdi-eye-check</v-icon>
@@ -28,7 +28,7 @@
       <v-btn
         v-if="!watched"
         block
-        @click="setSeasonAsWatched"
+        @click="setSeasonWatchState(true)"
         :loading="loading"
       >
         <v-icon large>mdi-eye-plus</v-icon>
@@ -39,9 +39,11 @@
 
 <script>
 import { mapState } from "vuex";
-import db from "@/firebase/config";
 import dateFormatter from "@/dateFormatter";
 import PosterImage from "@/components/PosterImage.vue";
+import FirestoreService from "@/services/FirestoreService.js";
+import TmdbService from "@/services/TmdbService.js";
+
 export default {
   components: {
     PosterImage,
@@ -54,7 +56,6 @@ export default {
     return {
       loading: false,
       watched: false,
-      mySeason: null,
       notFoundPic: require("@/assets/no-image.png"),
     };
   },
@@ -62,63 +63,47 @@ export default {
     getGermanDate(date) {
       return dateFormatter.getGermanDate(date);
     },
-    checkWatchStateSeason() {
+    async getSeasonWatchState() {
       this.loading = true;
-      this.dbRef
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((snapSeason) => {
-            if (snapSeason.id == this.season.season_number) {
-              let currentSeason = snapSeason.data();
-              currentSeason.id = snapSeason.id;
-              currentSeason.finished = snapSeason.data().finished;
-              this.watched = snapSeason.data().finished;
-              this.mySeason = currentSeason;
-            }
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+
+      this.watched = await FirestoreService.getSeasonWatchState(
+        this.show.id,
+        this.season.season_number
+      );
+
+      this.loading = false;
     },
-    setSeasonAsWatched() {
+
+    async setSeasonWatchState(watchState) {
       this.loading = true;
-      this.dbRef
-        .doc(this.season.season_number.toString())
-        .set({
-          finished: true,
-        })
-        .then((this.watched = true))
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    setSeasonAsNotWatched() {
-      this.loading = true;
-      this.dbRef
-        .doc(this.season.season_number.toString())
-        .update({
-          finished: false,
-        })
-        .then((this.watched = false))
-        .finally(() => {
-          this.loading = false;
-        });
+
+      await FirestoreService.setSeasonWatchState(
+        this.show.id,
+        this.season.season_number,
+        watchState
+      );
+      let episodes = await TmdbService.getEpisodes(
+        this.show.id,
+        this.season.season_number
+      );
+      for (const episode of episodes) {
+        await FirestoreService.setEpisodeWatchState(
+          this.show.id,
+          this.season.season_number,
+          episode.episode_number,
+          watchState
+        );
+      }
+
+      this.watched = watchState;
+      this.loading = false;
     },
   },
   created() {
-    this.checkWatchStateSeason();
+    this.getSeasonWatchState();
   },
   computed: {
     ...mapState(["posterUrl", "user"]),
-    dbRef() {
-      return db
-        .collection("users")
-        .doc(this.user.uid)
-        .collection("tv")
-        .doc(this.show.id.toString())
-        .collection("seasons");
-    },
   },
 };
 </script>
